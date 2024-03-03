@@ -1,14 +1,14 @@
 package com.joy.joyapi.service.impl;
 
-import static com.joy.joyapi.constant.RedisConstant.SEND_EMAIL_CODE;
-import static com.joy.joyapi.constant.UserConstant.USER_LOGIN_STATE;
-
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joy.joyapi.common.BaseResponse;
 import com.joy.joyapi.common.ErrorCode;
 import com.joy.joyapi.common.ResultUtils;
+import com.joy.joyapi.constant.CommonConstant;
+import com.joy.joyapi.exception.BusinessException;
 import com.joy.joyapi.mapper.UserMapper;
 import com.joy.joyapi.model.dto.user.UserQueryRequest;
 import com.joy.joyapi.model.entity.User;
@@ -19,19 +19,6 @@ import com.joy.joyapi.service.UserService;
 import com.joy.joyapi.utils.RandomSmsNumUtils;
 import com.joy.joyapi.utils.RegExpUtil;
 import com.joy.joyapi.utils.SqlUtils;
-import com.joy.joyapi.constant.CommonConstant;
-import com.joy.joyapi.exception.BusinessException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -45,11 +32,25 @@ import org.springframework.util.DigestUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static com.joy.joyapi.constant.RedisConstant.SEND_EMAIL_CODE;
+import static com.joy.joyapi.constant.UserConstant.USER_LOGIN_STATE;
+
 /**
  * 用户服务实现
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author Jason
+ * @from <a href="https://www.ojason.top">我的博客</a>
  */
 @Service
 @Slf4j
@@ -85,14 +86,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!userPassword.equals(checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
         }
-        // 校验验证码
-        if (!StringUtils.equals(captchaCode, (String) request.getSession().getAttribute("CaptchaCode"))) {
+        // 校验验证码，不区分大小写
+        String verifyCode = (String) request.getSession().getAttribute("CaptchaCode");
+        if (!StringUtils.equalsIgnoreCase(captchaCode, verifyCode)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "验证码错误");
         }
+
         synchronized (userAccount.intern()) {
             // 账户不能重复
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userAccount", userAccount);
+            queryWrapper.eq("user_account", userAccount);
             long count = this.baseMapper.selectCount(queryWrapper);
             if (count > 0) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
@@ -103,6 +106,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            // 随机生成用户名
+            String simpleUUID = IdUtil.simpleUUID();
+            user.setUserName("用户" + simpleUUID.substring(0, 10));
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
@@ -127,8 +133,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userAccount", userAccount);
-        queryWrapper.eq("userPassword", encryptPassword);
+        queryWrapper.eq("user_account", userAccount);
+        queryWrapper.eq("user_password", encryptPassword);
         User user = this.baseMapper.selectOne(queryWrapper);
         // 用户不存在
         if (user == null) {
@@ -148,7 +154,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         synchronized (unionId.intern()) {
             // 查询用户是否已存在
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("unionId", unionId);
+            queryWrapper.eq("union_id", unionId);
             User user = this.getOne(queryWrapper);
             // 被封号，禁止登录
             if (user != null && UserRoleEnum.BAN.getValue().equals(user.getUserRole())) {
@@ -291,11 +297,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String sortOrder = userQueryRequest.getSortOrder();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(id != null, "id", id);
-        queryWrapper.eq(StringUtils.isNotBlank(unionId), "unionId", unionId);
-        queryWrapper.eq(StringUtils.isNotBlank(mpOpenId), "mpOpenId", mpOpenId);
-        queryWrapper.eq(StringUtils.isNotBlank(userRole), "userRole", userRole);
-        queryWrapper.like(StringUtils.isNotBlank(userProfile), "userProfile", userProfile);
-        queryWrapper.like(StringUtils.isNotBlank(userName), "userName", userName);
+        queryWrapper.eq(StringUtils.isNotBlank(unionId), "union_id", unionId);
+        queryWrapper.eq(StringUtils.isNotBlank(mpOpenId), "mp_open_id", mpOpenId);
+        queryWrapper.eq(StringUtils.isNotBlank(userRole), "user_role", userRole);
+        queryWrapper.like(StringUtils.isNotBlank(userProfile), "user_profile", userProfile);
+        queryWrapper.like(StringUtils.isNotBlank(userName), "user_name", userName);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
@@ -306,10 +312,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 校验邮箱
         RegExpUtil.regExpVerify(RegExpUtil.emailRegExp, email, "邮箱格式错误");
         // 从redis中查看有没有该邮箱的验证码
-        String verifyCode =(String) redisTemplate.opsForValue().get(SEND_EMAIL_CODE + email);
+        String verifyCode = (String) redisTemplate.opsForValue().get(SEND_EMAIL_CODE + email);
         if (!StringUtils.isAnyBlank(verifyCode)) {
             // 如果redis有该手机号验证码，则返回
-             throw new BusinessException(ErrorCode.OPERATION_ERROR, "验证码已发送，请注意查收");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "验证码已发送，请注意查收");
         }
         // 如果redis没有该手机号验证码，则获取验证码并发送短信
         verifyCode = RandomSmsNumUtils.getSixBitRandom(); // 获取六位验证码
@@ -336,6 +342,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user;
     }
 
+    @Override
+    public BaseResponse<Boolean> forgetPassword(String userAccount, String userPassword, String captcha) {
+        // 校验参数
+        if (StringUtils.isAnyBlank(userAccount, userPassword, captcha)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+        }
+        RegExpUtil.regExpVerify(RegExpUtil.captchaRegExp, captcha, "验证码格式错误");
+        // 查询用户是否存在
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_account", userAccount);
+        User user = this.baseMapper.selectOne(queryWrapper);
+        if (user == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        // 校验验证码
+        String verifyCode = (String) redisTemplate.opsForValue().get("joy:sendCode:" + userAccount);
+        if (!StringUtils.equals(captcha, verifyCode)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "验证码错误");
+        }
+        // 加密密码
+        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
+        // 更新密码
+        user.setUserPassword(encryptPassword);
+        boolean updateResult = this.updateById(user);
+        if (!updateResult) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "修改密码失败");
+        }
+        return ResultUtils.success(true);
+    }
+
     /**
      * 发送邮箱验证码
      *
@@ -347,6 +383,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Context context = new Context(); // 引入Template的Context
         // 设置模板中的变量（分割验证码）
         context.setVariable("verifyCode", Arrays.asList(verifyCode.split("")));
+        //将验证码存入redis中
+        redisTemplate.opsForValue().set("joy:sendCode:" + email, verifyCode, 5, TimeUnit.MINUTES);
         // 第一个参数为模板的名称(html不用写全路径)
         String process = templateEngine.process("EmailCode.html", context); // 这里不用写全路径
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

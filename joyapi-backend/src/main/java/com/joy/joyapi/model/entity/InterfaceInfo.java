@@ -1,18 +1,18 @@
 package com.joy.joyapi.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.joy.joyapi.model.vo.UserVO;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 接口
+ *
  * @TableName interface_info
  */
-@TableName(value ="interface_info")
+@TableName(value = "interface_info")
 @Data
 public class InterfaceInfo implements Serializable {
     /**
@@ -74,7 +74,30 @@ public class InterfaceInfo implements Serializable {
     /**
      * 是否删除(0-未删, 1-已删)
      */
+    @TableLogic
     private Integer isDelete;
+
+    /**
+     * 类别
+     */
+    private String category;
+
+    /**
+     * 请求示例
+     */
+    private String requestExample;
+
+    /**
+     * 响应示例
+     */
+    private String responseExample;
+
+    /**
+     * 接口创建人信息
+     */
+    @TableField(exist = false)
+    private UserVO creatorInfo;
+
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

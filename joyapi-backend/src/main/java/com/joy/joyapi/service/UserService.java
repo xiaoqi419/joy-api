@@ -7,10 +7,10 @@ import com.joy.joyapi.model.dto.user.UserQueryRequest;
 import com.joy.joyapi.model.entity.User;
 import com.joy.joyapi.model.vo.LoginUserVO;
 import com.joy.joyapi.model.vo.UserVO;
-
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 用户服务
@@ -26,8 +26,8 @@ public interface UserService extends IService<User> {
      * @param userAccount   用户账户
      * @param userPassword  用户密码
      * @param checkPassword 校验密码
-     * @param captchaCode
-     * @param request
+     * @param captchaCode   验证码
+     * @param request       请求
      * @return 新用户 id
      */
     long userRegister(String userAccount, String userPassword, String checkPassword, String captchaCode, HttpServletRequest request);
@@ -37,7 +37,7 @@ public interface UserService extends IService<User> {
      *
      * @param userAccount  用户账户
      * @param userPassword 用户密码
-     * @param request
+     * @param request      请求
      * @return 脱敏后的用户信息
      */
     LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request);
@@ -124,6 +124,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 获取注册邮箱验证码
+     *
      * @param email 邮箱
      * @return 是否发送成功
      */
@@ -136,4 +137,14 @@ public interface UserService extends IService<User> {
      * @return 用户信息
      */
     User getUserById(Long userId);
+
+    /**
+     * 忘记密码
+     *
+     * @param userAccount  用户账户
+     * @param userPassword 用户密码
+     * @param captcha      验证码
+     * @return 是否成功
+     */
+    BaseResponse<Boolean> forgetPassword(String userAccount, String userPassword, String captcha);
 }

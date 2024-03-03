@@ -12,26 +12,12 @@ import com.joy.joyapi.config.WxOpenConfig;
 import com.joy.joyapi.constant.UserConstant;
 import com.joy.joyapi.exception.BusinessException;
 import com.joy.joyapi.exception.ThrowUtils;
-import com.joy.joyapi.model.dto.user.UserAddRequest;
-import com.joy.joyapi.model.dto.user.UserLoginRequest;
-import com.joy.joyapi.model.dto.user.UserQueryRequest;
-import com.joy.joyapi.model.dto.user.UserRegisterRequest;
-import com.joy.joyapi.model.dto.user.UserUpdateMyRequest;
-import com.joy.joyapi.model.dto.user.UserUpdateRequest;
+import com.joy.joyapi.model.dto.user.*;
 import com.joy.joyapi.model.entity.User;
 import com.joy.joyapi.model.vo.LoginUserVO;
 import com.joy.joyapi.model.vo.UserVO;
 import com.joy.joyapi.service.UserService;
-
-import java.io.IOException;
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
@@ -40,12 +26,14 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 import static com.joy.joyapi.constant.UserConstant.USER_LOGIN_STATE;
 import static com.joy.joyapi.service.impl.UserServiceImpl.SALT;
@@ -78,8 +66,7 @@ public class UserController {
      */
     @PostMapping("/register")
     @ApiOperation("用户注册")
-    @ApiImplicitParam(name = "userRegisterRequest", value = "用户注册请求", required = true, dataType = "UserRegisterRequest")
-    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest,HttpServletRequest request){
+    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest, HttpServletRequest request) {
         if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -87,10 +74,10 @@ public class UserController {
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
         String captchaCode = userRegisterRequest.getCode();
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword,captchaCode)) {
+        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, captchaCode)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        long result = userService.userRegister(userAccount, userPassword, checkPassword,captchaCode,request);
+        long result = userService.userRegister(userAccount, userPassword, checkPassword, captchaCode, request);
         return ResultUtils.success(result);
     }
 
@@ -103,7 +90,6 @@ public class UserController {
      */
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    @ApiImplicitParam(name = "userLoginRequest", value = "用户登录请求", required = true, dataType = "UserLoginRequest")
     public BaseResponse<LoginUserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -122,9 +108,8 @@ public class UserController {
      */
     @GetMapping("/login/wx_open")
     @ApiOperation("用户登录（微信开放平台）")
-    @ApiImplicitParam(name = "code", value = "微信登录 code", required = true, dataType = "String")
     public BaseResponse<LoginUserVO> userLoginByWxOpen(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("code") String code) {
+                                                       @RequestParam("code") String code) {
         WxOAuth2AccessToken accessToken;
         try {
             WxMpService wxService = wxOpenConfig.getWxMpService();
@@ -184,7 +169,6 @@ public class UserController {
      */
     @PostMapping("/add")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    @ApiImplicitParam(name = "userAddRequest", value = "用户添加请求", required = true, dataType = "UserAddRequest")
     @ApiOperation("创建用户")
     public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
         if (userAddRequest == null) {
@@ -192,9 +176,7 @@ public class UserController {
         }
         User user = new User();
         BeanUtils.copyProperties(userAddRequest, user);
-        // 默认密码 12345678
-        String defaultPassword = "12345678";
-        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + defaultPassword).getBytes());
+        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + user.getUserPassword()).getBytes());
         user.setUserPassword(encryptPassword);
         boolean result = userService.save(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
@@ -211,7 +193,6 @@ public class UserController {
     @PostMapping("/delete")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @ApiOperation("删除用户")
-    @ApiImplicitParam(name = "deleteRequest", value = "删除请求", required = true, dataType = "DeleteRequest")
     public BaseResponse<Boolean> deleteUser(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -230,9 +211,8 @@ public class UserController {
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @ApiOperation("更新用户")
-    @ApiImplicitParam(name = "userUpdateRequest", value = "用户更新请求", required = true, dataType = "UserUpdateRequest")
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,
-            HttpServletRequest request) {
+                                            HttpServletRequest request) {
         if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -253,7 +233,6 @@ public class UserController {
     @GetMapping("/get")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @ApiOperation("根据 id 获取用户")
-    @ApiImplicitParam(name = "id", value = "用户 id", required = true, dataType = "Long")
     public BaseResponse<User> getUserById(long id, HttpServletRequest request) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -272,7 +251,6 @@ public class UserController {
      */
     @GetMapping("/get/vo")
     @ApiOperation("根据 id 获取用户封装")
-    @ApiImplicitParam(name = "id", value = "用户 id", required = true, dataType = "Long")
     public BaseResponse<UserVO> getUserVOById(long id, HttpServletRequest request) {
         BaseResponse<User> response = getUserById(id, request);
         User user = response.getData();
@@ -289,9 +267,8 @@ public class UserController {
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @ApiOperation("分页获取用户列表（仅管理员）")
-    @ApiImplicitParam(name = "userQueryRequest", value = "用户查询请求", required = true, dataType = "UserQueryRequest")
     public BaseResponse<Page<User>> listUserByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
+                                                   HttpServletRequest request) {
         long current = userQueryRequest.getCurrent();
         long size = userQueryRequest.getPageSize();
         Page<User> userPage = userService.page(new Page<>(current, size),
@@ -308,9 +285,8 @@ public class UserController {
      */
     @PostMapping("/list/page/vo")
     @ApiOperation("分页获取用户封装列表")
-    @ApiImplicitParam(name = "userQueryRequest", value = "用户查询请求", required = true, dataType = "UserQueryRequest")
     public BaseResponse<Page<UserVO>> listUserVOByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
+                                                       HttpServletRequest request) {
         if (userQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -337,9 +313,8 @@ public class UserController {
      */
     @PostMapping("/update/my")
     @ApiOperation("更新个人信息")
-    @ApiImplicitParam(name = "userUpdateMyRequest", value = "用户更新请求", required = true, dataType = "UserUpdateMyRequest")
     public BaseResponse<Boolean> updateMyUser(@RequestBody UserUpdateMyRequest userUpdateMyRequest,
-            HttpServletRequest request) {
+                                              HttpServletRequest request) {
         if (userUpdateMyRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -359,10 +334,11 @@ public class UserController {
      * @param response 响应
      */
     @GetMapping("/captcha")
+
     @ApiOperation("验证码获取")
-    public void getCaptcha(HttpServletResponse response,HttpServletRequest request) {
+    public void getCaptcha(HttpServletResponse response, HttpServletRequest request) {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100, 4, 20);
-        response.setContentType("image/jpeg");
+        response.setContentType("image/png");
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             lineCaptcha.write(outputStream);
             request.getSession().setAttribute("CaptchaCode", lineCaptcha.getCode());
@@ -391,6 +367,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping("/current")
+    @ApiOperation("查询用户信息")
     public BaseResponse<UserVO> getCurrentUser(HttpServletRequest request) {
         // 查看缓存中是否存在用户信息
         User user = (User) request.getSession().getAttribute(USER_LOGIN_STATE);
@@ -399,4 +376,24 @@ public class UserController {
         request.getSession().setAttribute(USER_LOGIN_STATE, userById);
         return ResultUtils.success(userService.getUserVO(userById));
     }
+
+    /**
+     * 忘记密码
+     */
+    @PostMapping("/forget")
+    @ApiOperation("忘记密码")
+    public BaseResponse<Boolean> forgetPassword(@RequestBody UserForgetRequest userForgetRequest) {
+        if (userForgetRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        String userAccount = userForgetRequest.getUserAccount();
+        String userPassword = userForgetRequest.getUserPassword();
+        String captcha = userForgetRequest.getCaptcha();
+        if (StringUtils.isAnyBlank(userAccount, userPassword, captcha)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        return userService.forgetPassword(userAccount, userPassword, captcha);
+    }
+
+
 }

@@ -1,8 +1,11 @@
 package com.joy.joyapi.model.vo;
 
+import com.joy.joyapi.model.entity.User;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 用户视图（脱敏）
@@ -44,4 +47,13 @@ public class UserVO implements Serializable {
     private Date createTime;
 
     private static final long serialVersionUID = 1L;
+
+    public static UserVO objToVo(User user) {
+        if (user == null) {
+            return null;
+        }
+        UserVO infoVO = new UserVO();
+        BeanUtils.copyProperties(user, infoVO);
+        return infoVO;
+    }
 }

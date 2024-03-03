@@ -1,0 +1,31 @@
+
+Y
+java:S1854/"<Remove this useless assignment to local variable "isDelete".(–«Œó8×Êñ—à1
+`
+java:S1854.">Remove this useless assignment to local variable "updateTime".(ØÅŸ¨øÿÿÿÿ8ØÊñ—à1
+[
+java:S1854-">Remove this useless assignment to local variable "createTime".(¢ÚÛ8ØÊñ—à1
+\
+java:S1854*":Remove this useless assignment to local variable "status".(ÿÏ×İúÿÿÿÿ8ØÊñ—à1
+_
+java:S1854)"BRemove this useless assignment to local variable "responseHeader".(›Á¢8ØÊñ—à1
+c
+java:S1854("ARemove this useless assignment to local variable "requestHeader".(Ô•€øÿÿÿÿ8ØÊñ—à1
+X
+java:S1854$"6Remove this useless assignment to local variable "id".(·‰ÔÅûÿÿÿÿ8ØÊñ—à1
+I
+java:S1481$"'Remove this unused "id" local variable.(·‰ÔÅûÿÿÿÿ8ÙÊñ—à1
+T
+java:S1481("2Remove this unused "requestHeader" local variable.(Ô•€øÿÿÿÿ8ÚÊñ—à1
+P
+java:S1481)"3Remove this unused "responseHeader" local variable.(›Á¢8ÚÊñ—à1
+M
+java:S1481*"+Remove this unused "status" local variable.(ÿÏ×İúÿÿÿÿ8ÛÊñ—à1
+L
+java:S1481-"/Remove this unused "createTime" local variable.(¢ÚÛ8ÛÊñ—à1
+Q
+java:S1481."/Remove this unused "updateTime" local variable.(ØÅŸ¨øÿÿÿÿ8ÛÊñ—à1
+J
+java:S1481/"-Remove this unused "isDelete" local variable.(–«Œó8ÛÊñ—à1
+O
+java:S1135v"2Complete the task associated to this TODO comment.(Èüà¡8ãÊñ—à1

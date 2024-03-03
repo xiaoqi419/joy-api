@@ -1,0 +1,8 @@
+
+p
+java:S1488+"ZImmediately return this expression instead of assigning it to the temporary variable "rs".(Ëäó¯
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¡Ä«úÿÿÿÿ
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(—Ôîûÿÿÿÿ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(Ş­Óùÿÿÿÿ
+V	java:S125("<This block of commented-out lines of code should be removed.(àé½€ıÿÿÿÿ
