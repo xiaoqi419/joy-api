@@ -279,9 +279,9 @@ public class UserController {
     /**
      * 分页获取用户封装列表
      *
-     * @param userQueryRequest
-     * @param request
-     * @return
+     * @param userQueryRequest 查询条件
+     * @param request          请求
+     * @return 用户封装列表
      */
     @PostMapping("/list/page/vo")
     @ApiOperation("分页获取用户封装列表")

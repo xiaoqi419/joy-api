@@ -9,6 +9,7 @@ import com.joy.joyapiinterface.service.VirtualUserInterfaceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Jason
@@ -36,6 +37,13 @@ public class VirtualUserInterfaceServiceImpl extends ServiceImpl<VirtualUserInte
         long size = request.getPageSize();
         // 获取分页的虚拟用户
         return virtualUserInterfaceMapper.selectPage(new Page<>(current, size), null);
+    }
+
+    @Override
+    public List<VirtualUserInterface> getFixedVirtualUser() {
+        // 获取固定数量的虚拟用户
+        int count = 10;
+        return virtualUserInterfaceMapper.selectRandom(count);
     }
 }
 

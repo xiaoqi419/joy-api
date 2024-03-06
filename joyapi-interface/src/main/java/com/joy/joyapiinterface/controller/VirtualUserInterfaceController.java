@@ -11,12 +11,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 虚拟用户接口
@@ -44,6 +42,17 @@ public class VirtualUserInterfaceController {
     @PostMapping("/getVirtualUser")
     public BaseResponse<Page<VirtualUserInterface>> getVirtualUser(@RequestBody VirtualUserInterfaceQueryRequest request) {
         Page<VirtualUserInterface> virtualUserInterfacePage = virtualUserInterfaceService.getVirtualUser(request);
+        return ResultUtils.success(virtualUserInterfacePage, "获取成功！");
+    }
+
+
+    /**
+     * 获取固定数量的虚拟用户
+     */
+    @ApiOperation(value = "获取固定数量的虚拟用户")
+    @GetMapping("/getFixedVirtualUser")
+    public BaseResponse<List<VirtualUserInterface>> getFixedVirtualUser() {
+        List<VirtualUserInterface> virtualUserInterfacePage = virtualUserInterfaceService.getFixedVirtualUser();
         return ResultUtils.success(virtualUserInterfacePage, "获取成功！");
     }
 }
