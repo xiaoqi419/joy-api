@@ -4,7 +4,7 @@
 
 ## ⚡ 简介
 
-Joy Api Pro 是一个免费开源的集Api管理、调用、展示于一体的前后端分离项目。
+Joy Api Pro 是一个免费开源的集Api管理、调用、展示于一体的Vue3+React+SpringBoot前后端分离项目。
 
 ## 📚 技术栈
 

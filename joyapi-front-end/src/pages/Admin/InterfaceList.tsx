@@ -21,11 +21,14 @@ import {
   Card,
   Dropdown,
   Flex,
+  Form,
+  Input,
   MenuProps,
   Modal,
   Pagination,
   Popconfirm,
   Result,
+  Select,
   Space,
   Tag,
   Typography,
@@ -493,10 +496,32 @@ const Admin: React.FC = () => {
       icon: <IconFont type="icon-quxiao" />
     }
   ]
+
+  // 接口查询类型
+  type FieldType = {
+    name: string
+    status: number
+    method: string
+    category: string
+    userId: number
+  }
   return (
     <>
       {contextHolder}
-      <PageContainer>
+      <PageContainer
+        extra={
+          <Button
+            style={{
+              float: 'left',
+              marginTop: '20px'
+            }}
+            type="primary"
+            onClick={createInterface}
+          >
+            新建接口
+          </Button>
+        }
+      >
         <div>
           <div
             style={{
@@ -504,9 +529,65 @@ const Admin: React.FC = () => {
             }}
           >
             <Card>
-              <Button type="primary" onClick={createInterface}>
-                新建接口
-              </Button>
+              <Form
+                name="basic"
+                autoComplete="off"
+                layout={'inline'}
+                style={{ maxWidth: 'none' }}
+              >
+                <Form.Item<FieldType> label="接口名称" name="name">
+                  <Input />
+                </Form.Item>
+
+                <Form.Item<FieldType> label="接口状态" name="status">
+                  <Select allowClear style={{ width: 200 }}>
+                    <Select.Option value={0}>关闭</Select.Option>
+                    <Select.Option value={1}>开启</Select.Option>
+                    <Select.Option value={2}>审核中</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item<FieldType> label="请求方式" name="method">
+                  <Select allowClear style={{ width: 200 }}>
+                    <Select.Option value="GET">GET</Select.Option>
+                    <Select.Option value="POST">POST</Select.Option>
+                    <Select.Option value="PUT">PUT</Select.Option>
+                    <Select.Option value="DELETE">DELETE</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item<FieldType> label="接口类型" name="category">
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  style={{
+                    marginTop: '20px'
+                  }}
+                  label="创建人ID"
+                  name="userId"
+                >
+                  <Input />
+                </Form.Item>
+                <div
+                  style={{
+                    display: 'flex',
+                    marginLeft: '60%'
+                  }}
+                >
+                  <Form.Item
+                    style={{
+                      marginTop: '20px'
+                    }}
+                  >
+                    <Button>重置</Button>
+                  </Form.Item>
+                  <Form.Item
+                    style={{
+                      marginTop: '20px'
+                    }}
+                  >
+                    <Button type="primary">查询</Button>
+                  </Form.Item>
+                </div>
+              </Form>
             </Card>
           </div>
           <div

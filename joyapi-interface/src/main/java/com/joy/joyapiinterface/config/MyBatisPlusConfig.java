@@ -1,4 +1,4 @@
-package com.joy.joyapi.config;
+package com.joy.joyapiinterface.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MyBatis Plus 配置
  *
- * @author https://github.com/liyupi
+ * @author Jason
  */
 @Configuration
-@MapperScan("com.joy.joyapi.mapper")
+@MapperScan("com.joy.joyapiinterface.mapper")
 public class MyBatisPlusConfig {
 
     /**
