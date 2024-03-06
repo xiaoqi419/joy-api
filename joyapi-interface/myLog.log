@@ -1,0 +1,29 @@
+2024-03-06 11:07:13.956  INFO 5740 --- [restartedMain] c.j.j.JoyapiInterfaceApplication         : Starting JoyapiInterfaceApplication using Java 17.0.9 on JASON with PID 5740 (E:\project\react\api\joyapi-interface\target\classes started by 26504 in E:\project\react\api\joyapi-interface)
+2024-03-06 11:07:13.959  INFO 5740 --- [restartedMain] c.j.j.JoyapiInterfaceApplication         : The following 1 profile is active: "dev"
+2024-03-06 11:07:14.003  INFO 5740 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-03-06 11:07:14.004  INFO 5740 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-03-06 11:07:14.679  INFO 5740 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-03-06 11:07:14.681  INFO 5740 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-03-06 11:07:14.702  INFO 5740 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2024-03-06 11:07:14.822  WARN 5740 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : Skipping MapperFactoryBean with name 'virtualUserInterfaceMapper' and 'com.joy.joyapiinterface.mapper.VirtualUserInterfaceMapper' mapperInterface. Bean already defined with the same name!
+2024-03-06 11:07:14.823  WARN 5740 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.joy.joyapiinterface.mapper]' package. Please check your configuration.
+2024-03-06 11:07:15.287  INFO 5740 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8102 (http)
+2024-03-06 11:07:15.295  INFO 5740 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-06 11:07:15.295  INFO 5740 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-03-06 11:07:15.361  INFO 5740 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
+2024-03-06 11:07:15.362  INFO 5740 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1358 ms
+2024-03-06 11:07:15.388  INFO 5740 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-06 11:07:15.744  INFO 5740 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-06 11:07:15.750  INFO 5740 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/joyapi'
+2024-03-06 11:07:16.667  INFO 5740 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-03-06 11:07:16.692  INFO 5740 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-03-06 11:07:16.733  INFO 5740 --- [restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)]
+2024-03-06 11:07:17.160  INFO 5740 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8102 (http) with context path '/api'
+2024-03-06 11:07:17.161  INFO 5740 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Documentation plugins bootstrapped
+2024-03-06 11:07:17.162  INFO 5740 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2024-03-06 11:07:17.178  INFO 5740 --- [restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2024-03-06 11:07:17.314  INFO 5740 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2024-03-06 11:07:17.321  INFO 5740 --- [restartedMain] c.j.j.JoyapiInterfaceApplication         : Started JoyapiInterfaceApplication in 3.748 seconds (JVM running for 4.379)
+2024-03-06 11:21:02.721  INFO 5740 --- [http-nio-0.0.0.0-8102-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-06 11:21:02.721  INFO 5740 --- [http-nio-0.0.0.0-8102-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-06 11:21:02.722  INFO 5740 --- [http-nio-0.0.0.0-8102-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
