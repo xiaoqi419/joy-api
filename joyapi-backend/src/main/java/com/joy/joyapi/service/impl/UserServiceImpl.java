@@ -109,6 +109,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 随机生成用户名
             String simpleUUID = IdUtil.simpleUUID();
             user.setUserName("用户" + simpleUUID.substring(0, 10));
+            // 生成独属与用户的access_key和secret_key
+            user.setAccessKey(IdUtil.simpleUUID());
+            user.setSecretKey(IdUtil.simpleUUID());
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");

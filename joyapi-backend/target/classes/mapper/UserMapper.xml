@@ -18,11 +18,14 @@
         <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
         <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
         <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+        <result property="accessKey" column="access_key" jdbcType="VARCHAR"/>
+        <result property="secretKey" column="secret_key" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
         id,unionId,mpOpenId,
-        userName,userAvatar,userProfile,
+        userName,userAvatar,userProfile,access_key,secret_key,
         userRole,createTime,updateTime,isDelete
     </sql>
 </mapper>

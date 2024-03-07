@@ -1,13 +1,10 @@
 package com.joy.joyapi.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 用户
@@ -79,6 +76,16 @@ public class User implements Serializable {
      * 用户状态
      */
     private Integer userStatus;
+
+    /**
+     * 用户标识
+     */
+    private String accessKey;
+
+    /**
+     * 用户密钥
+     */
+    private String secretKey;
 
     /**
      * 是否删除
