@@ -20,6 +20,7 @@ import {
   Button,
   Card,
   Dropdown,
+  Empty,
   Flex,
   Form,
   Input,
@@ -30,6 +31,7 @@ import {
   Result,
   Select,
   Space,
+  Spin,
   Tag,
   Typography,
   message
@@ -505,6 +507,26 @@ const Admin: React.FC = () => {
     category: string
     userId: number
   }
+
+  //查询接口
+  const [form] = Form.useForm<FieldType>()
+  const onFinish = async (values: FieldType) => {
+    console.log('Success:', values)
+    const res = await listInterfaceInfoByPageUsingPost({
+      ...values,
+      ...pageParm
+    })
+    if (res.code === 200) {
+      setInterfaceList(res.data?.records || [])
+      setTotal(res.data?.total || 0)
+    } else {
+      messageApi.open({
+        type: 'error',
+        content: res.message
+      })
+    }
+  }
+
   return (
     <>
       {contextHolder}
@@ -530,12 +552,22 @@ const Admin: React.FC = () => {
           >
             <Card>
               <Form
+                form={form}
                 name="basic"
                 autoComplete="off"
                 layout={'inline'}
                 style={{ maxWidth: 'none' }}
+                onFinish={values => {
+                  onFinish(values)
+                }}
               >
-                <Form.Item<FieldType> label="接口名称" name="name">
+                <Form.Item<FieldType>
+                  label="接口名称"
+                  name="name"
+                  style={{
+                    width: 280
+                  }}
+                >
                   <Input />
                 </Form.Item>
 
@@ -559,7 +591,8 @@ const Admin: React.FC = () => {
                 </Form.Item>
                 <Form.Item<FieldType>
                   style={{
-                    marginTop: '20px'
+                    marginTop: '20px',
+                    width: 280
                   }}
                   label="创建人ID"
                   name="userId"
@@ -569,7 +602,7 @@ const Admin: React.FC = () => {
                 <div
                   style={{
                     display: 'flex',
-                    marginLeft: '60%'
+                    marginLeft: '52.8%'
                   }}
                 >
                   <Form.Item
@@ -577,14 +610,40 @@ const Admin: React.FC = () => {
                       marginTop: '20px'
                     }}
                   >
-                    <Button>重置</Button>
+                    <Button
+                      htmlType="reset"
+                      onClick={() => {
+                        form.resetFields()
+                        getInterfaceList()
+                        messageApi.success('重置成功')
+                      }}
+                    >
+                      重置
+                    </Button>
                   </Form.Item>
                   <Form.Item
                     style={{
                       marginTop: '20px'
                     }}
                   >
-                    <Button type="primary">查询</Button>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        form.submit()
+                        messageApi.success('刷新成功')
+                      }}
+                    >
+                      刷新
+                    </Button>
+                  </Form.Item>
+                  <Form.Item
+                    style={{
+                      marginTop: '20px'
+                    }}
+                  >
+                    <Button type="primary" htmlType="submit">
+                      查询
+                    </Button>
                   </Form.Item>
                 </div>
               </Form>
@@ -602,7 +661,9 @@ const Admin: React.FC = () => {
               wrap="wrap"
               gap="middle"
             >
-              {interfaceList &&
+              {/* 如果interfaceList有值显示列表，否则显示加载组件 */}
+
+              {interfaceList ? (
                 interfaceList.map((item, index) => {
                   return (
                     <ProCard
@@ -678,7 +739,10 @@ const Admin: React.FC = () => {
                       </div>
                     </ProCard>
                   )
-                })}
+                })
+              ) : (
+                <Spin />
+              )}
             </Flex>
           </div>
         </div>
@@ -688,13 +752,16 @@ const Admin: React.FC = () => {
             marginTop: '20px'
           }}
         >
-          <Pagination
-            simple
-            pageSize={pageParm.pageSize}
-            defaultCurrent={1}
-            total={total}
-            onChange={onPageChange}
-          />
+          {interfaceList.length === 0 && <Empty />}
+          {interfaceList.length > 0 && (
+            <Pagination
+              simple
+              pageSize={pageParm.pageSize}
+              defaultCurrent={1}
+              total={total}
+              onChange={onPageChange}
+            />
+          )}
         </div>
         {createModalVisible && <CreateInterface />}
         {manageMoadalVisible && <ManageInterface />}

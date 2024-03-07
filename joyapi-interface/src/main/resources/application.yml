@@ -54,7 +54,3 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.joy.joyapiinterface.controller
-
-logging:
-  file:
-    name: myLog.log
