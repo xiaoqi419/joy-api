@@ -1,9 +1,14 @@
 package com.joy.joyapiinterface.client;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.joy.joyapiinterface.model.dto.virtualuserinterface.VirtualUserInterfaceQueryRequest;
+import com.joy.joyapiinterface.utils.SignUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @program: joyapi-interface
@@ -15,6 +20,26 @@ import com.joy.joyapiinterface.model.dto.virtualuserinterface.VirtualUserInterfa
  */
 public class JoyApiClient {
 
+    String accessKey;
+    String secretKey;
+
+    public JoyApiClient(String accessKey, String secretKey) {
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+    }
+
+
+    private Map<String, String> getHeaders(String body) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("accessKey", accessKey);
+        headers.put("nonce", RandomUtil.randomNumbers(5));
+        headers.put("body", body);
+        headers.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
+        headers.put("sign", SignUtil.getSign(headers, secretKey));
+        return headers;
+    }
+
+
     /**
      * 获取虚拟用户
      *
@@ -25,6 +50,7 @@ public class JoyApiClient {
         String json = JSONUtil.toJsonStr(request);
         String jsonStr = HttpRequest.post("http://localhost:8102/api/virtualUser/getVirtualUser")
                 .body(json)
+                .addHeaders(getHeaders(json))
                 .execute().body();
         return JSONUtil.parseObj(jsonStr);
     }

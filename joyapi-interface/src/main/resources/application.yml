@@ -28,10 +28,10 @@ spring:
     password: 122419
   # Redis 配置
   redis:
-    database: 2
+    database: 1
     port: 6379
     timeout: 5000
-    password:
+    password: 122419
 
 mybatis-plus:
   configuration:

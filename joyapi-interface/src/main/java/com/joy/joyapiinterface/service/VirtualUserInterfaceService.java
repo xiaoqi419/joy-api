@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.joy.joyapiinterface.model.dto.virtualuserinterface.VirtualUserInterfaceQueryRequest;
 import com.joy.joyapiinterface.model.entity.VirtualUserInterface;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public interface VirtualUserInterfaceService extends IService<VirtualUserInterfa
      * @param request 请求参数
      * @return 虚拟用户
      */
-    Page<VirtualUserInterface> getVirtualUser(VirtualUserInterfaceQueryRequest request);
+    Page<VirtualUserInterface> getVirtualUser(VirtualUserInterfaceQueryRequest queryRequest, HttpServletRequest request);
 
     /**
      * 获取固定数量的虚拟用户

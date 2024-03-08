@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -40,8 +41,8 @@ public class VirtualUserInterfaceController {
      */
     @ApiOperation(value = "分页获取虚拟用户")
     @PostMapping("/getVirtualUser")
-    public BaseResponse<Page<VirtualUserInterface>> getVirtualUser(@RequestBody VirtualUserInterfaceQueryRequest request) {
-        Page<VirtualUserInterface> virtualUserInterfacePage = virtualUserInterfaceService.getVirtualUser(request);
+    public BaseResponse<Page<VirtualUserInterface>> getVirtualUser(@RequestBody VirtualUserInterfaceQueryRequest queryRequest, HttpServletRequest request) {
+        Page<VirtualUserInterface> virtualUserInterfacePage = virtualUserInterfaceService.getVirtualUser(queryRequest, request);
         return ResultUtils.success(virtualUserInterfacePage, "获取成功！");
     }
 
