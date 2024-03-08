@@ -29,7 +29,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     timeout: 5000
-    password:
+    password: 122419
   # Elasticsearch 配置
   # todo 需替换配置，然后取消注释
   #  elasticsearch:
@@ -56,7 +56,7 @@ server:
     session:
       cookie:
         max-age: 2592000
-        
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true

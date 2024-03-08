@@ -6,6 +6,15 @@
  * 布局组件
  */
 import Footer from './Footer'
+import JoyIcon from './JoyIcon/JoyIcon'
 import { Question } from './RightContent'
 import { AvatarDropdown, AvatarName } from './RightContent/AvatarDropdown'
-export { AvatarDropdown, AvatarName, Footer, Question }
+import TopStatisticCard from './Welcome/TopStatisticCard'
+export {
+  AvatarDropdown,
+  AvatarName,
+  Footer,
+  JoyIcon,
+  Question,
+  TopStatisticCard
+}
