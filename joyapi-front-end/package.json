@@ -46,9 +46,9 @@
     "not ie <= 10"
   ],
   "dependencies": {
-    "@ant-design/charts": "v1",
     "@ant-design/icons": "^4.8.1",
     "@ant-design/pro-components": "^2.6.48",
+    "@antv/g2": "^5.1.15",
     "@umijs/route-utils": "^2.2.2",
     "animate.css": "^4.1.1",
     "antd": "^5.13.2",

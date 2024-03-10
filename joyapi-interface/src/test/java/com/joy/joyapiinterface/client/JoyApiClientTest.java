@@ -23,6 +23,6 @@ class JoyApiClientTest {
         request.setPageSize(10);
         JSONObject virtualUser = joyApiClient.getVirtualUser(request);
         System.out.println(virtualUser);
-        
+
     }
 }

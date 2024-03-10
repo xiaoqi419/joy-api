@@ -86,7 +86,7 @@ public class VirtualUserInterfaceServiceImpl extends ServiceImpl<VirtualUserInte
         String signStr = SignUtil.getSign(headers, user.getSecretKey());
         // 如果签名不相同，则返回错误
         if (!signStr.equals(sign)) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "签名错误");
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "签名错误，无权限");
         }
         // 如果当前页数小于1或不存在，则默认为1
         if (queryRequest.getCurrent() < 1) {
