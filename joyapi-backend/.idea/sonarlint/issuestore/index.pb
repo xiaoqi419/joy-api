@@ -208,3 +208,9 @@ B
 joyapi-backend.iml,c\5\c553b0526bf8718ec98eb9228b9efe8af4cbf1ce
 C
 springboot-init.iml,9\c\9cad340c1628cc51a9d54c4634f8a9ec209e4c59
+b
+2src/main/java/com/joy/joyapi/config/OSSConfig.java,3\c\3c4403e11dd1bf45b75f7ba4b1635176eca92254
+e
+5src/main/java/com/joy/joyapi/service/FileService.java,2\3\23b50cc57ced57e6308d770839b95464389b1b92
+n
+>src/main/java/com/joy/joyapi/service/impl/FileServiceImpl.java,2\5\253900f1af3975e41dc7c23f5e2ffc77f5a3d3cb

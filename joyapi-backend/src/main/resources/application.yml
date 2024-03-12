@@ -88,13 +88,7 @@ wx:
     appId: xxx
     appSecret: xxx
 # 对象存储
-# 阿里云OSS配置
-aliyun:
-  oss:
-    end-point: oss-cn-hangzhou.aliyuncs.com
-    access-key-id: LTAI5tPfzcXpqhDDswbe9PjF
-    access-key-secret: ZSSBhb3zH0xzuxMxcqcS2wyJsa4aSd
-    bucket-name: oss-test-img
+
 # 接口文档配置
 knife4j:
   enable: true

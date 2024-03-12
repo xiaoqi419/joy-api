@@ -1,12 +1,37 @@
 {
   "groups": [
     {
+      "name": "aliyun.oss",
+      "type": "com.joy.joyapi.config.OSSConfig",
+      "sourceType": "com.joy.joyapi.config.OSSConfig"
+    },
+    {
       "name": "wx.open",
       "type": "com.joy.joyapi.config.WxOpenConfig",
       "sourceType": "com.joy.joyapi.config.WxOpenConfig"
     }
   ],
   "properties": [
+    {
+      "name": "aliyun.oss.access-key-id",
+      "type": "java.lang.String",
+      "sourceType": "com.joy.joyapi.config.OSSConfig"
+    },
+    {
+      "name": "aliyun.oss.access-key-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.joy.joyapi.config.OSSConfig"
+    },
+    {
+      "name": "aliyun.oss.bucket-name",
+      "type": "java.lang.String",
+      "sourceType": "com.joy.joyapi.config.OSSConfig"
+    },
+    {
+      "name": "aliyun.oss.end-point",
+      "type": "java.lang.String",
+      "sourceType": "com.joy.joyapi.config.OSSConfig"
+    },
     {
       "name": "cos.client.accessKey",
       "type": "java.lang.String",

@@ -4,9 +4,11 @@ import cn.hutool.core.io.FileUtil;
 import com.joy.joyapi.common.ErrorCode;
 import com.joy.joyapi.exception.BusinessException;
 import com.joy.joyapi.model.enums.FileUploadBizEnum;
-import com.joy.joyapi.service.UserService;
+import com.joy.joyapi.service.FileService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +27,7 @@ import java.util.Arrays;
 public class FileController {
 
     @Resource
-    private UserService userService;
+    private FileService fileService;
 
 
     /**
@@ -48,6 +50,18 @@ public class FileController {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件类型错误");
             }
         }
+    }
+
+    /**
+     * 上传用户头像
+     *
+     * @param multipartFile 文件
+     * @return 文件路径
+     */
+    @PostMapping("/uploadUserAvatar")
+    public String uploadUserAvatar(@RequestPart("file") MultipartFile multipartFile) {
+        validFile(multipartFile, FileUploadBizEnum.USER_AVATAR);
+        return fileService.upload(multipartFile);
     }
 
 
