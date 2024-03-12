@@ -40,6 +40,7 @@ public class FileServiceImpl implements FileService {
         String endPoint = ossConfig.getEndPoint();
         String accessKeyId = ossConfig.getAccessKeyId();
         String accessKeySecret = ossConfig.getAccessKeySecret();
+        String domain = ossConfig.getDomain();
 
         //创建OSS对象
         OSS ossClient = new OSSClientBuilder().build(endPoint, accessKeyId, accessKeySecret);
@@ -64,7 +65,7 @@ public class FileServiceImpl implements FileService {
             PutObjectResult result = ossClient.putObject(bucketName, uploadFileName, file.getInputStream());
             //拼装返回路径
             if (result != null) {
-                return "https://" + bucketName + "/" + uploadFileName;
+                return "https://" + domain + "/" + uploadFileName;
             }
         } catch (IOException e) {
             log.error("文件上传失败:{}", e.getMessage());

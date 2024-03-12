@@ -28,6 +28,11 @@
       "sourceType": "com.joy.joyapi.config.OSSConfig"
     },
     {
+      "name": "aliyun.oss.domain",
+      "type": "java.lang.String",
+      "sourceType": "com.joy.joyapi.config.OSSConfig"
+    },
+    {
       "name": "aliyun.oss.end-point",
       "type": "java.lang.String",
       "sourceType": "com.joy.joyapi.config.OSSConfig"

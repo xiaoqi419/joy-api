@@ -1,7 +1,9 @@
 package com.joy.joyapi.controller;
 
 import cn.hutool.core.io.FileUtil;
+import com.joy.joyapi.common.BaseResponse;
 import com.joy.joyapi.common.ErrorCode;
+import com.joy.joyapi.common.ResultUtils;
 import com.joy.joyapi.exception.BusinessException;
 import com.joy.joyapi.model.enums.FileUploadBizEnum;
 import com.joy.joyapi.service.FileService;
@@ -59,9 +61,9 @@ public class FileController {
      * @return 文件路径
      */
     @PostMapping("/uploadUserAvatar")
-    public String uploadUserAvatar(@RequestPart("file") MultipartFile multipartFile) {
+    public BaseResponse<String> uploadUserAvatar(@RequestPart("file") MultipartFile multipartFile) {
         validFile(multipartFile, FileUploadBizEnum.USER_AVATAR);
-        return fileService.upload(multipartFile);
+        return ResultUtils.success(fileService.upload(multipartFile));
     }
 
 
