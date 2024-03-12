@@ -88,14 +88,7 @@ wx:
     appId: xxx
     appSecret: xxx
 # 对象存储
-# 阿里云OSS配置
-aliyun:
-  oss:
-    end-point:
-    access-key-id:
-    access-key-secret:
-    bucket-name:
-    domain: upload.ojason.top
+
 # 接口文档配置
 knife4j:
   enable: true
