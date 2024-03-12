@@ -7,11 +7,16 @@ export default [
       { name: '注册', path: '/user/register', component: './User/Register' }
     ]
   },
-  { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
+  {
+    path: '/welcome',
+    name: '首页',
+    icon: 'SmileTwoTone',
+    component: './Welcome'
+  },
   {
     path: '/admin',
     name: '系统管理',
-    icon: 'icon-shenhe',
+    icon: 'HeartTwoTone',
     access: 'canAdmin',
     routes: [
       { path: '/admin', redirect: '/admin/interface-list' },
@@ -26,6 +31,12 @@ export default [
         component: './Admin/ApprovedInterfaceList'
       }
     ]
+  },
+  {
+    path: '/personal-setting',
+    name: '个人设置',
+    icon: 'SettingTwoTone',
+    component: './Setting/PersonalSettings'
   },
   { path: '/', redirect: '/welcome' },
   { path: '*', layout: false, component: './404' }

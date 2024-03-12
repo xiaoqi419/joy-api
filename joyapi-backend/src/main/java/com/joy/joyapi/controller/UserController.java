@@ -41,8 +41,7 @@ import static com.joy.joyapi.service.impl.UserServiceImpl.SALT;
 /**
  * 用户接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author Jason
  */
 @RestController
 @RequestMapping("/user")
@@ -61,8 +60,8 @@ public class UserController {
     /**
      * 用户注册
      *
-     * @param userRegisterRequest
-     * @return
+     * @param userRegisterRequest 注册请求
+     * @return 用户 id
      */
     @PostMapping("/register")
     @ApiOperation("用户注册")
@@ -84,9 +83,9 @@ public class UserController {
     /**
      * 用户登录
      *
-     * @param userLoginRequest
-     * @param request
-     * @return
+     * @param userLoginRequest 登录请求
+     * @param request          请求
+     * @return 登录用户信息
      */
     @PostMapping("/login")
     @ApiOperation("用户登录")
@@ -130,8 +129,8 @@ public class UserController {
     /**
      * 用户注销
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 是否注销成功
      */
     @PostMapping("/logout")
     @ApiOperation("用户注销")
@@ -146,8 +145,8 @@ public class UserController {
     /**
      * 获取当前登录用户
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 当前登录用户
      */
     @GetMapping("/get/login")
     @ApiOperation("获取当前登录用户")
@@ -163,9 +162,9 @@ public class UserController {
     /**
      * 创建用户
      *
-     * @param userAddRequest
-     * @param request
-     * @return
+     * @param userAddRequest 用户添加请求
+     * @param request        请求
+     * @return 用户 id
      */
     @PostMapping("/add")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -186,9 +185,9 @@ public class UserController {
     /**
      * 删除用户
      *
-     * @param deleteRequest
-     * @param request
-     * @return
+     * @param deleteRequest 删除请求
+     * @param request       请求
+     * @return 是否删除成功
      */
     @PostMapping("/delete")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -204,9 +203,9 @@ public class UserController {
     /**
      * 更新用户
      *
-     * @param userUpdateRequest
-     * @param request
-     * @return
+     * @param userUpdateRequest 更新请求
+     * @param request           请求
+     * @return 是否更新成功
      */
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -226,9 +225,9 @@ public class UserController {
     /**
      * 根据 id 获取用户（仅管理员）
      *
-     * @param id
-     * @param request
-     * @return
+     * @param id      id
+     * @param request 请求
+     * @return 用户
      */
     @GetMapping("/get")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -245,9 +244,9 @@ public class UserController {
     /**
      * 根据 id 获取包装类
      *
-     * @param id
-     * @param request
-     * @return
+     * @param id      id
+     * @param request 请求
+     * @return 用户封装
      */
     @GetMapping("/get/vo")
     @ApiOperation("根据 id 获取用户封装")
@@ -260,9 +259,9 @@ public class UserController {
     /**
      * 分页获取用户列表（仅管理员）
      *
-     * @param userQueryRequest
-     * @param request
-     * @return
+     * @param userQueryRequest 查询条件
+     * @param request          请求
+     * @return 用户列表
      */
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -307,9 +306,9 @@ public class UserController {
     /**
      * 更新个人信息
      *
-     * @param userUpdateMyRequest
-     * @param request
-     * @return
+     * @param userUpdateMyRequest 更新请求
+     * @param request             请求
+     * @return 是否更新成功
      */
     @PostMapping("/update/my")
     @ApiOperation("更新个人信息")
