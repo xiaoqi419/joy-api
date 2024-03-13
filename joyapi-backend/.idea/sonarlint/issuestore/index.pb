@@ -45,8 +45,6 @@ m
 =src/main/java/com/joy/joyapi/exception/BusinessException.java,5\7\578d6729eb34973615a25461a8f964a34dfbe591
 a
 1src/main/java/com/joy/joyapi/model/vo/UserVO.java,d\2\d2fa35908bb3f71e2cac64bb644dd5978d3f1d61
-h
-8src/test/java/com/joy/joyapi/manager/CosManagerTest.java,0\1\01885322cee30ae26f053e4d9eaa2ef162456030
 H
 sql/post_es_mapping.json,5\2\5296148e8046132b2441ff016fc8c606080f9552
 m
@@ -102,8 +100,6 @@ c
 3src/main/java/com/joy/joyapi/mapper/PostMapper.java,d\2\d23dccddfe5dc65d4ea855215c31fe6ab3c00564
 h
 8src/main/java/com/joy/joyapi/mapper/PostThumbMapper.java,6\4\64064f9496fbe39611d41e475c5151393b95ffb8
-d
-4src/main/java/com/joy/joyapi/manager/CosManager.java,c\2\c24b8cf7fc8bf2161ac2229037c3d63cf70fe8c3
 c
 3src/main/java/com/joy/joyapi/mapper/UserMapper.java,c\6\c6a9c134599c5b04d05458bc515c283ec82e2b21
 `
@@ -112,8 +108,6 @@ f
 6src/main/java/com/joy/joyapi/common/DeleteRequest.java,e\3\e3c04e88f51287aad8c12289ee83b8e24e0277a9
 b
 2src/main/java/com/joy/joyapi/common/ErrorCode.java,e\3\e37108ac2ffeef2682a510a80f9fbcb60b4c46b9
-h
-8src/main/java/com/joy/joyapi/config/CosClientConfig.java,a\a\aa1e95db792cbad6d5ea7b4df7ed9fcf35e2bf33
 e
 5src/main/java/com/joy/joyapi/config/WxOpenConfig.java,4\1\416541963ddca7f948656124f00f383b7401e756
 o

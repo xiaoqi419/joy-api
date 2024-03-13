@@ -191,7 +191,10 @@ const TopStatisticCard: React.FC = () => {
         gap="large"
         justify="space-around"
         vertical={value === 'vertical'}
-        style={{ marginTop: '20px' }}
+        style={{
+          marginTop: '20px',
+          width: '100%'
+        }}
       >
         <Card
           style={{
@@ -212,7 +215,13 @@ const TopStatisticCard: React.FC = () => {
           }
         >
           {/* 分析概览 */}
-          <div id="container" style={{ height: 300 }} />
+          <div
+            id="container"
+            style={{
+              height: 300,
+              width: '100%'
+            }}
+          />
         </Card>
         <Card style={{ width: '30%' }} title="接口调用成功率">
           <Flex vertical>

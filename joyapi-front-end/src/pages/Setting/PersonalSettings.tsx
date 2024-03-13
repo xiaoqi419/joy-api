@@ -1,14 +1,16 @@
-import { updateUserUsingPost } from '@/services/joy-admin/userController'
+import { updateMyUserUsingPost } from '@/services/joy-admin/userController'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-components'
 import { useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
 import {
+  Button,
   Card,
   Flex,
+  Form,
   GetProp,
+  Input,
   Tag,
-  Typography,
   Upload,
   UploadProps,
   message
@@ -16,13 +18,15 @@ import {
 import React, { useEffect, useState } from 'react'
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
-
-const { Paragraph } = Typography
-
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result as string))
-  reader.readAsDataURL(img)
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 14 }
+  }
 }
 
 const beforeUpload = (file: FileType) => {
@@ -30,11 +34,11 @@ const beforeUpload = (file: FileType) => {
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!')
   }
-  const isLt2M = file.size / 1024 / 1024 < 2
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
+  const isLt1M = file.size / 1024 / 1024 < 1
+  if (!isLt1M) {
+    message.error('Image must smaller than 1MB!')
   }
-  return isJpgOrPng && isLt2M
+  return isJpgOrPng && isLt1M
 }
 
 const PersonalSetting: React.FC = () => {
@@ -45,6 +49,7 @@ const PersonalSetting: React.FC = () => {
   const { currentUser } = initialState || {}
   const [username, setUsername] = useState('')
   const [userProfile, setUserProfile] = useState('')
+  const uploadAvatarUrl = 'http://localhost:8101/api/file/uploadUserAvatar'
 
   let userInfo: API.UserUpdateRequest = {
     id: currentUser?.id,
@@ -52,53 +57,45 @@ const PersonalSetting: React.FC = () => {
     userAvatar: imageUrl,
     userProfile: userProfile
   }
-  async function updateUserInfo() {
-    return await updateUserUsingPost(userInfo)
-  }
 
+  // 防抖更新用户信息
+  async function updateUserInfo() {
+    return await updateMyUserUsingPost(userInfo)
+  }
   const { data, run } = useRequest(updateUserInfo, {
-    debounceWait: 1000,
+    debounceWait: 300,
     manual: true
   })
-
   useEffect(() => {
-    setUsername(currentUser?.userName || '')
-    setUserProfile(currentUser?.userProfile || '')
-  }, [])
-
-  // 更新用户信息
-  useEffect(() => {
-    run()
-    if (data) {
+    if (data !== undefined) {
+      console.log(data)
       if (data.code === 200) {
         messageApi.success('更新成功')
       } else {
-        messageApi.error('更新失败')
+        messageApi.error('更新失败,' + data.message || '未知错误')
       }
     }
-  }, [username, userProfile, imageUrl])
+  }, [data])
 
+  // 初始化用户信息
   useEffect(() => {
     setImageUrl(currentUser?.userAvatar)
-  }, [currentUser?.userAvatar])
-
+    setUsername(currentUser?.userName || '')
+    setUserProfile(currentUser?.userProfile || '')
+  }, [currentUser])
+  // 上传头像
   const handleChange: UploadProps['onChange'] = info => {
     if (info.file.status === 'uploading') {
       setLoading(true)
       return
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as FileType, url => {
-        setLoading(false)
-        setImageUrl(url)
-        messageApi.success('上传成功')
-      })
+      setLoading(false)
+      setImageUrl(info.file.response.data)
+
+      messageApi.success('上传成功')
     }
   }
-
-  // TODO 上传头像接口
-
   const uploadButton = (
     <button style={{ border: 0, background: 'none' }} type="button">
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -123,11 +120,11 @@ const PersonalSetting: React.FC = () => {
               {/* 头像组件 */}
               <span>
                 <Upload
-                  name="avatar"
+                  name="file"
                   listType="picture-circle"
                   className="avatar-uploader"
                   showUploadList={false}
-                  action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                  action={uploadAvatarUrl}
                   beforeUpload={beforeUpload}
                   onChange={handleChange}
                 >
@@ -146,73 +143,69 @@ const PersonalSetting: React.FC = () => {
                   )}
                 </Upload>
               </span>
-              <Flex
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: 50
+              <Form
+                {...formItemLayout}
+                variant="filled"
+                style={{ maxWidth: 600 }}
+                onFinish={() => {
+                  run()
                 }}
-                gap={'middle'}
-                justify="space-around"
               >
-                <h4 style={{ margin: 0 }}>用户ID:</h4>
-                <h2 style={{ margin: 0 }}> {currentUser?.id}</h2>
-              </Flex>
-              <Flex
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: 50
-                }}
-                gap={'middle'}
-                justify="space-around"
-              >
-                <h4 style={{ margin: 0 }}>用户名:</h4>
-                <Typography.Title
-                  editable={{ onChange: setUsername }}
-                  level={4}
-                  style={{ margin: 0 }}
+                <Form.Item label="用户ID" name="id">
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: '100%',
+                      textAlign: 'center'
+                    }}
+                  >
+                    {currentUser?.id}
+                  </span>
+                </Form.Item>
+                <Form.Item label="用户组" name="Select">
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: '100%',
+                      textAlign: 'center'
+                    }}
+                  >
+                    {currentUser?.userRole === 'admin' ? (
+                      <Tag color="magenta">管理员</Tag>
+                    ) : (
+                      <Tag color="green">普通用户</Tag>
+                    )}
+                  </span>
+                </Form.Item>
+                <Form.Item
+                  label="用户名"
+                  name="userName"
+                  rules={[{ required: true, message: 'Please input!' }]}
+                  initialValue={currentUser?.userName}
                 >
-                  {username}
-                </Typography.Title>
-              </Flex>
-              <Flex
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: 50
-                }}
-                gap={'middle'}
-                justify="space-around"
-              >
-                <h4 style={{ margin: 0 }}>简介:</h4>
-                <Paragraph
-                  editable={{
-                    maxLength: 50,
-                    autoSize: { maxRows: 5, minRows: 3 },
-                    onChange: setUserProfile
-                  }}
-                  style={{ margin: 0, fontSize: 16, fontWeight: 'bold' }}
+                  <Input
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="简介"
+                  name="userProfile"
+                  rules={[{ required: true, message: 'Please input!' }]}
+                  initialValue={currentUser?.userProfile}
                 >
-                  {userProfile}
-                </Paragraph>
-              </Flex>
-              <Flex
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: 50
-                }}
-                gap={'middle'}
-                justify="space-around"
-              >
-                <h4 style={{ margin: 0 }}>用户组：</h4>
-                {currentUser?.userRole === 'admin' ? (
-                  <Tag color="#f50"> 管理员</Tag>
-                ) : (
-                  <Tag color="#108ee9">普通用户</Tag>
-                )}
-              </Flex>
+                  <Input.TextArea
+                    value={userProfile}
+                    onChange={e => setUserProfile(e.target.value)}
+                  />
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+                  <Button type="primary" htmlType="submit">
+                    更改信息
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </Card>
           <Card style={{ width: 600 }}>
