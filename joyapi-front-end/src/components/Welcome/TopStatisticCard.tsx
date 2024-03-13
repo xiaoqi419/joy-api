@@ -46,8 +46,9 @@ const TopStatisticCard: React.FC = () => {
       window.removeEventListener('resize', resize)
     }
   }, [])
-  // 柱形图组件
-  const Bar = () => {
+
+  // 柱形图渲染
+  useEffect(() => {
     const data = [
       { day: '周一', value: 122, type: '接口调用次数' },
       { day: '周一', value: 241, type: '接口申请次数' },
@@ -95,18 +96,15 @@ const TopStatisticCard: React.FC = () => {
       shared: true
     })
     chart.render()
-    return chart.getContainer()
-  }
-  useEffect(() => {
-    Bar()
   }, [])
+
   // 不同分段渲染不同的图表
   // TODO 未完成week和lastWeek的数据
   const renderChart = (value: string) => {
     if (value === 'week') {
-      Bar()
+      console.log('week')
     } else {
-      Bar()
+      console.log('lastWeek')
     }
   }
   return (
@@ -199,7 +197,7 @@ const TopStatisticCard: React.FC = () => {
         <Card
           style={{
             minWidth: 380,
-            width: '97%'
+            width: '100%'
           }}
           title={'分析概览'}
           extra={
