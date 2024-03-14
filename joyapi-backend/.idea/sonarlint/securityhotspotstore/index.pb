@@ -208,3 +208,17 @@ e
 5src/main/java/com/joy/joyapi/service/FileService.java,2\3\23b50cc57ced57e6308d770839b95464389b1b92
 n
 >src/main/java/com/joy/joyapi/service/impl/FileServiceImpl.java,2\5\253900f1af3975e41dc7c23f5e2ffc77f5a3d3cb
+m
+=src/main/java/com/joy/joyapi/controller/NoticeController.java,2\3\2385e8d22cbe559aa5dc01bfbf4501c41e174d11
+g
+7src/main/java/com/joy/joyapi/service/NoticeService.java,9\c\9ca3ae8c87b55728bc1445336aaf843f26db093b
+p
+@src/main/java/com/joy/joyapi/service/impl/NoticeServiceImpl.java,6\8\687913504050e8b9949a5ad624a4dff5331a1768
+e
+5src/main/java/com/joy/joyapi/model/entity/Notice.java,3\7\3761110a9703afba880b3c09b3f2c6e763b91ffb
+e
+5src/main/java/com/joy/joyapi/mapper/NoticeMapper.java,7\4\740dc8b6d5dbbec15eceb532e48c48b524ee82ba
+s
+Csrc/main/java/com/joy/joyapi/model/dto/notice/NoticeAddRequest.java,1\8\1824449ef2c8ee2390b1c091ae7869cf23159b35
+v
+Fsrc/main/java/com/joy/joyapi/model/dto/notice/NoticeUpdateRequest.java,1\6\162f843c9f40851d858153c001bb67c12de535ee
