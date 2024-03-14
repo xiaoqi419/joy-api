@@ -1,0 +1,23 @@
+// 点的外圈闪烁动画
+@keyframes blink {
+  0% {
+    // 蓝色渐变shadow
+    box-shadow: 0 0 0 0 rgba(42, 9, 227, 0.2);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 77, 79, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 79, 0);
+  }
+}
+
+.point{
+  width: 8px;
+  height: 8px;
+  background-color: #5d08cd;
+  border-radius: 50%;
+  top: 0;
+  right: 0;
+  animation: blink 1s infinite;
+}

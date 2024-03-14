@@ -8,6 +8,7 @@ import {
 import { Chart } from '@antv/g2'
 import { Card, Col, Flex, Progress, Row, Segmented, Timeline } from 'antd'
 import React, { useEffect } from 'react'
+import '../../public/css/NoticeIcon.less'
 
 const iconStyle = {
   width: 56,
@@ -106,6 +107,11 @@ const Welcome: React.FC = () => {
     { day: '周日', value: 90 }
   ]
 
+  // 公告组件图标
+  const NoticeIcon = () => {
+    return <div className="point"></div>
+  }
+
   return (
     <>
       <PageContainer>
@@ -189,6 +195,11 @@ const Welcome: React.FC = () => {
               style={{
                 width: '100%'
               }}
+              styles={{
+                body: {
+                  paddingBottom: 0
+                }
+              }}
               title={'分析概览'}
               extra={
                 <Segmented
@@ -217,7 +228,15 @@ const Welcome: React.FC = () => {
             </Card>
           </Col>
           <Col className="gutter-row" span={6}>
-            <Card style={{ width: '100%' }} title="接口调用成功率">
+            <Card
+              style={{ width: '100%' }}
+              title="接口调用成功率"
+              styles={{
+                body: {
+                  paddingBottom: 0
+                }
+              }}
+            >
               <Flex vertical>
                 <Flex vertical>
                   {successRateData.map((item, index) => {
@@ -265,20 +284,39 @@ const Welcome: React.FC = () => {
             <Card title="数据统计">1</Card>
           </Col>
           <Col span={6}>
-            <Card title="最新动态">
+            <Card
+              title="最新动态"
+              styles={{
+                body: {
+                  paddingBottom: 0
+                }
+              }}
+            >
               <Timeline
                 items={[
                   {
-                    children: 'Create a services site 2015-09-01'
+                    children: 'Create a services site 2015-09-01',
+                    dot: <NoticeIcon />
                   },
                   {
-                    children: 'Solve initial network problems 2015-09-01'
+                    children: 'Solve initial network problems 2015-09-01',
+                    dot: <NoticeIcon />
                   },
                   {
-                    children: 'Technical testing 2015-09-01'
+                    children: 'Technical testing 2015-09-01',
+                    dot: <NoticeIcon />
                   },
                   {
-                    children: 'Network problems being solved 2015-09-01'
+                    children: 'Network problems being solved 2015-09-01',
+                    dot: <NoticeIcon />
+                  },
+                  {
+                    children: 'Create a services site 2015-09-01',
+                    dot: <NoticeIcon />
+                  },
+                  {
+                    children: 'Solve initial network problems 2015-09-01',
+                    dot: <NoticeIcon />
                   }
                 ]}
               />

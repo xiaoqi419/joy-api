@@ -9,12 +9,4 @@ import Footer from './Footer'
 import JoyIcon from './JoyIcon/JoyIcon'
 import { Question } from './RightContent'
 import { AvatarDropdown, AvatarName } from './RightContent/AvatarDropdown'
-import TopStatisticCard from './Welcome/TopStatisticCard'
-export {
-  AvatarDropdown,
-  AvatarName,
-  Footer,
-  JoyIcon,
-  Question,
-  TopStatisticCard
-}
+export { AvatarDropdown, AvatarName, Footer, JoyIcon, Question }
