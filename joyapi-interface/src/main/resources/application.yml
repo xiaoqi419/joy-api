@@ -54,3 +54,9 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.joy.joyapiinterface.controller
+
+# joyapi 配置
+joyapi:
+  client:
+    access-key: 018e192e-c5ed-3880-f661-8a5afdf0c339
+    secret-key: EpPaeDS1xeNdNcrFaQfsbAcUyeq1dddqfB5Sd7i/XJI=

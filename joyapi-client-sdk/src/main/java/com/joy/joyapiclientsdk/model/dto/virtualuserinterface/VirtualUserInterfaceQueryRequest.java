@@ -1,7 +1,6 @@
-package com.joy.joyapiinterface.model.dto.virtualuserinterface;
+package com.joy.joyapiclientsdk.model.dto.virtualuserinterface;
 
-
-import com.joy.joyapiinterface.common.PageRequest;
+import com.joy.joyapiclientsdk.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,6 +19,6 @@ import java.io.Serializable;
 public class VirtualUserInterfaceQueryRequest extends PageRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
 
 }

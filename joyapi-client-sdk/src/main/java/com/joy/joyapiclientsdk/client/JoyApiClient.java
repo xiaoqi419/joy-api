@@ -1,11 +1,11 @@
-package com.joy.joyapiinterface.client;
+package com.joy.joyapiclientsdk.client;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.joy.joyapiinterface.model.dto.virtualuserinterface.VirtualUserInterfaceQueryRequest;
-import com.joy.joyapiinterface.utils.SignUtil;
+import com.joy.joyapiclientsdk.model.dto.virtualuserinterface.VirtualUserInterfaceQueryRequest;
+import com.joy.joyapiclientsdk.utils.SignUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +50,17 @@ public class JoyApiClient {
         String json = JSONUtil.toJsonStr(request);
         String jsonStr = HttpRequest.post("http://localhost:8102/api/virtualUser/getVirtualUser")
                 .body(json)
+                .addHeaders(getHeaders(json))
+                .execute().body();
+        return JSONUtil.parseObj(jsonStr);
+    }
+
+    /**
+     * 获取固定数量的虚拟用户
+     */
+    public JSONObject getFixedNumberVirtualUser(VirtualUserInterfaceQueryRequest request) {
+        String json = JSONUtil.toJsonStr(request);
+        String jsonStr = HttpRequest.get("http://localhost:8102/api/virtualUser/getFixedVirtualUser")
                 .addHeaders(getHeaders(json))
                 .execute().body();
         return JSONUtil.parseObj(jsonStr);

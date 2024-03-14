@@ -1,4 +1,4 @@
-package com.joy.joyapiinterface.utils;
+package com.joy.joyapiclientsdk.utils;
 
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;

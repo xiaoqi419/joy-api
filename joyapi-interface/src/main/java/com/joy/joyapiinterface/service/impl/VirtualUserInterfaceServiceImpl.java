@@ -3,6 +3,8 @@ package com.joy.joyapiinterface.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.joy.joyapiclientsdk.utils.RedisUtil;
+import com.joy.joyapiclientsdk.utils.SignUtil;
 import com.joy.joyapiinterface.common.ErrorCode;
 import com.joy.joyapiinterface.exception.BusinessException;
 import com.joy.joyapiinterface.mapper.VirtualUserInterfaceMapper;
@@ -11,8 +13,6 @@ import com.joy.joyapiinterface.model.entity.User;
 import com.joy.joyapiinterface.model.entity.VirtualUserInterface;
 import com.joy.joyapiinterface.service.UserService;
 import com.joy.joyapiinterface.service.VirtualUserInterfaceService;
-import com.joy.joyapiinterface.utils.RedisUtil;
-import com.joy.joyapiinterface.utils.SignUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,7 +56,7 @@ public class VirtualUserInterfaceServiceImpl extends ServiceImpl<VirtualUserInte
         User user = userService.getOne(queryWrapper);
         // 如果用户不存在，则返回错误
         if (user == null) {
-            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "用户不存在");
+            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "无权限访问");
         }
         try {
             // 从redis中获取随机数，如果存在相同的随机数，则返回错误
@@ -66,7 +66,7 @@ public class VirtualUserInterfaceServiceImpl extends ServiceImpl<VirtualUserInte
                 throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "请勿重复请求");
             }
             // 生成一个随机数存储到redis中
-            redisUtil.set(API_NAME + VIRTUAL_USER + RANDOM, nonce, 100);
+            redisUtil.set(API_NAME + VIRTUAL_USER + RANDOM, nonce, 5);
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "请勿重复请求");
         } finally {

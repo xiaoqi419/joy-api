@@ -1,4 +1,4 @@
-package com.joy.joyapiinterface.model.entity;
+package com.joy.joyapiclientsdk.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

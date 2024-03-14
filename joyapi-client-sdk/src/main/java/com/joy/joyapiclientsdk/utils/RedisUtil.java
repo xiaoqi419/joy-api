@@ -1,4 +1,4 @@
-package com.joy.joyapiinterface.utils;
+package com.joy.joyapiclientsdk.utils;
 
 import cn.hutool.db.nosql.redis.RedisDS;
 import org.springframework.stereotype.Component;
