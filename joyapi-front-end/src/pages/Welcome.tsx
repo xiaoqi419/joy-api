@@ -18,6 +18,7 @@ import {
   Timeline,
   message
 } from 'antd'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 
 const iconStyle = {
@@ -318,10 +319,14 @@ const Welcome: React.FC = () => {
               }}
             >
               <Timeline
+                mode="left"
                 items={notice.map(item => {
                   return {
                     children: item.content,
-                    dot: <NoticeIcon />
+                    dot: <NoticeIcon />,
+                    label: dayjs(item.createTime)
+                      .format('YYYY-MM-DD ddd HH:mm:ss')
+                      .toString()
                   }
                 })}
               />
