@@ -1,6 +1,8 @@
 import {
   addNoticeUsingPost,
-  getNoticeListUsingPost
+  deleteNoticeUsingPost,
+  getNoticeListUsingPost,
+  updateNoticeUsingPost
 } from '@/services/joy-api/noticeController'
 import { PlusOutlined } from '@ant-design/icons'
 import {
@@ -50,7 +52,8 @@ const NoticeManage: React.FC = () => {
       title: '序号',
       key: 'id',
       width: 80,
-      align: 'center'
+      align: 'center',
+      editable: false
     },
     {
       title: '内容',
@@ -76,6 +79,7 @@ const NoticeManage: React.FC = () => {
       key: 'createTime',
       dataIndex: 'createTime',
       valueType: 'date',
+      editable: false,
       sorter: true
     },
     {
@@ -84,6 +88,7 @@ const NoticeManage: React.FC = () => {
       dataIndex: 'updateTime',
       valueType: 'date',
       align: 'center',
+      editable: false,
       sorter: true
     },
     {
@@ -112,12 +117,37 @@ const NoticeManage: React.FC = () => {
           查看
         </a>,
         <TableDropdown
-          key="actionGroup"
-          onSelect={() => action?.reload()}
-          menus={[
-            { key: 'copy', name: '复制' },
-            { key: 'delete', name: '删除' }
-          ]}
+          key="more"
+          onSelect={key => {
+            if (key === 'delete') {
+              Modal.confirm({
+                title: '删除公告',
+                content: (
+                  <>
+                    确定删除公告：
+                    <span
+                      style={{
+                        color: 'red'
+                      }}
+                    >
+                      {record.content}
+                    </span>
+                    吗？
+                  </>
+                ),
+                onOk: async () => {
+                  const res = await deleteNoticeUsingPost({ id: record.id })
+                  if (res.code === 200) {
+                    messageApi.success('删除成功')
+                    actionRef.current?.reload()
+                  } else {
+                    messageApi.error('删除失败')
+                  }
+                }
+              })
+            }
+          }}
+          menus={[{ key: 'delete', name: '删除' }]}
         />
       ]
     }
@@ -191,7 +221,18 @@ const NoticeManage: React.FC = () => {
             }
           }}
           editable={{
-            type: 'multiple'
+            type: 'multiple',
+            onSave: async (rowKey, data) => {
+              const res = await updateNoticeUsingPost(data)
+              if (res.code === 200) {
+                messageApi.success('修改成功')
+                actionRef.current?.reload()
+                return true
+              } else {
+                messageApi.error('修改失败')
+                return false
+              }
+            }
           }}
           columnsState={{
             persistenceKey: 'pro-table-singe-demos',
