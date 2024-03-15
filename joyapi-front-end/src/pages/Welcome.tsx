@@ -20,6 +20,7 @@ import {
 } from 'antd'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
+import CountUp from 'react-countup'
 
 const iconStyle = {
   width: 56,
@@ -137,6 +138,8 @@ const Welcome: React.FC = () => {
     })
   }, [])
 
+  const formatter = (value: number) => <CountUp end={value} separator="," />
+
   return (
     <>
       {contextHolder}
@@ -148,7 +151,8 @@ const Welcome: React.FC = () => {
               chartPlacement="left"
               statistic={{
                 title: '用户数',
-                value: 112,
+                value: 112893,
+                formatter: formatter as any,
                 suffix: '人',
                 description: (
                   <>
@@ -167,6 +171,7 @@ const Welcome: React.FC = () => {
               statistic={{
                 title: '接口调用总次数',
                 value: 2345,
+                formatter: formatter as any,
                 suffix: '次',
                 description: (
                   <>
@@ -185,6 +190,7 @@ const Welcome: React.FC = () => {
               statistic={{
                 title: '通过审核接口数',
                 value: 1193,
+                formatter: formatter as any,
                 suffix: '个',
                 description: (
                   <div>
@@ -203,6 +209,7 @@ const Welcome: React.FC = () => {
               statistic={{
                 title: '接口提交次数',
                 value: 113893,
+                formatter: formatter as any,
                 suffix: '次',
                 description: (
                   <>
