@@ -1,5 +1,6 @@
 import '@/assets/styles/NoticeIcon.less'
 import { JoyIcon } from '@/components'
+import { getNewestNoticeUsingGet } from '@/services/joy-api/noticeController'
 import { CalendarTwoTone, CloudTwoTone } from '@ant-design/icons'
 import {
   PageContainer,
@@ -7,8 +8,17 @@ import {
   StatisticCard
 } from '@ant-design/pro-components'
 import { Chart } from '@antv/g2'
-import { Card, Col, Flex, Progress, Row, Segmented, Timeline } from 'antd'
-import React, { useEffect } from 'react'
+import {
+  Card,
+  Col,
+  Flex,
+  Progress,
+  Row,
+  Segmented,
+  Timeline,
+  message
+} from 'antd'
+import React, { useEffect, useState } from 'react'
 
 const iconStyle = {
   width: 56,
@@ -20,6 +30,8 @@ const iconStyle = {
 }
 
 const Welcome: React.FC = () => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   // Icon组件
   const Icon = (type: number) => {
     // 根据type来显示不同的图标
@@ -112,8 +124,21 @@ const Welcome: React.FC = () => {
     return <div className="point"></div>
   }
 
+  // 获取公告数据
+  const [notice, setNotice] = useState<API.Notice[]>([])
+  useEffect(() => {
+    getNewestNoticeUsingGet().then(res => {
+      if (res.code === 200) {
+        setNotice(res.data || [])
+      } else {
+        messageApi.error(res.message)
+      }
+    })
+  }, [])
+
   return (
     <>
+      {contextHolder}
       <PageContainer>
         <Row gutter={[16, 16]}>
           {/* 顶端卡片统计 */}
@@ -293,32 +318,12 @@ const Welcome: React.FC = () => {
               }}
             >
               <Timeline
-                items={[
-                  {
-                    children: 'Create a services site 2015-09-01',
-                    dot: <NoticeIcon />
-                  },
-                  {
-                    children: 'Solve initial network problems 2015-09-01',
-                    dot: <NoticeIcon />
-                  },
-                  {
-                    children: 'Technical testing 2015-09-01',
-                    dot: <NoticeIcon />
-                  },
-                  {
-                    children: 'Network problems being solved 2015-09-01',
-                    dot: <NoticeIcon />
-                  },
-                  {
-                    children: 'Create a services site 2015-09-01',
-                    dot: <NoticeIcon />
-                  },
-                  {
-                    children: 'Solve initial network problems 2015-09-01',
+                items={notice.map(item => {
+                  return {
+                    children: item.content,
                     dot: <NoticeIcon />
                   }
-                ]}
+                })}
               />
             </Card>
           </Col>

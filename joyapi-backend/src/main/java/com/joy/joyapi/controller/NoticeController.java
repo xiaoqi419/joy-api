@@ -1,12 +1,15 @@
 package com.joy.joyapi.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joy.joyapi.annotation.AuthCheck;
 import com.joy.joyapi.common.BaseResponse;
 import com.joy.joyapi.common.ErrorCode;
 import com.joy.joyapi.common.ResultUtils;
 import com.joy.joyapi.constant.UserConstant;
 import com.joy.joyapi.exception.BusinessException;
+import com.joy.joyapi.exception.ThrowUtils;
 import com.joy.joyapi.model.dto.notice.NoticeAddRequest;
+import com.joy.joyapi.model.dto.notice.NoticeQueryRequest;
 import com.joy.joyapi.model.dto.notice.NoticeUpdateRequest;
 import com.joy.joyapi.model.entity.Notice;
 import com.joy.joyapi.service.NoticeService;
@@ -31,6 +34,28 @@ public class NoticeController {
 
     @Resource
     private NoticeService noticeService;
+
+    /**
+     * 分页获取公告
+     *
+     * @param noticeQueryRequest 公告查询条件
+     * @return 公告列表
+     */
+    @PostMapping("/getNoticeList")
+    @ApiOperation(value = "分页获取公告", notes = "分页获取公告")
+    public BaseResponse<Page<Notice>> getNoticeList(NoticeQueryRequest noticeQueryRequest) {
+        long current = noticeQueryRequest.getCurrent();
+        long pageSize = noticeQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(pageSize > 20, ErrorCode.PARAMS_ERROR);
+        Page<Notice> noticePage = noticeService.page(new Page<>(current, pageSize),
+                noticeService.getQueryWrapper(noticeQueryRequest));
+        if (noticePage == null) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
+        return ResultUtils.success(noticePage);
+    }
+
 
     /**
      * 新建公告

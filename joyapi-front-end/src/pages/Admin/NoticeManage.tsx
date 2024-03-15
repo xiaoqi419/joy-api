@@ -1,3 +1,7 @@
+import {
+  addNoticeUsingPost,
+  getNoticeListUsingPost
+} from '@/services/joy-api/noticeController'
 import { PlusOutlined } from '@ant-design/icons'
 import {
   ActionType,
@@ -8,8 +12,8 @@ import {
   ProTable,
   TableDropdown
 } from '@ant-design/pro-components'
-import { Button, Form, message } from 'antd'
-import React, { useRef } from 'react'
+import { Button, Form, Modal, message } from 'antd'
+import React, { useRef, useState } from 'react'
 
 type NoticeItem = {
   id: number
@@ -18,93 +22,111 @@ type NoticeItem = {
   updateTime: string
 }
 
-const columns: ProColumns<NoticeItem>[] = [
-  {
-    dataIndex: 'id',
-    title: '序号',
-    key: 'id',
-    valueType: 'index',
-    width: 60,
-    align: 'center'
-  },
-  {
-    title: '内容',
-    dataIndex: 'content',
-    key: 'content',
-    copyable: true,
-    ellipsis: true,
-    width: 500,
-    align: 'center',
-    tooltip: '内容过长会自动收缩',
-    formItemProps: {
-      rules: [
-        {
-          required: true,
-          message: '此项为必填项'
-        }
-      ]
-    }
-  },
-  {
-    title: '创建时间',
-    align: 'center',
-    key: 'createTime',
-    dataIndex: 'created_at',
-    valueType: 'date',
-    sorter: true
-  },
-  {
-    title: '更新时间',
-    key: 'updateTime',
-    dataIndex: 'updated_at',
-    valueType: 'date',
-    align: 'center',
-    sorter: true
-  },
-  {
-    title: '操作',
-    align: 'center',
-    valueType: 'option',
-    key: 'option',
-    render: (text, record, _, action) => [
-      <a
-        key="editable"
-        onClick={() => {
-          action?.startEditable?.(record.id)
-        }}
-      >
-        编辑
-      </a>,
-      <a
-        href={`/admin/notice/${record.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        key="view"
-      >
-        查看
-      </a>,
-      <TableDropdown
-        key="actionGroup"
-        onSelect={() => action?.reload()}
-        menus={[
-          { key: 'copy', name: '复制' },
-          { key: 'delete', name: '删除' }
-        ]}
-      />
-    ]
-  }
-]
-
 const NoticeManage: React.FC = () => {
   const actionRef = useRef<ActionType>()
   const [form] = Form.useForm<NoticeItem>()
   const [messageApi, contextHolder] = message.useMessage()
+  const [data, setData] = useState<API.Notice[]>([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [currentId, setCurrentId] = useState<number | undefined>(undefined)
 
+  // 公告内容弹窗
+  const ContentModal = () => {
+    return (
+      <Modal
+        title="公告内容"
+        open={isOpen}
+        onOk={() => setIsOpen(false)}
+        onCancel={() => setIsOpen(false)}
+      >
+        {data.find(item => item.id === currentId)?.content}
+      </Modal>
+    )
+  }
+
+  const columns: ProColumns<API.Notice>[] = [
+    {
+      dataIndex: 'id',
+      title: '序号',
+      key: 'id',
+      width: 80,
+      align: 'center'
+    },
+    {
+      title: '内容',
+      dataIndex: 'content',
+      key: 'content',
+      copyable: true,
+      ellipsis: true,
+      width: 500,
+      align: 'center',
+      tooltip: '内容过长会自动收缩',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '此项为必填项'
+          }
+        ]
+      }
+    },
+    {
+      title: '创建时间',
+      align: 'center',
+      key: 'createTime',
+      dataIndex: 'createTime',
+      valueType: 'date',
+      sorter: true
+    },
+    {
+      title: '更新时间',
+      key: 'updateTime',
+      dataIndex: 'updateTime',
+      valueType: 'date',
+      align: 'center',
+      sorter: true
+    },
+    {
+      title: '操作',
+      align: 'center',
+      valueType: 'option',
+      key: 'option',
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.id!)
+          }}
+        >
+          编辑
+        </a>,
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          key="view"
+          onClick={() => {
+            setIsOpen(true)
+            setCurrentId(record.id)
+          }}
+        >
+          查看
+        </a>,
+        <TableDropdown
+          key="actionGroup"
+          onSelect={() => action?.reload()}
+          menus={[
+            { key: 'copy', name: '复制' },
+            { key: 'delete', name: '删除' }
+          ]}
+        />
+      ]
+    }
+  ]
   // 新建公告
   const AddNoticeButton = () => {
     return (
       <>
-        <ModalForm<NoticeItem>
+        <ModalForm<API.Notice>
           title="新建公告"
           trigger={
             <Button type="primary">
@@ -121,9 +143,13 @@ const NoticeManage: React.FC = () => {
           width={500}
           submitTimeout={2000}
           onFinish={async values => {
-            console.log(values.id)
-            messageApi.success('提交成功')
-            return true
+            const res = await addNoticeUsingPost(values)
+            if (res.code === 200) {
+              messageApi.success('添加成功')
+              actionRef.current?.reload()
+              return true
+            }
+            return false
           }}
           style={{
             textAlign: 'center'
@@ -144,16 +170,24 @@ const NoticeManage: React.FC = () => {
     <>
       {contextHolder}
       <PageContainer>
-        <ProTable<NoticeItem>
+        <ProTable<API.Notice>
           columns={columns}
           actionRef={actionRef}
           cardBordered
-          request={async (params, sort, filter) => {
-            console.log(sort, filter)
-
+          request={async (params = {} as Record<string, any>) => {
+            const param: API.getNoticeListUsingPOSTParams = {
+              current: params.current,
+              pageSize: params.pageSize,
+              ...params
+            }
+            const response = await getNoticeListUsingPost(param)
+            setData(response.data?.records || [])
             return {
-              data: [],
-              success: true
+              success: response.code === 200 ? true : false,
+              total: response.data?.total,
+              data: response.data?.records || [],
+              pageSize: params.pageSize,
+              current: params.current
             }
           }}
           editable={{
@@ -178,18 +212,6 @@ const NoticeManage: React.FC = () => {
               listsHeight: 400
             }
           }}
-          form={{
-            // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-            syncToUrl: (values, type) => {
-              if (type === 'get') {
-                return {
-                  ...values,
-                  created_at: [values.startTime, values.endTime]
-                }
-              }
-              return values
-            }
-          }}
           pagination={{
             pageSize: 5,
             onChange: page => console.log(page)
@@ -197,6 +219,7 @@ const NoticeManage: React.FC = () => {
           dateFormatter="string"
           toolBarRender={() => [<AddNoticeButton key={1} />]}
         />
+        <ContentModal />
       </PageContainer>
     </>
   )

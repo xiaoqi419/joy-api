@@ -1,7 +1,9 @@
 package com.joy.joyapi.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joy.joyapi.model.dto.notice.NoticeAddRequest;
+import com.joy.joyapi.model.dto.notice.NoticeQueryRequest;
 import com.joy.joyapi.model.dto.notice.NoticeUpdateRequest;
 import com.joy.joyapi.model.entity.Notice;
 
@@ -36,4 +38,12 @@ public interface NoticeService extends IService<Notice> {
      * @return 更新结果
      */
     boolean updateNotice(NoticeUpdateRequest noticeUpdateRequest);
+
+    /**
+     * 获取查询条件
+     *
+     * @param noticeQueryRequest 查询条件
+     * @return 查询条件
+     */
+    Wrapper<Notice> getQueryWrapper(NoticeQueryRequest noticeQueryRequest);
 }

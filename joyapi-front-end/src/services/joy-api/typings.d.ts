@@ -45,6 +45,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageNotice_ = {
+    code?: number;
+    data?: PageNotice_;
+    message?: string;
+  };
+
   type BaseResponsePageUser_ = {
     code?: number;
     data?: PageUser_;
@@ -92,6 +98,17 @@ declare namespace API {
   type getInterfaceInfoVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getNoticeListUsingPOSTParams = {
+    content?: string;
+    createTime?: string;
+    current?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    updateTime?: string;
   };
 
   type getUserByIdUsingGETParams = {
@@ -233,6 +250,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: InterfaceInfoVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageNotice_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: Notice[];
     searchCount?: boolean;
     size?: number;
     total?: number;
