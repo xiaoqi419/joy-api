@@ -19,7 +19,6 @@ import com.joy.joyapi.model.vo.InterfaceInfoVO;
 import com.joy.joyapi.model.vo.UserVO;
 import com.joy.joyapi.service.InterfaceInfoService;
 import com.joy.joyapi.service.UserService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/InterfaceInfo")
 @Slf4j
-@Api(tags = "接口信息")
 public class InterfaceInfoController {
 
     @Resource

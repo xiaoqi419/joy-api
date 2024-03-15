@@ -1,4 +1,4 @@
-import { updateMyUserUsingPost } from '@/services/joy-admin/userController'
+import { updateMyUserUsingPost } from '@/services/joy-api/userController'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-components'
 import { useModel } from '@umijs/max'

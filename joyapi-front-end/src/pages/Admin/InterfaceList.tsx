@@ -1,7 +1,7 @@
 import {
   deleteInterfaceInfoUsingPost,
   listInterfaceInfoByPageUsingPost
-} from '@/services/joy-admin/interfaceController'
+} from '@/services/joy-api/interfaceInfoController'
 import {
   MoreOutlined,
   SmileOutlined,

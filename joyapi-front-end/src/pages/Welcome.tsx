@@ -1,3 +1,4 @@
+import '@/assets/styles/NoticeIcon.less'
 import { JoyIcon } from '@/components'
 import { CalendarTwoTone, CloudTwoTone } from '@ant-design/icons'
 import {
@@ -8,7 +9,6 @@ import {
 import { Chart } from '@antv/g2'
 import { Card, Col, Flex, Progress, Row, Segmented, Timeline } from 'antd'
 import React, { useEffect } from 'react'
-import '../../public/css/NoticeIcon.less'
 
 const iconStyle = {
   width: 56,

@@ -1,7 +1,7 @@
 import {
   getCaptchaUsingGet,
   userRegisterUsingPost
-} from '@/services/joy-admin/userController'
+} from '@/services/joy-api/userController'
 import { history } from '@umijs/max'
 import 'animate.css'
 import { Button, Card, Col, Form, Image, Input, Row, message } from 'antd'

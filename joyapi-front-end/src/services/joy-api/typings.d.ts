@@ -1,4 +1,8 @@
 declare namespace API {
+  type addNoticeUsingPOSTParams = {
+    content?: string;
+  };
+
   type BaseResponseBoolean_ = {
     code?: number;
     data?: boolean;
@@ -8,6 +12,12 @@ declare namespace API {
   type BaseResponseInterfaceInfoVO_ = {
     code?: number;
     data?: InterfaceInfoVO;
+    message?: string;
+  };
+
+  type BaseResponseListNotice_ = {
+    code?: number;
+    data?: Notice[];
     message?: string;
   };
 
@@ -63,6 +73,11 @@ declare namespace API {
     code?: number;
     data?: UserVO;
     message?: string;
+  };
+
+  type deleteNoticeUsingPOSTParams = {
+    /** id */
+    id?: number;
   };
 
   type DeleteRequest = {
@@ -185,6 +200,13 @@ declare namespace API {
     userRole?: string;
   };
 
+  type Notice = {
+    content?: string;
+    createTime?: string;
+    id?: number;
+    updateTime?: string;
+  };
+
   type OrderItem = {
     asc?: boolean;
     column?: string;
@@ -242,15 +264,18 @@ declare namespace API {
     total?: number;
   };
 
-  type uploadFileUsingPOSTParams = {
-    biz?: string;
+  type updateNoticeUsingPOSTParams = {
+    content?: string;
+    id?: number;
   };
 
   type User = {
+    accessKey?: string;
     createTime?: string;
     id?: number;
     isDelete?: number;
     mpOpenId?: string;
+    secretKey?: string;
     unionId?: string;
     updateTime?: string;
     userAccount?: string;

@@ -3,10 +3,12 @@
 // API 更新时间：
 // API 唯一标识：
 import * as fileController from './fileController';
-import * as jiekouxinxi from './jiekouxinxi';
-import * as yonghujiekou from './yonghujiekou';
+import * as interfaceInfoController from './interfaceInfoController';
+import * as noticeController from './noticeController';
+import * as userController from './userController';
 export default {
-  jiekouxinxi,
+  interfaceInfoController,
   fileController,
-  yonghujiekou,
+  noticeController,
+  userController,
 };

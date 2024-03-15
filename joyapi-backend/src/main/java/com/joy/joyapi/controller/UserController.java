@@ -17,7 +17,6 @@ import com.joy.joyapi.model.entity.User;
 import com.joy.joyapi.model.vo.LoginUserVO;
 import com.joy.joyapi.model.vo.UserVO;
 import com.joy.joyapi.service.UserService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
@@ -46,7 +45,6 @@ import static com.joy.joyapi.service.impl.UserServiceImpl.SALT;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@Api(tags = "用户接口")
 public class UserController {
 
     @Resource

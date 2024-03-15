@@ -1,5 +1,5 @@
 import ForgetModal from '@/components/Forget/index'
-import { userLoginUsingPost } from '@/services/joy-admin/userController'
+import { userLoginUsingPost } from '@/services/joy-api/userController'
 import {
   AlipayOutlined,
   LockOutlined,

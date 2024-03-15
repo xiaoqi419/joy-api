@@ -10,7 +10,6 @@ import com.joy.joyapi.model.dto.notice.NoticeAddRequest;
 import com.joy.joyapi.model.dto.notice.NoticeUpdateRequest;
 import com.joy.joyapi.model.entity.Notice;
 import com.joy.joyapi.service.NoticeService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/notice")
 @Slf4j
-@Api(tags = "公告接口")
 public class NoticeController {
 
     @Resource

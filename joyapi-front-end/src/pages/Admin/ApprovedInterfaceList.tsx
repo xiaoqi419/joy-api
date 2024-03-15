@@ -1,7 +1,7 @@
 import {
   auditInterfaceInfoUsingPost,
   listInterfaceInfoByPageUsingPost
-} from '@/services/joy-admin/interfaceController'
+} from '@/services/joy-api/interfaceInfoController'
 import { SmileOutlined } from '@ant-design/icons'
 import {
   PageContainer,

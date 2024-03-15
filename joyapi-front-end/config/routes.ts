@@ -22,13 +22,18 @@ export default [
       { path: '/admin', redirect: '/admin/interface-list' },
       {
         path: '/admin/interface-list',
-        name: '接口管理列表',
+        name: '接口管理',
         component: './Admin/InterfaceList'
       },
       {
         path: '/admin/approved-list',
-        name: '接口审核列表',
+        name: '接口审核',
         component: './Admin/ApprovedInterfaceList'
+      },
+      {
+        path: '/admin/notice-manage',
+        name: '公告管理',
+        component: './Admin/NoticeManage'
       }
     ]
   },
