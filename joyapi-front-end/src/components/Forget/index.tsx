@@ -1,7 +1,7 @@
 import {
   forgetPasswordUsingPost,
   getEmailCodeUsingPost
-} from '@/services/joy-admin/userController'
+} from '@/services/joy-api/userController'
 import { Button, Form, Input, Modal, Space, message } from 'antd'
 import React, { useEffect, useState } from 'react'
 

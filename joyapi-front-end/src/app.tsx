@@ -1,5 +1,5 @@
 import { AvatarDropdown, AvatarName, Footer, Question } from '@/components'
-import { getLoginUserUsingGet as queryCurrentUser } from '@/services/joy-admin/userController'
+import { getLoginUserUsingGet as queryCurrentUser } from '@/services/joy-api/userController'
 import { LinkOutlined } from '@ant-design/icons'
 import type { Settings as LayoutSettings } from '@ant-design/pro-components'
 import { SettingDrawer } from '@ant-design/pro-components'

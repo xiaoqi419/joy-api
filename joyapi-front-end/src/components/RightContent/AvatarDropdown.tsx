@@ -1,4 +1,4 @@
-import { userLogoutUsingPost } from '@/services/joy-admin/userController'
+import { userLogoutUsingPost } from '@/services/joy-api/userController'
 import {
   LogoutOutlined,
   SettingOutlined,
