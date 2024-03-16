@@ -224,3 +224,5 @@ v
 Fsrc/main/java/com/joy/joyapi/model/dto/notice/NoticeUpdateRequest.java,1\6\162f843c9f40851d858153c001bb67c12de535ee
 u
 Esrc/main/java/com/joy/joyapi/model/dto/notice/NoticeQueryRequest.java,1\3\135a7530c57952aace83e44df945181f0898f506
+u
+Esrc/main/java/com/joy/joyapi/model/enums/InterfaceInfoStatusEnum.java,a\e\aed4fbc9b36dca8b03a81042eb2f3395662bf9c7

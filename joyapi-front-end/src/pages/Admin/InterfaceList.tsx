@@ -1,6 +1,7 @@
 import {
   deleteInterfaceInfoUsingPost,
-  listInterfaceInfoByPageUsingPost
+  listInterfaceInfoByPageUsingPost,
+  updateInterfaceInfoUsingPost
 } from '@/services/joy-api/interfaceInfoController'
 import {
   MoreOutlined,
@@ -268,11 +269,26 @@ const Admin: React.FC = () => {
       <StepsForm
         onFinish={async values => {
           console.log(values)
-          await setManageModalVisible(false)
-          messageApi.open({
-            type: 'success',
-            content: '提交成功'
+          // 提交
+          const res = await updateInterfaceInfoUsingPost({
+            ...values,
+            status: 2,
+            id: InterfaceInfo.id
           })
+          if (res.code === 200) {
+            messageApi.open({
+              type: 'success',
+              content: '提交成功'
+            })
+            setManageModalVisible(false)
+            // 刷新
+            getInterfaceList()
+          } else {
+            messageApi.open({
+              type: 'error',
+              content: res.message
+            })
+          }
         }}
         formProps={{
           validateMessages: {
@@ -573,8 +589,8 @@ const Admin: React.FC = () => {
 
                 <Form.Item<FieldType> label="接口状态" name="status">
                   <Select allowClear style={{ width: 200 }}>
-                    <Select.Option value={0}>关闭</Select.Option>
-                    <Select.Option value={1}>开启</Select.Option>
+                    <Select.Option value={0}>下线</Select.Option>
+                    <Select.Option value={1}>上线</Select.Option>
                     <Select.Option value={2}>审核中</Select.Option>
                   </Select>
                 </Form.Item>
@@ -690,11 +706,10 @@ const Admin: React.FC = () => {
                             display: 'flex'
                           }}
                         >
-                          {/* 为0显示关闭，1显示正常，2显示审核中 */}
                           {item.status === 0 ? (
-                            <Tag color="red">关闭</Tag>
+                            <Tag color="red">下线</Tag>
                           ) : item.status === 1 ? (
-                            <Tag color="rgb(0, 168, 112)">正常</Tag>
+                            <Tag color="rgb(0, 168, 112)">上线</Tag>
                           ) : (
                             <Tag color="orange">审核中</Tag>
                           )}

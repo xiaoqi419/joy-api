@@ -10,13 +10,14 @@ import com.joy.joyapi.mapper.InterfaceInfoMapper;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoAuditRequest;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.joy.joyapi.model.entity.InterfaceInfo;
+import com.joy.joyapi.model.enums.InterfaceInfoStatusEnum;
 import com.joy.joyapi.model.vo.InterfaceInfoVO;
 import com.joy.joyapi.service.InterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author 26504
@@ -30,6 +31,9 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
 
     @Override
     public void validInterfaceInfo(InterfaceInfo interfaceInfo, boolean add) {
+        if (!add) {
+            return;
+        }
         if (interfaceInfo == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -37,19 +41,13 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         String name = interfaceInfo.getName();
         String description = interfaceInfo.getDescription();
         String url = interfaceInfo.getUrl();
-        String requestHeader = interfaceInfo.getRequestHeader();
-        String responseHeader = interfaceInfo.getResponseHeader();
-        Integer status = interfaceInfo.getStatus();
         String method = interfaceInfo.getMethod();
         Long userId = interfaceInfo.getUserId();
-        Date createTime = interfaceInfo.getCreateTime();
-        Date updateTime = interfaceInfo.getUpdateTime();
-        Integer isDelete = interfaceInfo.getIsDelete();
         String category = interfaceInfo.getCategory();
         String requestExp = interfaceInfo.getRequestExample();
         String responseExp = interfaceInfo.getResponseExample();
 
-        if (StringUtils.isAnyBlank(name, url, method, category, description, requestExp, responseExp) || userId == null) {
+        if (StringUtils.isAnyBlank(name, url, method, category, description, requestExp, responseExp)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
@@ -121,18 +119,46 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
 
     @Override
     public boolean auditInterfaceInfo(InterfaceInfoAuditRequest interfaceInfoAuditRequest) {
-        // 该接口存在则审核通过
-        if (interfaceInfoAuditRequest != null && interfaceInfoAuditRequest.getId() != null && !interfaceInfoAuditRequest.getId().isEmpty() && interfaceInfoAuditRequest.getAuditStatus() != null && interfaceInfoAuditRequest.getAuditStatus() == 1) {
-            InterfaceInfo interfaceInfo = new InterfaceInfo();
-            interfaceInfo.setStatus(1);
-            return update(interfaceInfo, new QueryWrapper<InterfaceInfo>().in("id", interfaceInfoAuditRequest.getId()));
+        if (interfaceInfoAuditRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (interfaceInfoAuditRequest != null && interfaceInfoAuditRequest.getId() != null && !interfaceInfoAuditRequest.getId().isEmpty() && interfaceInfoAuditRequest.getAuditStatus() != null && interfaceInfoAuditRequest.getAuditStatus() == 0) {
-            InterfaceInfo interfaceInfo = new InterfaceInfo();
-            interfaceInfo.setStatus(0);
-            return update(interfaceInfo, new QueryWrapper<InterfaceInfo>().in("id", interfaceInfoAuditRequest.getId()));
+        List<Long> id = interfaceInfoAuditRequest.getId();
+        Integer status = interfaceInfoAuditRequest.getAuditStatus();
+        if (id == null || status == null || status < 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        return false;
+        // 从数据库中批量查找id符合的接口
+        List<InterfaceInfo> interfaceInfoList = listByIds(id);
+        if (interfaceInfoList == null || interfaceInfoList.size() != id.size()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口不存在");
+        }
+        if (InterfaceInfoStatusEnum.getEnumByValue(status)) {
+            // 上线
+            for (InterfaceInfo interfaceInfo : interfaceInfoList) {
+                if (interfaceInfo.getStatus().equals(InterfaceInfoStatusEnum.ONLINE.getCode())) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已上线");
+                }
+                // 上线接口
+                interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getCode());
+                QueryWrapper<InterfaceInfo> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("id", interfaceInfo.getId());
+                update(interfaceInfo, queryWrapper);
+            }
+        }
+        if (status.equals(InterfaceInfoStatusEnum.OFFLINE.getCode())) {
+            // 下线
+            for (InterfaceInfo interfaceInfo : interfaceInfoList) {
+                if (interfaceInfo.getStatus().equals(InterfaceInfoStatusEnum.OFFLINE.getCode())) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已下线");
+                }
+                // 下线接口
+                interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getCode());
+                QueryWrapper<InterfaceInfo> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("id", interfaceInfo.getId());
+                update(interfaceInfo, queryWrapper);
+            }
+        }
+        return true;
     }
 }
 

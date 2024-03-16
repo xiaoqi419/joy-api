@@ -1,31 +1,13 @@
 
-
-java:S1854/"<Remove this useless assignment to local variable "isDelete".(–«Œó8×Êñ—à1J$17336cf7-3fba-40a6-a160-54481f9a2a90
-†
-java:S1854.">Remove this useless assignment to local variable "updateTime".(ØÅŸ¨øÿÿÿÿ8ØÊñ—à1J$423ae970-9c8a-456b-a232-824bdabb0ae9
-
-java:S1854-">Remove this useless assignment to local variable "createTime".(¢ÚÛ8ØÊñ—à1J$be3a71e3-a116-44d3-9bcf-8e15dd8e0ff5
 ‚
-java:S1854*":Remove this useless assignment to local variable "status".(ÿÏ×İúÿÿÿÿ8ØÊñ—à1J$df81ec5b-52a4-4aaa-a940-ada858df9234
-…
-java:S1854)"BRemove this useless assignment to local variable "responseHeader".(›Á¢8ØÊñ—à1J$b42cac80-7a46-4144-b7da-62865f1d8169
-‰
-java:S1854("ARemove this useless assignment to local variable "requestHeader".(Ô•€øÿÿÿÿ8ØÊñ—à1J$f0550391-1e08-4d70-8cee-b84574dec8f3
+java:S1854-":Remove this useless assignment to local variable "userId".(Ò¾¢²şÿÿÿÿ8¤ı·½ä1J$fe4cdbd8-207e-4fb4-84db-549788fbe7ef
 ~
-java:S1854$"6Remove this useless assignment to local variable "id".(·‰ÔÅûÿÿÿÿ8ØÊñ—à1J$48a89443-784c-4f50-a98d-5a8441c2448a
+java:S1854("6Remove this useless assignment to local variable "id".(·‰ÔÅûÿÿÿÿ8²Îå¼ä1J$528bfbc8-34b2-4f96-a415-0698f4e442e1
 o
-java:S1481$"'Remove this unused "id" local variable.(·‰ÔÅûÿÿÿÿ8ÙÊñ—à1J$6fca8462-126d-4d5b-af4b-23c9d1062e41
-z
-java:S1481("2Remove this unused "requestHeader" local variable.(Ô•€øÿÿÿÿ8ÚÊñ—à1J$aee9782a-ff01-42bb-9385-65228bc081b6
-v
-java:S1481)"3Remove this unused "responseHeader" local variable.(›Á¢8ÚÊñ—à1J$ddc30c53-8c74-4578-b73d-b2a22ee4bd03
+java:S1481("'Remove this unused "id" local variable.(·‰ÔÅûÿÿÿÿ8³Îå¼ä1J$cf2fa954-ab5b-45fe-aafb-11e4fce1e5b2
 s
-java:S1481*"+Remove this unused "status" local variable.(ÿÏ×İúÿÿÿÿ8ÛÊñ—à1J$49245823-4d18-4434-90de-3ec2652d0e9d
-r
-java:S1481-"/Remove this unused "createTime" local variable.(¢ÚÛ8ÛÊñ—à1J$36b30049-5493-4166-b4c5-ec41a1f58836
-w
-java:S1481."/Remove this unused "updateTime" local variable.(ØÅŸ¨øÿÿÿÿ8ÛÊñ—à1J$db401c4c-16dd-4dd3-9824-c7d861299148
-p
-java:S1481/"-Remove this unused "isDelete" local variable.(–«Œó8ÛÊñ—à1J$ffdf8272-13c0-4d27-8ff1-f0d09065b715
+java:S1481-"+Remove this unused "userId" local variable.(Ò¾¢²şÿÿÿÿ8©ı·½ä1J$0af05678-55a2-4fa8-a315-d5b4b717b769
 u
-java:S1135v"2Complete the task associated to this TODO comment.(Èüà¡8ãÊñ—à1J$d1b3b97c-94d2-4bd8-b506-5d51990dc676
+java:S1135t"2Complete the task associated to this TODO comment.(Èüà¡8¼Îå¼ä1J$329355c8-d27a-45d3-8b2e-c7160a4636ef
+•
+java:S3776y"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(±¡â8©ãï¼ä1J$4da260f6-cacb-4203-8b95-511d7a3b23a7
