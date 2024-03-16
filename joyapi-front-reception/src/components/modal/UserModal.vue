@@ -1,6 +1,6 @@
 <template>
   <div class="login-box">
-    <el-dialog v-model="dialogVisible" width="500">
+    <el-dialog v-model="dialogVisible" :width="dialogWidth">
       <div class="box-main">
         <h1>Login Form</h1>
         <div class="owl" id="owl" :class="{ password: isPassword }">
@@ -38,16 +38,23 @@
               </template>
             </el-input>
           </el-form-item>
+          <el-form-item>
+            <div class="btn-box">
+              <el-checkbox v-model="formLabelAlign.type">记住我</el-checkbox>
+              <el-space wrap>
+                <el-link type="primary">忘记密码？</el-link>
+                <el-link type="primary">注册</el-link>
+              </el-space>
+            </div>
+          </el-form-item>
         </el-form>
-        <!-- 忘记密码，记住我 -->
-        <div class="forget">
-          <el-checkbox v-model="formLabelAlign.type">记住我</el-checkbox>
-          <a href="javascript:;">忘记密码</a>
-        </div>
+        <!-- 登录 -->
         <div>
-          <el-button type="primary" @click="dialogVisible = false"
-            >登录</el-button
-          >
+          <button>
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front text"> 登录 </span>
+          </button>
         </div>
       </div>
     </el-dialog>
@@ -57,12 +64,31 @@
 <script lang="ts" setup name="modal-user">
 import useModalStore from '@/store/modules/modal'
 import { storeToRefs } from 'pinia'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import '@/assets/scss/userModal.scss'
 
 const modalStore = storeToRefs(useModalStore())
 const dialogVisible = modalStore.userModal
 const isPassword = ref(false)
+// 模态框宽度
+const dialogWidth = ref(500)
+
+// 监视浏览器宽度变化调整合适的模态框宽度
+watch(
+  () => window.innerWidth,
+  newValue => {
+    if (newValue > 500) {
+      dialogWidth.value = 500
+    } else {
+      dialogWidth.value = newValue
+    }
+  },
+  {
+    immediate: true,
+    flush: 'post',
+    deep: true
+  }
+)
 
 const formLabelAlign = reactive({
   name: '',
@@ -79,11 +105,11 @@ const formLabelAlign = reactive({
     text-align: center;
     margin-bottom: 20px;
   }
-  .forget {
+  .btn-box {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
-    margin: 0 80px;
+    width: 100%;
+    margin-top: 5px;
   }
 }
 

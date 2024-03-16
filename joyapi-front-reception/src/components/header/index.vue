@@ -69,15 +69,18 @@ const goHome = () => {
     padding-right: 20px;
     .btn-login {
       font-size: 20px;
+      // 触摸按钮时按钮底部缓慢出现下划线动画
+      transition: all 0.3s ease-in-out;
       &:hover {
-        border: none;
-        color: currentColor;
-        outline: 0;
-        text-decoration: none;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        transition: all 0.2s ease-in-out 0s;
+        border-bottom: 2px solid #409eff;
+        color: #409eff;
+        transition: all 0.3s ease-in-out;
+        transform: scale(1.1);
         cursor: pointer;
+        font-weight: bold;
+        font-size: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
       }
     }
   }
