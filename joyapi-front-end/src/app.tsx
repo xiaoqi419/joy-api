@@ -53,6 +53,29 @@ export const layout: RunTimeLayoutConfig = ({
   setInitialState
 }) => {
   return {
+    iconfontUrl: '//at.alicdn.com/t/c/font_4443840_xl2yiy0b5p.js',
+    menuItemRender: (menuItemProps, defaultDom) => {
+      if (menuItemProps.isUrl || !menuItemProps.path) {
+        return defaultDom
+      }
+      // 支持二级菜单显示icon
+      return (
+        <Link to={menuItemProps.path}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            {menuItemProps.pro_layout_parentKeys &&
+              menuItemProps.pro_layout_parentKeys.length > 0 &&
+              menuItemProps.icon}
+            <span>{defaultDom}</span>
+          </div>
+        </Link>
+      )
+    },
+
     actionsRender: () => [<Question key="doc" />],
     avatarProps: {
       src: initialState?.currentUser?.userAvatar,

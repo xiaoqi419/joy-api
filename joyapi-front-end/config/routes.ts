@@ -23,15 +23,18 @@ export default [
       {
         path: '/admin/interface-list',
         name: '接口管理',
+        icon: 'SnippetsTwoTone',
         component: './Admin/InterfaceList'
       },
       {
         path: '/admin/approved-list',
+        icon: 'HighlightTwoTone',
         name: '接口审核',
         component: './Admin/ApprovedInterfaceList'
       },
       {
         path: '/admin/notice-manage',
+        icon: 'EditTwoTone',
         name: '公告管理',
         component: './Admin/NoticeManage'
       }
