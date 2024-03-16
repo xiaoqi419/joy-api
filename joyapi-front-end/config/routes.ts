@@ -14,6 +14,23 @@ export default [
     component: './Welcome'
   },
   {
+    path: '/interface-list',
+    name: '接口列表',
+    icon: 'icon-meirituijian',
+    routes: [
+      {
+        path: '/interface-list',
+        redirect: '/interface-list/public'
+      },
+      {
+        path: '/interface-list/public',
+        name: '公共接口',
+        icon: 'ContactsTwoTone',
+        component: './List/PublicInterfaceList'
+      }
+    ]
+  },
+  {
     path: '/admin',
     name: '系统管理',
     icon: 'HeartTwoTone',
