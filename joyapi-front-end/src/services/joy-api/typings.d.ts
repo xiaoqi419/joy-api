@@ -184,7 +184,9 @@ declare namespace API {
     id?: number;
     method?: string;
     name?: string;
+    requestExample?: string;
     requestHeader?: string;
+    responseExample?: string;
     responseHeader?: string;
     status?: number;
     url?: string;

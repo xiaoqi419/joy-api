@@ -18,6 +18,7 @@ import {
 import '@umijs/max'
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Dropdown,
@@ -33,7 +34,6 @@ import {
   Select,
   Space,
   Spin,
-  Tag,
   Typography,
   message
 } from 'antd'
@@ -707,11 +707,23 @@ const Admin: React.FC = () => {
                           }}
                         >
                           {item.status === 0 ? (
-                            <Tag color="red">下线</Tag>
+                            <Badge
+                              status="error"
+                              text="offline"
+                              style={{ marginRight: '10px' }}
+                            />
                           ) : item.status === 1 ? (
-                            <Tag color="rgb(0, 168, 112)">上线</Tag>
+                            <Badge
+                              status="success"
+                              text="online"
+                              style={{ marginRight: '10px' }}
+                            />
                           ) : (
-                            <Tag color="orange">审核中</Tag>
+                            <Badge
+                              status="processing"
+                              text="审核中"
+                              style={{ marginRight: '10px' }}
+                            />
                           )}
                           <Dropdown
                             trigger={['click']}
