@@ -1,4 +1,7 @@
-<template>1</template>
+<template>
+  <!-- Modal -->
+  <joy-modal-user />
+</template>
 
 <script setup lang="ts"></script>
 
