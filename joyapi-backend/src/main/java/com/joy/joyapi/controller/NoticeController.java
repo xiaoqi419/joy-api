@@ -104,6 +104,7 @@ public class NoticeController {
         if (!result) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         }
+        
         return ResultUtils.success("更新成功");
     }
 
