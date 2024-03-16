@@ -143,7 +143,7 @@ const Welcome: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <PageContainer>
+      <PageContainer title="JOY API PRO 公共接口管理平台">
         <Row gutter={[16, 16]}>
           {/* 顶端卡片统计 */}
           <Col className="gutter-row" span={6}>
