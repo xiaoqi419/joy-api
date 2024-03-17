@@ -57,6 +57,9 @@ public class JoyApiClient {
 
     /**
      * 获取固定数量的虚拟用户
+     *
+     * @param request 请求参数
+     * @return 固定数量的虚拟用户
      */
     public JSONObject getFixedNumberVirtualUser(VirtualUserInterfaceQueryRequest request) {
         String json = JSONUtil.toJsonStr(request);

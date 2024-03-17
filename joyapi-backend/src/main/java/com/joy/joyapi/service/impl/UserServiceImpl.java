@@ -375,6 +375,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return ResultUtils.success(true);
     }
 
+    @Override
+    public BaseResponse<Boolean> updatePassword(User loginUser, String oldPassword, String newPassword) {
+        // 校验参数
+        if (loginUser == null || loginUser.getId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        if (StringUtils.isAnyBlank(oldPassword, newPassword)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+        }
+        // 查询用户是否存在
+        User user = this.getById(loginUser.getId());
+        if (user == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        // 校验旧密码
+        String encryptOldPassword = DigestUtils.md5DigestAsHex((SALT + oldPassword).getBytes());
+        if (!StringUtils.equals(encryptOldPassword, user.getUserPassword())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "旧密码错误");
+        }
+        // 加密新密码
+        String encryptNewPassword = DigestUtils.md5DigestAsHex((SALT + newPassword).getBytes());
+        // 更新密码
+        user.setUserPassword(encryptNewPassword);
+        boolean updateResult = this.updateById(user);
+        if (!updateResult) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "修改密码失败");
+        }
+        return ResultUtils.success(true);
+    }
+
     /**
      * 发送邮箱验证码
      *

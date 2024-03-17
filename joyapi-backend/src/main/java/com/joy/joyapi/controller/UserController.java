@@ -392,5 +392,28 @@ public class UserController {
         return userService.forgetPassword(userAccount, userPassword, captcha);
     }
 
+    /**
+     * 修改密码
+     *
+     * @param userUpdatePasswordRequest 修改密码请求
+     * @param request                   请求
+     * @return 是否修改成功
+     */
+    @PostMapping("/update/password")
+    @ApiOperation("修改密码")
+    public BaseResponse<Boolean> updatePassword(@RequestBody UserUpdatePasswordRequest userUpdatePasswordRequest,
+                                                HttpServletRequest request) {
+        if (userUpdatePasswordRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        String oldPassword = userUpdatePasswordRequest.getOldPassword();
+        String newPassword = userUpdatePasswordRequest.getNewPassword();
+        if (StringUtils.isAnyBlank(oldPassword, newPassword)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        return userService.updatePassword(loginUser, oldPassword, newPassword);
+    }
+
 
 }

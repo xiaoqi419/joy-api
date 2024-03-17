@@ -147,4 +147,14 @@ public interface UserService extends IService<User> {
      * @return 是否成功
      */
     BaseResponse<Boolean> forgetPassword(String userAccount, String userPassword, String captcha);
+
+    /**
+     * 更新密码
+     *
+     * @param loginUser   登录用户
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @return 是否成功
+     */
+    BaseResponse<Boolean> updatePassword(User loginUser, String oldPassword, String newPassword);
 }
