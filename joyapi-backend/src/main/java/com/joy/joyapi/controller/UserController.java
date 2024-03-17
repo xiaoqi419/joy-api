@@ -415,5 +415,28 @@ public class UserController {
         return userService.updatePassword(loginUser, oldPassword, newPassword);
     }
 
+    /**
+     * 查看用户AccessKey
+     *
+     * @param request 请求
+     * @return AccessKey 签名
+     */
+    @GetMapping("/accessKey")
+    @ApiOperation("查看用户AccessKey")
+    public BaseResponse<String> getAccessKey(HttpServletRequest request) {
+        User loginUser = userService.getLoginUser(request);
+        return ResultUtils.success(loginUser.getAccessKey());
+    }
+
+    /**
+     * 重新生成用户AccessKey
+     */
+    @PostMapping("/accessKey")
+    @ApiOperation("重新生成用户AccessKey")
+    public BaseResponse<String> updateAccessKey(HttpServletRequest request) {
+        User loginUser = userService.getLoginUser(request);
+        return ResultUtils.success(userService.updateAccessKey(loginUser));
+    }
+
 
 }

@@ -30,7 +30,7 @@ public class VirtualUserInterfaceController {
     private VirtualUserInterfaceService virtualUserInterfaceService;
 
     /**
-     * 根据数量获取虚拟用户
+     * 根据分页获取虚拟用户
      *
      * @param request 请求参数
      */

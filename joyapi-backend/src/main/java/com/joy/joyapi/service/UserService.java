@@ -157,4 +157,12 @@ public interface UserService extends IService<User> {
      * @return 是否成功
      */
     BaseResponse<Boolean> updatePassword(User loginUser, String oldPassword, String newPassword);
+
+    /**
+     * 更新用户信息
+     *
+     * @param loginUser 登录用户
+     * @return 是否成功
+     */
+    String updateAccessKey(User loginUser);
 }

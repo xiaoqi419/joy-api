@@ -414,6 +414,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return ResultUtils.success(true);
     }
 
+    @Override
+    public String updateAccessKey(User loginUser) {
+        // 校验参数
+        if (loginUser == null || loginUser.getId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        // 查询用户是否存在
+        User user = this.getById(loginUser.getId());
+        if (user == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        // 生成新的accessKey和secretKey
+        String accessKey = DigestUtil.md5Hex(SALT + user.getUserAccount() + RandomUtil.randomNumbers(5));
+        String secretKey = DigestUtil.md5Hex(SALT + user.getUserAccount() + RandomUtil.randomNumbers(10));
+        // 更新accessKey和secretKey
+        user.setAccessKey(accessKey);
+        user.setSecretKey(secretKey);
+        boolean updateResult = this.updateById(user);
+        if (!updateResult) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "修改accessKey失败");
+        }
+        return accessKey;
+    }
+
     /**
      * 发送邮箱验证码
      *

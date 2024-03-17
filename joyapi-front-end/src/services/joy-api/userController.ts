@@ -2,6 +2,22 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 查看用户AccessKey GET /api/user/accessKey */
+export async function getAccessKeyUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseString_>('/api/user/accessKey', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 重新生成用户AccessKey POST /api/user/accessKey */
+export async function updateAccessKeyUsingPost(options?: { [key: string]: any }) {
+  return request<API.BaseResponseString_>('/api/user/accessKey', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
 /** 创建用户 POST /api/user/add */
 export async function addUserUsingPost(body: API.UserAddRequest, options?: { [key: string]: any }) {
   return request<API.BaseResponseLong_>('/api/user/add', {
