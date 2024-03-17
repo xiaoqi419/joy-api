@@ -16,6 +16,4 @@ public class UserUpdatePasswordRequest {
     private String oldPassword;
 
     private String newPassword;
-
-    private String checkPassword;
 }

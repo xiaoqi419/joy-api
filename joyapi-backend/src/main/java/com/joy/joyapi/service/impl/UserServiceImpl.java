@@ -377,12 +377,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public BaseResponse<Boolean> updatePassword(User loginUser, String oldPassword, String newPassword) {
+        // 校验密码长度 大于6小于20
+        if (oldPassword.length() < 8 || oldPassword.length() > 20
+                || newPassword.length() < 8 || newPassword.length() > 20) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码长度不符合要求");
+        }
         // 校验参数
         if (loginUser == null || loginUser.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
-        }
-        if (StringUtils.isAnyBlank(oldPassword, newPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
         // 查询用户是否存在
         User user = this.getById(loginUser.getId());
