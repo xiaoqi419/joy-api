@@ -33,6 +33,12 @@ export default [
         name: '公共接口',
         icon: 'ContactsTwoTone',
         component: './List/PublicInterfaceList'
+      },
+      {
+        path: '/interface-list/private',
+        name: '个人接口',
+        icon: 'ProjectTwoTone',
+        component: './List/PrivateInterfaceList'
       }
     ]
   },
