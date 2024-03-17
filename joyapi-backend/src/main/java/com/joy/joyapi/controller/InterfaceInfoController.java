@@ -15,6 +15,7 @@ import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.joy.joyapi.model.entity.InterfaceInfo;
 import com.joy.joyapi.model.entity.User;
+import com.joy.joyapi.model.enums.InterfaceInfoStatusEnum;
 import com.joy.joyapi.model.vo.InterfaceInfoVO;
 import com.joy.joyapi.model.vo.UserVO;
 import com.joy.joyapi.service.InterfaceInfoService;
@@ -69,6 +70,7 @@ public class InterfaceInfoController {
         interfaceInfo.setName(interfaceInfo.getName().trim());
         interfaceInfo.setDescription(interfaceInfo.getDescription().trim());
         interfaceInfo.setUrl(interfaceInfo.getUrl().trim());
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.AUDITING.getCode());
         interfaceInfo.setCategory(interfaceInfo.getCategory().trim());
         interfaceInfo.setRequestHeader(interfaceInfo.getRequestHeader().trim());
         interfaceInfo.setResponseHeader(interfaceInfo.getResponseHeader().trim());

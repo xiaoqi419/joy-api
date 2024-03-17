@@ -1,13 +1,13 @@
 
-‚
-java:S1854-":Remove this useless assignment to local variable "userId".(Ò¾¢²şÿÿÿÿ8¤ı·½ä1J$6d908ee7-bfd0-4ef2-9957-f935a25de55f
-~
-java:S1854("6Remove this useless assignment to local variable "id".(·‰ÔÅûÿÿÿÿ8²Îå¼ä1J$25863e31-0b1e-4fb2-a456-536a3b388128
+\
+java:S1854-":Remove this useless assignment to local variable "userId".(Ò¾¢²şÿÿÿÿ8úæä1
+X
+java:S1854("6Remove this useless assignment to local variable "id".(·‰ÔÅûÿÿÿÿ8úæä1
+I
+java:S1481("'Remove this unused "id" local variable.(·‰ÔÅûÿÿÿÿ8üæä1
+M
+java:S1481-"+Remove this unused "userId" local variable.(Ò¾¢²şÿÿÿÿ8ıæä1
+O
+java:S1135t"2Complete the task associated to this TODO comment.(Èüà¡8ƒ‘æä1
 o
-java:S1481("'Remove this unused "id" local variable.(·‰ÔÅûÿÿÿÿ8³Îå¼ä1J$c49c4f3e-f79c-40a5-965b-f523dcfe1540
-s
-java:S1481-"+Remove this unused "userId" local variable.(Ò¾¢²şÿÿÿÿ8©ı·½ä1J$0c32d205-0989-4293-b305-6644e797b98b
-u
-java:S1135t"2Complete the task associated to this TODO comment.(Èüà¡8¼Îå¼ä1J$fe3da34f-33cf-4638-a18e-3331e7e4638f
-•
-java:S3776y"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(±¡â8©ãï¼ä1J$16b5d58d-f0f0-4fd9-bcfe-0931058c89e4
+java:S3776y"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(±¡â8„‘æä1

@@ -8,7 +8,10 @@ package com.joy.joyapi.model.enums;
 public enum InterfaceInfoStatusEnum {
 
     OFFLINE(0, "下线"),
-    ONLINE(1, "上线");
+    ONLINE(1, "上线"),
+    // 审核中
+    AUDITING(2, "审核中");
+
 
     private final Integer code;
     private final String desc;

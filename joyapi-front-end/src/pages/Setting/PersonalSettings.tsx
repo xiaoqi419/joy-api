@@ -1,4 +1,6 @@
 import {
+  getAccessKeyUsingGet,
+  updateAccessKeyUsingPost,
   updateMyUserUsingPost,
   updatePasswordUsingPost,
   userLogoutUsingPost
@@ -17,12 +19,15 @@ import {
   Button,
   Card,
   Col,
+  Descriptions,
+  DescriptionsProps,
   Flex,
   Form,
   GetProp,
   Input,
   Row,
   Tag,
+  Typography,
   Upload,
   UploadProps,
   message
@@ -189,6 +194,63 @@ const PersonalSetting: React.FC = () => {
     )
   }
 
+  // 右侧功能区
+  const [accessKey, setAccessKey] = useState('')
+  const { Paragraph } = Typography
+  const selectAccessKey = async () => {
+    const res = await getAccessKeyUsingGet()
+    if (res.code === 200) {
+      setAccessKey(res.data!)
+      messageApi.success('获取成功')
+    } else {
+      messageApi.error('获取失败,' + res.message || '未知错误')
+    }
+  }
+  const updateAccessKey = async () => {
+    const res = await updateAccessKeyUsingPost()
+    if (res.code === 200) {
+      setAccessKey(res.data!)
+      messageApi.success('更新成功')
+    } else {
+      messageApi.error('获取失败,' + res.message || '未知错误')
+    }
+  }
+  const items: DescriptionsProps['items'] = [
+    {
+      key: '1',
+      label: 'AccessKey',
+      children: (
+        <p>
+          {accessKey ? (
+            <div
+              style={{
+                marginTop: 5
+              }}
+            >
+              <Paragraph copyable>{accessKey}</Paragraph>{' '}
+              <Button
+                type="primary"
+                onClick={() => {
+                  setAccessKey('')
+                }}
+              >
+                隐藏
+              </Button>
+              &nbsp;
+              <Button type="primary" onClick={updateAccessKey}>
+                重新生成
+              </Button>
+            </div>
+          ) : (
+            <Button type="primary" onClick={selectAccessKey}>
+              生成
+            </Button>
+          )}
+        </p>
+      )
+    }
+  ]
+
   return (
     <>
       {contextHolder}
@@ -300,9 +362,14 @@ const PersonalSetting: React.FC = () => {
             </div>
           </Card>
           <Card style={{ width: 600 }}>
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
+            <Descriptions
+              title="接口调用"
+              items={items}
+              column={1}
+              labelStyle={{
+                lineHeight: '32px'
+              }}
+            />
           </Card>
         </Flex>
       </PageContainer>
