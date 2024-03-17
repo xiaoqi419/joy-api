@@ -1,21 +1,33 @@
-import { updateMyUserUsingPost } from '@/services/joy-api/userController'
+import {
+  updateMyUserUsingPost,
+  updatePasswordUsingPost,
+  userLogoutUsingPost
+} from '@/services/joy-api/userController'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import { PageContainer } from '@ant-design/pro-components'
-import { useModel } from '@umijs/max'
+import {
+  ModalForm,
+  PageContainer,
+  ProFormInstance,
+  ProFormText,
+  stringify
+} from '@ant-design/pro-components'
+import { history, useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
 import {
   Button,
   Card,
+  Col,
   Flex,
   Form,
   GetProp,
   Input,
+  Row,
   Tag,
   Upload,
   UploadProps,
   message
 } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
 const formItemLayout = {
@@ -102,6 +114,80 @@ const PersonalSetting: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
   )
+
+  // 修改密码组件
+  const [form] = Form.useForm<API.UserUpdatePasswordRequest>()
+  const restFormRef = useRef<ProFormInstance>()
+  const ChangePassword = () => {
+    return (
+      <ModalForm<API.UserUpdatePasswordRequest>
+        title="修改密码"
+        trigger={<Button type="primary">修改密码</Button>}
+        form={form}
+        width={400}
+        formRef={restFormRef}
+        autoFocusFirstInput
+        modalProps={{
+          destroyOnClose: true
+        }}
+        submitter={{
+          searchConfig: {
+            resetText: '重置'
+          },
+          resetButtonProps: {
+            onClick: () => {
+              restFormRef.current?.resetFields()
+              //   setModalVisible(false);
+            }
+          }
+        }}
+        submitTimeout={2000}
+        onFinish={async values => {
+          const res = await updatePasswordUsingPost(values)
+          if (res.code === 200) {
+            // 两秒倒计时
+            messageApi.success('修改成功，即将退出登录！')
+            // 退出登录并跳转到登录页
+            setTimeout(async () => {
+              await userLogoutUsingPost()
+              const { search, pathname } = window.location
+              const urlParams = new URL(window.location.href).searchParams
+              /** 此方法会跳转到 redirect 参数所在的位置 */
+              const redirect = urlParams.get('redirect')
+              // Note: There may be security issues, please note
+              if (window.location.pathname !== '/user/login' && !redirect) {
+                history.replace({
+                  pathname: '/user/login',
+                  search: stringify({
+                    redirect: pathname + search
+                  })
+                })
+              }
+            }, 2000)
+          } else {
+            messageApi.error('修改失败,' + res.message || '未知错误')
+          }
+          return false
+        }}
+      >
+        <ProFormText.Password
+          width="md"
+          name="oldPassword"
+          label="旧密码"
+          placeholder="请输入旧密码"
+          rules={[{ required: true }, { min: 8 }, { max: 20 }]}
+        />
+
+        <ProFormText.Password
+          width="md"
+          name="newPassword"
+          label="新密码"
+          placeholder="请输入新密码"
+          rules={[{ required: true }, { min: 8 }, { max: 20 }]}
+        />
+      </ModalForm>
+    )
+  }
 
   return (
     <>
@@ -200,11 +286,16 @@ const PersonalSetting: React.FC = () => {
                   />
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-                  <Button type="primary" htmlType="submit">
-                    更改信息
-                  </Button>
-                </Form.Item>
+                <Row gutter={24}>
+                  <Col className="gutter-row" span={10}>
+                    <ChangePassword />
+                  </Col>
+                  <Col className="gutter-row" span={10}>
+                    <Button type="primary" htmlType="submit">
+                      更改信息
+                    </Button>
+                  </Col>
+                </Row>
               </Form>
             </div>
           </Card>
