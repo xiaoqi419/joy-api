@@ -1,4 +1,5 @@
 import {
+  addInterfaceInfoUsingPost,
   deleteInterfaceInfoUsingPost,
   listInterfaceInfoByPageUsingPost,
   updateInterfaceInfoUsingPost
@@ -89,12 +90,14 @@ const Admin: React.FC = () => {
     return (
       <StepsForm
         onFinish={async values => {
-          console.log(values)
           setCreateModalVisible(false)
-          messageApi.open({
-            type: 'success',
-            content: '提交成功'
-          })
+          const res = await addInterfaceInfoUsingPost(values)
+          if (res.code === 200) {
+            messageApi.success('发布成功')
+            getInterfaceList()
+          } else {
+            messageApi.error('发布失败,' + res.message || '未知错误')
+          }
         }}
         formProps={{
           validateMessages: {
@@ -104,7 +107,7 @@ const Admin: React.FC = () => {
         stepsFormRender={(dom, submitter) => {
           return (
             <Modal
-              title="新建接口"
+              title="发布接口"
               width={800}
               onCancel={() => setCreateModalVisible(false)}
               open={createModalVisible}
@@ -197,26 +200,50 @@ const Admin: React.FC = () => {
               }
             ]}
           />
-          <ProFormText
+          <ProFormTextArea
             name="requestExample"
             width="md"
             label="请求示例"
             tooltip="例如: https://zj.v.api.aa1.cn/api/xz/?code=654028207203"
             placeholder="请输入请求示例"
+            rules={[{ required: true }]}
+          />
+          <ProFormText
+            name="requestHeader"
+            width="md"
+            label="请求头"
+            placeholder="请输入请求头"
+            initialValue={`{"Content-Type": "application/json;charset=UTF-8"}`}
             rules={[
               { required: true },
               {
                 validator(rule, value, callback) {
-                  // 如果为空则返回错误
                   if (!value) {
                     callback()
                   }
-                  if (
-                    !/^(http|https):\/\/[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=])*$/.test(
-                      value
-                    )
-                  ) {
-                    callback('请输入正确的请求示例')
+                  if (!/^{.*}$/.test(value)) {
+                    callback('请输入正确的响应头')
+                  }
+                  callback()
+                }
+              }
+            ]}
+          />
+          <ProFormText
+            name="responseHeader"
+            width="md"
+            label="响应头"
+            initialValue={`{"Content-Type": "application/json;charset=UTF-8"}`}
+            placeholder="请输入响应头"
+            rules={[
+              { required: true },
+              {
+                validator(rule, value, callback) {
+                  if (!value) {
+                    callback()
+                  }
+                  if (!/^{.*}$/.test(value)) {
+                    callback('请输入正确的响应头')
                   }
                   callback()
                 }
@@ -396,32 +423,14 @@ const Admin: React.FC = () => {
               }
             ]}
           />
-          <ProFormText
+          <ProFormTextArea
             name="requestExample"
             width="md"
             label="请求示例"
             initialValue={InterfaceInfo.requestExample}
             tooltip="例如: https://zj.v.api.aa1.cn/api/xz/?code=654028207203"
             placeholder="请输入请求示例"
-            rules={[
-              { required: true },
-              {
-                validator(rule, value, callback) {
-                  // 如果为空则返回错误
-                  if (!value) {
-                    callback()
-                  }
-                  if (
-                    !/^(http|https):\/\/[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=])*$/.test(
-                      value
-                    )
-                  ) {
-                    callback('请输入正确的请求示例')
-                  }
-                  callback()
-                }
-              }
-            ]}
+            rules={[{ required: true }]}
           />
           <ProFormTextArea
             name="responseExample"
@@ -556,7 +565,7 @@ const Admin: React.FC = () => {
             type="primary"
             onClick={createInterface}
           >
-            新建接口
+            发布接口
           </Button>
         }
       >
@@ -670,13 +679,7 @@ const Admin: React.FC = () => {
               marginTop: '20px'
             }}
           >
-            <Flex
-              vertical={false}
-              justify={'space-between'}
-              align={'center'}
-              wrap="wrap"
-              gap="middle"
-            >
+            <Flex vertical={false} align={'center'} wrap="wrap" gap="middle">
               {/* 如果interfaceList有值显示列表，否则显示加载组件 */}
 
               {interfaceList ? (

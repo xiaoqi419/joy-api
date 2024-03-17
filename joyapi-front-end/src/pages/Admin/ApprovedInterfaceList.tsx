@@ -180,7 +180,7 @@ const ApprovedInterfacePage: React.FC = () => {
               placeholder="请输入请求方式"
               disabled
             />
-            <ProFormText
+            <ProFormTextArea
               name="requestExample"
               width="md"
               label="请求示例"
