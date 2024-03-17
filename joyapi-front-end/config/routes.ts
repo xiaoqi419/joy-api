@@ -8,6 +8,12 @@ export default [
     ]
   },
   {
+    path: '/interface-info/:id',
+    name: '接口详情',
+    component: './InterfaceInfo',
+    hideInMenu: true
+  },
+  {
     path: '/welcome',
     name: '首页',
     icon: 'SmileTwoTone',
