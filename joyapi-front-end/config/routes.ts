@@ -14,6 +14,12 @@ export default [
     hideInMenu: true
   },
   {
+    path: '/publish-interface',
+    name: '发布接口',
+    component: './PublishInterface',
+    hideInMenu: true
+  },
+  {
     path: '/welcome',
     name: '首页',
     icon: 'SmileTwoTone',
