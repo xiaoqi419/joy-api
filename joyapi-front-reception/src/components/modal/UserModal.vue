@@ -42,8 +42,8 @@
             <div class="btn-box">
               <el-checkbox v-model="formLabelAlign.type">记住我</el-checkbox>
               <el-space wrap>
-                <el-link type="primary">忘记密码？</el-link>
-                <el-link type="primary">注册</el-link>
+                <el-link type="primary">忘记密码</el-link>
+                <el-link type="primary">没有账号？</el-link>
               </el-space>
             </div>
           </el-form-item>

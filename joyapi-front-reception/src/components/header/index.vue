@@ -15,7 +15,12 @@
         />
         JOY API
       </div>
-      <div class="flex-grow" />
+      <div
+        class="flex-grow"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <div>承诺，旗下API永久免费</div>
+      </div>
       <div class="btn">
         <el-button :icon="Search" circle type="primary" />
         <el-button type="primary" text class="btn-login" @click="doLogin()"
