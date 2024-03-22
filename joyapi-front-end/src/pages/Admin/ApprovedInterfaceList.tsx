@@ -1,114 +1,113 @@
 import {
   auditInterfaceInfoUsingPost,
-  listInterfaceInfoByPageUsingPost
-} from '@/services/joy-api/interfaceInfoController'
-import { SmileOutlined } from '@ant-design/icons'
+  listInterfaceInfoByPageUsingPost,
+} from '@/services/joy-api/interfaceInfoController';
+import { SmileOutlined } from '@ant-design/icons';
 import {
   PageContainer,
   ProFormRadio,
   ProFormText,
   ProFormTextArea,
   ProList,
-  StepsForm
-} from '@ant-design/pro-components'
-import { Alert, Button, Modal, Result, Tag, Typography, message } from 'antd'
+  StepsForm,
+} from '@ant-design/pro-components';
+import { Alert, Button, Modal, Result, Tag, Typography, message } from 'antd';
 
-import React, { Key, useState } from 'react'
-const { Paragraph } = Typography
+import React, { Key, useState } from 'react';
+
+const { Paragraph } = Typography;
 
 const ApprovedInterfacePage: React.FC = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
-  const [messageApi, contextHolder] = message.useMessage()
+  const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
+  const [messageApi, contextHolder] = message.useMessage();
   // 刷新状态
-  const [dataSource, setDataSource] = useState<API.InterfaceInfo[]>()
+  const [dataSource, setDataSource] = useState<API.InterfaceInfo[]>();
   const rowSelection = {
     selectedRowKeys,
     onChange: (keys: Key[]) => {
-      setSelectedRowKeys(keys)
-    }
-  }
+      setSelectedRowKeys(keys);
+    },
+  };
 
   // 获取审核的接口列表
   const getAuditInterfaceList = async (key: number) => {
     // 重置选择的Id
-    setSelectedRowKeys([])
+    setSelectedRowKeys([]);
     const param: API.InterfaceInfoQueryRequest = {
       status: 2,
       current: 1,
-      pageSize: 8
-    }
-    const response = await listInterfaceInfoByPageUsingPost(param)
+      pageSize: 8,
+    };
+    const response = await listInterfaceInfoByPageUsingPost(param);
     if (response.code === 200) {
-      setDataSource(response.data?.records)
+      setDataSource(response.data?.records);
       if (key === 2) {
         messageApi.open({
           type: 'success',
-          content: '刷新成功'
-        })
+          content: '刷新成功',
+        });
       }
     } else {
       messageApi.open({
         type: 'error',
-        content: response.message
-      })
+        content: response.message,
+      });
     }
-  }
+  };
 
   // 通过接口
-  const handleApprove = async (
-    interfaceParam: API.InterfaceInfoAuditRequest
-  ) => {
+  const handleApprove = async (interfaceParam: API.InterfaceInfoAuditRequest) => {
     // 如果参数为空则提示
     if (interfaceParam.id === undefined && selectedRowKeys.length === 0) {
       messageApi.open({
         type: 'warning',
-        content: '请选择要审核的接口'
-      })
-      return
+        content: '请选择要审核的接口',
+      });
+      return;
     }
     // 将selectedRowKeys传递给后端
 
     const param: API.InterfaceInfoAuditRequest = {
       auditStatus: interfaceParam.auditStatus,
-      id: interfaceParam.id === undefined ? selectedRowKeys : interfaceParam.id
-    } as API.InterfaceInfoAuditRequest
-    const res = await auditInterfaceInfoUsingPost(param)
+      id: interfaceParam.id === undefined ? selectedRowKeys : interfaceParam.id,
+    } as API.InterfaceInfoAuditRequest;
+    const res = await auditInterfaceInfoUsingPost(param);
     if (res.code === 200) {
       messageApi.open({
         type: 'success',
-        content: '操作成功'
-      })
-      getAuditInterfaceList(1)
+        content: '操作成功',
+      });
+      await getAuditInterfaceList(1);
     } else {
       messageApi.open({
         type: 'error',
-        content: res.message
-      })
+        content: res.message,
+      });
     }
-  }
+  };
 
   // 对接口进行操作Modal
   const ManageInterface = (value: any) => {
-    const interfaceInfo = value.value
-    const [visible, setVisible] = useState(false)
+    const interfaceInfo = value.value;
+    const [visible, setVisible] = useState(false);
 
     return (
       <div>
         <a onClick={() => setVisible(true)}>操作</a>
         <StepsForm
-          onFinish={async values => {
-            console.log(values)
-            let array = [interfaceInfo.id]
+          onFinish={async (values) => {
+            console.log(values);
+            let array = [interfaceInfo.id];
             let param = {
               id: array,
-              auditStatus: values.auditStatus
-            }
-            handleApprove(param)
+              auditStatus: values.auditStatus,
+            };
+            await handleApprove(param);
           }}
           formProps={{
             validateMessages: {
-              required: '此项为必填项'
-            }
+              required: '此项为必填项',
+            },
           }}
           stepsFormRender={(dom, submitter) => {
             return (
@@ -122,14 +121,14 @@ const ApprovedInterfacePage: React.FC = () => {
               >
                 {dom}
               </Modal>
-            )
+            );
           }}
         >
           <StepsForm.StepForm
             name="base"
             title="接口基本信息"
             onFinish={async () => {
-              return true
+              return true;
             }}
           >
             <ProFormText
@@ -192,7 +191,6 @@ const ApprovedInterfacePage: React.FC = () => {
               name="responseExample"
               width="md"
               label="返回示例"
-              initialValue={interfaceInfo.responseExample}
               placeholder="请输入返回示例"
               disabled
             />
@@ -204,12 +202,12 @@ const ApprovedInterfacePage: React.FC = () => {
               options={[
                 {
                   label: '通过',
-                  value: '1'
+                  value: '1',
                 },
                 {
                   label: '不通过',
-                  value: '0'
-                }
+                  value: '0',
+                },
               ]}
               rules={[{ required: true }]}
             />
@@ -227,31 +225,31 @@ const ApprovedInterfacePage: React.FC = () => {
           </StepsForm.StepForm>
         </StepsForm>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
       {contextHolder}
       <PageContainer>
         <ProList<any>
-          request={async (params = {} as Record<string, any>) => {
+          request={async (params) => {
             const param: API.InterfaceInfoQueryRequest = {
               status: 2,
               current: params.current,
               pageSize: params.pageSize,
-              ...params
-            }
-            const response = await listInterfaceInfoByPageUsingPost(param)
-            setDataSource(response.data?.records)
+              ...params,
+            };
+            const response = await listInterfaceInfoByPageUsingPost(param);
+            setDataSource(response.data?.records);
             return {
-              success: response.code === 200 ? true : false,
-              total: response.data?.total
-            }
+              success: response.code === 200,
+              total: response.data?.total,
+            };
           }}
           pagination={{
             defaultPageSize: 8,
-            showSizeChanger: true
+            showSizeChanger: true,
           }}
           search={{}}
           metas={{
@@ -262,13 +260,13 @@ const ApprovedInterfacePage: React.FC = () => {
                 return (
                   <span
                     style={{
-                      fontSize: 16
+                      fontSize: 16,
                     }}
                   >
                     {row.name}
                   </span>
-                )
-              }
+                );
+              },
             },
             subTitle: {
               dataIndex: 'method',
@@ -278,7 +276,7 @@ const ApprovedInterfacePage: React.FC = () => {
                 GET: { text: 'GET' },
                 POST: { text: 'POST' },
                 DELETE: { text: 'DELETE' },
-                PUT: { text: 'PUT' }
+                PUT: { text: 'PUT' },
               },
               render: (text, row) => {
                 return row.method === 'GET' ? (
@@ -289,8 +287,8 @@ const ApprovedInterfacePage: React.FC = () => {
                   <Tag color="red">DELETE</Tag>
                 ) : (
                   <Tag color="orange">PUT</Tag>
-                )
-              }
+                );
+              },
             },
 
             content: {
@@ -303,60 +301,46 @@ const ApprovedInterfacePage: React.FC = () => {
                     <span
                       style={{
                         display: 'block',
-                        marginBottom: 10
+                        marginBottom: 10,
                       }}
                     >
                       接口简介：
                     </span>
                     <Paragraph
                       ellipsis={{
-                        rows: 4
+                        rows: 4,
                       }}
                       title={`${row.description}...`}
                     >
                       <span
                         style={{
                           fontSize: 14,
-                          color: '#666666'
+                          color: '#666666',
                         }}
                       >
                         {row.description}
                       </span>
                     </Paragraph>
                   </div>
-                )
-              }
+                );
+              },
             },
 
             actions: {
-              render: (text, row) => [
-                <ManageInterface value={row} key={text} />
-              ],
-              search: false
-            }
+              render: (text, row) => [<ManageInterface value={row} key={text} />],
+              search: false,
+            },
           }}
           toolBarRender={() => [
-            <Button
-              key="4"
-              type="primary"
-              onClick={() => handleApprove({ auditStatus: 1 })}
-            >
+            <Button key="4" type="primary" onClick={() => handleApprove({ auditStatus: 1 })}>
               通过
             </Button>,
-            <Button
-              key="5"
-              type="primary"
-              onClick={() => handleApprove({ auditStatus: 0 })}
-            >
+            <Button key="5" type="primary" onClick={() => handleApprove({ auditStatus: 0 })}>
               不通过
             </Button>,
-            <Button
-              key="3"
-              type="primary"
-              onClick={() => getAuditInterfaceList(2)}
-            >
+            <Button key="3" type="primary" onClick={() => getAuditInterfaceList(2)}>
               刷新
-            </Button>
+            </Button>,
           ]}
           rowKey="id"
           rowSelection={rowSelection}
@@ -366,6 +350,6 @@ const ApprovedInterfacePage: React.FC = () => {
         />
       </PageContainer>
     </>
-  )
-}
-export default ApprovedInterfacePage
+  );
+};
+export default ApprovedInterfacePage;

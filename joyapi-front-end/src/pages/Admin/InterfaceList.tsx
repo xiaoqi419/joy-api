@@ -7,6 +7,7 @@ import { MoreOutlined, SmileOutlined, createFromIconfontCN } from '@ant-design/i
 import {
   PageContainer,
   ProCard,
+  ProFormInstance,
   ProFormText,
   ProFormTextArea,
   StepsForm,
@@ -34,7 +35,7 @@ import {
   Typography,
   message,
 } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/c/font_4443840_xl2yiy0b5p.js',
@@ -57,6 +58,7 @@ const Admin: React.FC = () => {
   const [total, setTotal] = useState(0);
   // 接口列表
   const [interfaceList, setInterfaceList] = useState<API.InterfaceInfoVO[]>([]);
+  const formRef = useRef<ProFormInstance>();
   // 获取接口列表
   const getInterfaceList = async () => {
     const param = {
@@ -81,11 +83,12 @@ const Admin: React.FC = () => {
   }, []);
 
   // 管理接口Modal
-  const [manageMoadalVisible, setManageModalVisible] = useState(false);
+  const [manageModalVisible, setManageModalVisible] = useState(false);
   const [InterfaceInfo, setInterfaceInfo] = useState<API.InterfaceInfo>({});
   const ManageInterface = () => {
     return (
       <StepsForm
+        formRef={formRef}
         onFinish={async (values) => {
           console.log(values);
           // 提交
@@ -120,7 +123,7 @@ const Admin: React.FC = () => {
               title="管理接口"
               width={800}
               onCancel={() => setManageModalVisible(false)}
-              open={manageMoadalVisible}
+              open={manageModalVisible}
               footer={submitter}
               destroyOnClose
             >
@@ -216,6 +219,24 @@ const Admin: React.FC = () => {
             ]}
           />
           <ProFormTextArea
+            name="requestHeader"
+            width="md"
+            label="请求头"
+            initialValue={InterfaceInfo.requestHeader}
+            tooltip={`"例如: {"Content-Type": "application/json"}`}
+            placeholder="请输入请求头"
+            rules={[{ required: true }]}
+          />
+          <ProFormTextArea
+            name="responseHeader"
+            width="md"
+            label="响应头"
+            initialValue={InterfaceInfo.responseHeader}
+            tooltip={`"例如: {"Content-Type": "application/json"}`}
+            placeholder="请输入响应头"
+            rules={[{ required: true }]}
+          />
+          <ProFormTextArea
             name="requestExample"
             width="md"
             label="请求示例"
@@ -229,7 +250,7 @@ const Admin: React.FC = () => {
             width="md"
             label="返回示例"
             initialValue={InterfaceInfo.responseExample}
-            tooltip="例如: {code: 200, msg: 'success', data: {}}"
+            tooltip={`"例如: {"code": 200, "msg": "success", "data": {}}"`}
             placeholder="请输入返回示例"
             rules={[
               { required: true },
@@ -263,6 +284,7 @@ const Admin: React.FC = () => {
   // 管理接口Modal显示
   const manageInterface = (el: any, val: API.InterfaceInfo) => {
     interfaceBody = val;
+    console.log(val);
     if (el.key === '1') {
       // 点击菜单传递该列表的值
       setInterfaceInfo(val);
@@ -570,7 +592,7 @@ const Admin: React.FC = () => {
             />
           )}
         </div>
-        {manageMoadalVisible && <ManageInterface />}
+        {manageModalVisible && <ManageInterface />}
       </PageContainer>
     </>
   );

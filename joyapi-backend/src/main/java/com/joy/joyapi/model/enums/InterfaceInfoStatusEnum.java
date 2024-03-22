@@ -12,7 +12,7 @@ public enum InterfaceInfoStatusEnum {
     // 审核中
     AUDITING(2, "审核中");
 
-
+    
     private final Integer code;
     private final String desc;
 

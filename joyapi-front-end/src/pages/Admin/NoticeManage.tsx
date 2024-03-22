@@ -2,9 +2,9 @@ import {
   addNoticeUsingPost,
   deleteNoticeUsingPost,
   getNoticeListUsingPost,
-  updateNoticeUsingPost
-} from '@/services/joy-api/noticeController'
-import { PlusOutlined } from '@ant-design/icons'
+  updateNoticeUsingPost,
+} from '@/services/joy-api/noticeController';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
   ModalForm,
@@ -12,25 +12,25 @@ import {
   ProColumns,
   ProFormTextArea,
   ProTable,
-  TableDropdown
-} from '@ant-design/pro-components'
-import { Button, Form, Modal, message } from 'antd'
-import React, { useRef, useState } from 'react'
+  TableDropdown,
+} from '@ant-design/pro-components';
+import { Button, Form, Modal, message } from 'antd';
+import React, { useRef, useState } from 'react';
 
 type NoticeItem = {
-  id: number
-  content: string
-  createTime: string
-  updateTime: string
-}
+  id: number;
+  content: string;
+  createTime: string;
+  updateTime: string;
+};
 
 const NoticeManage: React.FC = () => {
-  const actionRef = useRef<ActionType>()
-  const [form] = Form.useForm<NoticeItem>()
-  const [messageApi, contextHolder] = message.useMessage()
-  const [data, setData] = useState<API.Notice[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [currentId, setCurrentId] = useState<number | undefined>(undefined)
+  const actionRef = useRef<ActionType>();
+  const [form] = Form.useForm<NoticeItem>();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [data, setData] = useState<API.Notice[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentId, setCurrentId] = useState<number | undefined>(undefined);
 
   // 公告内容弹窗
   const ContentModal = () => {
@@ -41,10 +41,10 @@ const NoticeManage: React.FC = () => {
         onOk={() => setIsOpen(false)}
         onCancel={() => setIsOpen(false)}
       >
-        {data.find(item => item.id === currentId)?.content}
+        {data.find((item) => item.id === currentId)?.content}
       </Modal>
-    )
-  }
+    );
+  };
 
   const columns: ProColumns<API.Notice>[] = [
     {
@@ -53,7 +53,7 @@ const NoticeManage: React.FC = () => {
       key: 'id',
       width: 80,
       align: 'center',
-      editable: false
+      editable: false,
     },
     {
       title: '内容',
@@ -68,10 +68,10 @@ const NoticeManage: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '此项为必填项'
-          }
-        ]
-      }
+            message: '此项为必填项',
+          },
+        ],
+      },
     },
     {
       title: '创建时间',
@@ -80,7 +80,7 @@ const NoticeManage: React.FC = () => {
       dataIndex: 'createTime',
       valueType: 'date',
       editable: false,
-      sorter: true
+      sorter: true,
     },
     {
       title: '更新时间',
@@ -89,7 +89,7 @@ const NoticeManage: React.FC = () => {
       valueType: 'date',
       align: 'center',
       editable: false,
-      sorter: true
+      sorter: true,
     },
     {
       title: '操作',
@@ -100,7 +100,7 @@ const NoticeManage: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id!)
+            action?.startEditable?.(record.id!);
           }}
         >
           编辑
@@ -110,15 +110,15 @@ const NoticeManage: React.FC = () => {
           rel="noopener noreferrer"
           key="view"
           onClick={() => {
-            setIsOpen(true)
-            setCurrentId(record.id)
+            setIsOpen(true);
+            setCurrentId(record.id);
           }}
         >
           查看
         </a>,
         <TableDropdown
           key="more"
-          onSelect={key => {
+          onSelect={(key) => {
             if (key === 'delete') {
               Modal.confirm({
                 title: '删除公告',
@@ -127,7 +127,7 @@ const NoticeManage: React.FC = () => {
                     确定删除公告：
                     <span
                       style={{
-                        color: 'red'
+                        color: 'red',
                       }}
                     >
                       {record.content}
@@ -136,22 +136,22 @@ const NoticeManage: React.FC = () => {
                   </>
                 ),
                 onOk: async () => {
-                  const res = await deleteNoticeUsingPost({ id: record.id })
+                  const res = await deleteNoticeUsingPost({ id: record.id });
                   if (res.code === 200) {
-                    messageApi.success('删除成功')
-                    actionRef.current?.reload()
+                    messageApi.success('删除成功');
+                    actionRef.current?.reload();
                   } else {
-                    messageApi.error('删除失败')
+                    messageApi.error('删除失败');
                   }
-                }
-              })
+                },
+              });
             }
           }}
           menus={[{ key: 'delete', name: '删除' }]}
-        />
-      ]
-    }
-  ]
+        />,
+      ],
+    },
+  ];
   // 新建公告
   const AddNoticeButton = () => {
     return (
@@ -168,21 +168,21 @@ const NoticeManage: React.FC = () => {
           autoFocusFirstInput
           modalProps={{
             destroyOnClose: true,
-            onCancel: () => console.log('run')
+            onCancel: () => console.log('run'),
           }}
           width={500}
           submitTimeout={2000}
-          onFinish={async values => {
-            const res = await addNoticeUsingPost(values)
+          onFinish={async (values) => {
+            const res = await addNoticeUsingPost(values);
             if (res.code === 200) {
-              messageApi.success('添加成功')
-              actionRef.current?.reload()
-              return true
+              messageApi.success('添加成功');
+              actionRef.current?.reload();
+              return true;
             }
-            return false
+            return false;
           }}
           style={{
-            textAlign: 'center'
+            textAlign: 'center',
           }}
         >
           <ProFormTextArea
@@ -193,8 +193,8 @@ const NoticeManage: React.FC = () => {
           />
         </ModalForm>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -204,58 +204,54 @@ const NoticeManage: React.FC = () => {
           columns={columns}
           actionRef={actionRef}
           cardBordered
-          request={async (params = {} as Record<string, any>) => {
+          request={async (params) => {
             const param: API.getNoticeListUsingPOSTParams = {
               current: params.current,
               pageSize: params.pageSize,
-              ...params
-            }
-            const response = await getNoticeListUsingPost(param)
-            setData(response.data?.records || [])
+              ...params,
+            };
+            const response = await getNoticeListUsingPost(param);
+            setData(response.data?.records || []);
             return {
               success: response.code === 200 ? true : false,
               total: response.data?.total,
               data: response.data?.records || [],
               pageSize: params.pageSize,
-              current: params.current
-            }
+              current: params.current,
+            };
           }}
           editable={{
             type: 'multiple',
             onSave: async (rowKey, data) => {
-              const res = await updateNoticeUsingPost(data)
+              const res = await updateNoticeUsingPost(data);
               if (res.code === 200) {
-                messageApi.success('修改成功')
-                actionRef.current?.reload()
-                return true
+                messageApi.success('修改成功');
+                actionRef.current?.reload();
+                return true;
               } else {
-                messageApi.error('修改失败')
-                return false
+                messageApi.error('修改失败');
+                return false;
               }
-            }
+            },
           }}
           columnsState={{
             persistenceKey: 'pro-table-singe-demos',
             persistenceType: 'localStorage',
             defaultValue: {
-              option: { fixed: 'right', disable: true }
+              option: { fixed: 'right', disable: true },
             },
-            onChange(value) {
-              console.log('value: ', value)
-            }
           }}
           rowKey="id"
           search={{
-            labelWidth: 'auto'
+            labelWidth: 'auto',
           }}
           options={{
             setting: {
-              listsHeight: 400
-            }
+              listsHeight: 400,
+            },
           }}
           pagination={{
             pageSize: 5,
-            onChange: page => console.log(page)
           }}
           dateFormatter="string"
           toolBarRender={() => [<AddNoticeButton key={1} />]}
@@ -263,6 +259,6 @@ const NoticeManage: React.FC = () => {
         <ContentModal />
       </PageContainer>
     </>
-  )
-}
-export default NoticeManage
+  );
+};
+export default NoticeManage;

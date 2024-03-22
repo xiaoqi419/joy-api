@@ -116,10 +116,18 @@ public class InterfaceInfoController {
      * @return 是否成功
      */
     @PostMapping("/update")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @ApiOperation(value = "更新接口", notes = "更新接口信息")
-    public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest) {
-        if (interfaceInfoUpdateRequest == null || interfaceInfoUpdateRequest.getId() <= 0) {
+    public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest, HttpServletRequest request) {
+        // 判断修改的用户是否是管理员或者是接口拥有者
+        User user = userService.getLoginUser(request);
+        InterfaceInfo interfaceInfo1 = interfaceInfoService.getById(interfaceInfoUpdateRequest.getId());
+        if (interfaceInfo1 == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (user == null || (!user.getId().equals(interfaceInfo1.getUserId()) && !userService.isAdmin(request))) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+        }
+        if (interfaceInfoUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         InterfaceInfo interfaceInfo = new InterfaceInfo();
