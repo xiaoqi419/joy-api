@@ -1,4 +1,7 @@
-import { addInterfaceInfoUsingPost } from '@/services/joy-api/interfaceInfoController';
+import {
+  getInterfaceInfoVoByIdUsingGet,
+  updateInterfaceInfoUsingPost,
+} from '@/services/joy-api/interfaceInfoController';
 import { CloseCircleOutlined, SmileOutlined } from '@ant-design/icons';
 import {
   PageContainer,
@@ -10,13 +13,37 @@ import {
   ProFormTextArea,
   StepsForm,
 } from '@ant-design/pro-components';
-import { history } from '@umijs/max';
+import { history, useParams } from '@umijs/max';
 import { Alert, message } from 'antd';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const PublishIInterfacePage: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage();
+const EditInterfacePage: React.FC = () => {
   const formRef = useRef<ProFormInstance>();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [data, setData] = useState<API.InterfaceInfoVO>({});
+  const urlParams = useParams();
+
+  // 获取接口信息
+  const loadData = async () => {
+    try {
+      const res = await getInterfaceInfoVoByIdUsingGet(urlParams);
+      if (res.code === 200) {
+        setData(res.data!);
+      } else {
+        messageApi.error('获取接口信息失败，' + res.message);
+      }
+    } catch (error) {
+      messageApi.error('获取接口信息失败，' + error);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    formRef.current?.setFieldsValue(data);
+  }, [data]);
 
   // 格式化数据 参数包含数据，名称，类型
   const formatData = (data?: any, name?: any) => {
@@ -27,8 +54,6 @@ const PublishIInterfacePage: React.FC = () => {
         if (!isNaN(item[name + 'Value'])) {
           return { [item[name + 'Name']]: Number(item[name + 'Value']) };
         }
-        // 如果字符串里为对象则转为对象
-        console.log(item[name + 'Value']);
         if (item[name + 'Value'].includes('{')) {
           item[name + 'Value'] = JSON.parse(item[name + 'Value']);
         }
@@ -37,7 +62,6 @@ const PublishIInterfacePage: React.FC = () => {
       }),
     );
   };
-
   // 获取StepsForm中所有的数据
   const handleGetFormData = async (values: any) => {
     let requestExample = {};
@@ -55,7 +79,6 @@ const PublishIInterfacePage: React.FC = () => {
     // 请求头
     if (values.requestHeader) {
       requestHeader = formatData(values.requestHeader, 'requestHeader');
-      console.log(requestHeader);
     }
     // 响应头
     if (values.responseHeader) {
@@ -71,17 +94,18 @@ const PublishIInterfacePage: React.FC = () => {
       responseExample,
       requestHeader,
       responseHeader,
+      ...urlParams,
     };
-    const res = await addInterfaceInfoUsingPost(params);
+    const res = await updateInterfaceInfoUsingPost(params);
     if (res.code === 200) {
-      messageApi.success('创建成功');
-      history.push('/interface-list/private');
+      messageApi.success('更新成功');
+      setTimeout(() => {
+        history.push('/interface-list/private');
+      }, 1000);
     } else {
-      messageApi.error('创建失败' + res.message);
+      messageApi.error('更新失败，' + res.message);
     }
-    console.log(params);
   };
-
   return (
     <>
       {contextHolder}
@@ -316,4 +340,4 @@ const PublishIInterfacePage: React.FC = () => {
     </>
   );
 };
-export default PublishIInterfacePage;
+export default EditInterfacePage;

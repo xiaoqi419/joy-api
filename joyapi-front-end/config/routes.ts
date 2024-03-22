@@ -4,26 +4,32 @@ export default [
     layout: false,
     routes: [
       { name: '登录', path: '/user/login', component: './User/Login' },
-      { name: '注册', path: '/user/register', component: './User/Register' }
-    ]
+      { name: '注册', path: '/user/register', component: './User/Register' },
+    ],
   },
   {
     path: '/interface-info/:id',
     name: '接口详情',
     component: './InterfaceInfo',
-    hideInMenu: true
+    hideInMenu: true,
+  },
+  {
+    path: '/interface-info/edit/:id',
+    name: '编辑接口',
+    component: './InterfaceInfo/edit',
+    hideInMenu: true,
   },
   {
     path: '/publish-interface',
     name: '发布接口',
     component: './PublishInterface',
-    hideInMenu: true
+    hideInMenu: true,
   },
   {
     path: '/welcome',
     name: '首页',
     icon: 'SmileTwoTone',
-    component: './Welcome'
+    component: './Welcome',
   },
   {
     path: '/interface-list',
@@ -32,21 +38,21 @@ export default [
     routes: [
       {
         path: '/interface-list',
-        redirect: '/interface-list/public'
+        redirect: '/interface-list/public',
       },
       {
         path: '/interface-list/public',
         name: '公共接口',
         icon: 'ContactsTwoTone',
-        component: './List/PublicInterfaceList'
+        component: './List/PublicInterfaceList',
       },
       {
         path: '/interface-list/private',
         name: '个人接口',
         icon: 'ProjectTwoTone',
-        component: './List/PrivateInterfaceList'
-      }
-    ]
+        component: './List/PrivateInterfaceList',
+      },
+    ],
   },
   {
     path: '/admin',
@@ -59,28 +65,28 @@ export default [
         path: '/admin/interface-list',
         name: '接口管理',
         icon: 'SnippetsTwoTone',
-        component: './Admin/InterfaceList'
+        component: './Admin/InterfaceList',
       },
       {
         path: '/admin/approved-list',
         icon: 'HighlightTwoTone',
         name: '接口审核',
-        component: './Admin/ApprovedInterfaceList'
+        component: './Admin/ApprovedInterfaceList',
       },
       {
         path: '/admin/notice-manage',
         icon: 'EditTwoTone',
         name: '公告管理',
-        component: './Admin/NoticeManage'
-      }
-    ]
+        component: './Admin/NoticeManage',
+      },
+    ],
   },
   {
     path: '/personal-setting',
     name: '个人设置',
     icon: 'SettingTwoTone',
-    component: './Setting/PersonalSettings'
+    component: './Setting/PersonalSettings',
   },
   { path: '/', redirect: '/welcome' },
-  { path: '*', layout: false, component: './404' }
-]
+  { path: '*', layout: false, component: './404' },
+];
