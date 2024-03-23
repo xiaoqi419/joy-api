@@ -2,7 +2,7 @@
   <div class="container">
     <el-menu
       :default-active="activeIndex"
-      class="el-menu-demo"
+      class="menu"
       mode="horizontal"
       :ellipsis="false"
       @select="handleSelect">
@@ -14,10 +14,9 @@
         JOY API
       </div>
       <div class="flex-grow" style="display: flex; justify-content: center; align-items: center">
-        <div>郑重承诺，旗下API永久免费</div>
       </div>
       <div class="btn">
-        <el-button :icon="Search" circle type="primary" />
+        <el-button :icon="Search" circle type="primary" style="margin-right: 20px" />
         <el-button
           v-if="buttonStore.loginBtn"
           type="primary"
@@ -64,20 +63,25 @@ const goHome = () => {
 .container {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
+  .menu {
+    height: 9vh;
+  }
+
   .logo {
     display: flex;
     align-items: center;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 20px;
+    margin-left: 50px;
   }
 
   .btn {
     justify-content: center;
     align-items: center;
     display: flex;
-    padding-right: 20px;
+    padding-right: 50px;
+
 
     .btn-login {
       font-size: 20px;

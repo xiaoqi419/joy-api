@@ -14,7 +14,7 @@ class Request {
   // Axios 的实例对象
   private axiosInstance: AxiosInstance | null = null;
 
-  constructor(defaultConfig: CreateAxiosDefaults) {
+  constructor (defaultConfig: CreateAxiosDefaults) {
     // 初始化 AxiosInstance 对象
     this.axiosInstance = axios.create(defaultConfig);
 
@@ -24,7 +24,7 @@ class Request {
   }
 
   // 请求拦截
-  private httpInterceptorsRequest() {
+  private httpInterceptorsRequest () {
     this.axiosInstance?.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         return config;
@@ -36,14 +36,22 @@ class Request {
   }
 
   // 响应拦截
-  private httpInterceptorsResponse() {
+  private httpInterceptorsResponse () {
     this.axiosInstance?.interceptors.response.use(
       (response: AxiosResponse) => {
+        if (response.data.code !== 200) {
+          ElMessage({
+            showClose: true,
+            message: `${response.data.message}`,
+            type: 'error',
+            center: true
+          });
+        }
         return response;
       },
       (err) => {
         if (err && err.response) {
-          if (err.response.status === 401) {
+          if (err.response.code === 401) {
             // TODO 无权限时的操作
           }
 
@@ -65,7 +73,7 @@ class Request {
   /**
    * get 请求
    */
-  public get<T>(url: string, params?: AxiosRequestConfig): Promise<T> {
+  public get<T> (url: string, params?: AxiosRequestConfig): Promise<T> {
     return this.axiosInstance!.get(url, params)
       .then((resp) => resp.data)
       .catch();
@@ -74,7 +82,7 @@ class Request {
   /**
    * post 请求
    */
-  public post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public post<T> (url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
     return this.axiosInstance!.post(url, data, config)
       .then((resp) => resp.data)
       .catch();
@@ -83,7 +91,7 @@ class Request {
   /**
    * delete 请求
    */
-  public remove<T>(url: string, params?: AxiosRequestConfig): Promise<T> {
+  public remove<T> (url: string, params?: AxiosRequestConfig): Promise<T> {
     return this.axiosInstance!.delete(url, params)
       .then((resp) => resp.data)
       .catch();
@@ -92,7 +100,7 @@ class Request {
   /**
    * put 请求
    */
-  public put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public put<T> (url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
     return this.axiosInstance!.put(url, data, config);
   }
 }
