@@ -5,6 +5,7 @@
   <div class="main">
     <router-view />
   </div>
+  <joy-footer />
 </template>
 
 <style lang="scss" scoped>

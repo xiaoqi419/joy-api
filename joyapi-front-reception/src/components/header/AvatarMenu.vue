@@ -5,8 +5,8 @@ import useButtonStore from '@/store/modules/button';
 import useUserStore from '@/store/modules/user';
 import { ElMessage } from 'element-plus';
 
-const avatarUrl = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png');
 const userStore = useUserStore();
+const avatarUrl = ref(userStore.userInfo ? userStore.userInfo.userAvatar : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png');
 const buttonStore = useButtonStore();
 
 const doLogout = async () => {
