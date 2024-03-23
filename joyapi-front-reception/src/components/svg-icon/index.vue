@@ -1,5 +1,5 @@
 <!--
- * @Title: index.vue
+ * @Title: NavBar.vue
  * @Description:
  * @Author: dscloudy 小云哥
  * @Date: 2022/10/3 22:10
@@ -7,20 +7,18 @@
  * 2022/10/3 22:10   dscloudy    Create File.
  -->
 <template>
-  <div v-if="isOnlineSvg"
-       :style="{ '--svg-icon-url': `url(${icon})` }"
-       class="svg-icon svg-icon-online"
-       :class="className"/>
-  <svg v-else
-       class="svg-icon"
-       :class="className"
-       aria-hidden="true">
-    <use :xlink:href="`#icon-${icon}`"/>
+  <div
+    v-if="isOnlineSvg"
+    :style="{ '--svg-icon-url': `url(${icon})` }"
+    class="svg-icon svg-icon-online"
+    :class="className" />
+  <svg v-else class="svg-icon" :class="className" aria-hidden="true">
+    <use :xlink:href="`#icon-${icon}`" />
   </svg>
 </template>
 
 <script lang="ts" setup name="svg-icon">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   // SVG 图标名称或在线URL
@@ -33,9 +31,9 @@ const props = defineProps({
     type: String,
     default: ''
   }
-})
+});
 
-const isOnlineSvg = computed(() => /^(https?:)/.test(props.icon))
+const isOnlineSvg = computed(() => /^(https?:)/.test(props.icon));
 </script>
 
 <style scoped lang="scss">

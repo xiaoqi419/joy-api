@@ -1,22 +1,26 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-const useDemoStore = defineStore('demo', () => {
-  const counter = ref(0)
+const useDemoStore = defineStore(
+  'demo',
+  () => {
+    const counter = ref(0);
 
-  const increment = () => {
-    counter.value++
+    const increment = () => {
+      counter.value++;
+    };
+
+    return {
+      counter,
+      increment
+    };
+  },
+  {
+    persist: {
+      key: 'aaa',
+      storage: sessionStorage
+    }
   }
+);
 
-  return {
-    counter,
-    increment
-  }
-}, {
-  persist: {
-    key: 'aaa',
-    storage: sessionStorage
-  }
-})
-
-export default useDemoStore
+export default useDemoStore;

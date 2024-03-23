@@ -15,26 +15,28 @@
           label-position="left"
           label-width="auto"
           :model="formLabelAlign"
-          style="max-width: 300px; margin: 0 auto"
-        >
+          style="max-width: 300px; margin: 0 auto">
           <el-form-item>
-            <el-input v-model="formLabelAlign.name" placeholder="用户名">
+            <el-input v-model="formLabelAlign.userAccount" placeholder="用户名">
               <template #prefix>
-                <el-icon><joy-svg-icon icon="user" /></el-icon>
+                <el-icon>
+                  <joy-svg-icon icon="user" />
+                </el-icon>
               </template>
             </el-input>
           </el-form-item>
           <el-form-item>
             <el-input
-              v-model="formLabelAlign.region"
+              v-model="formLabelAlign.userPassword"
               @focus="isPassword = true"
               @blur="isPassword = false"
               placeholder="密码"
               type="password"
-              show-password
-            >
+              show-password>
               <template #prefix>
-                <el-icon><joy-svg-icon icon="password" /></el-icon>
+                <el-icon>
+                  <joy-svg-icon icon="password" />
+                </el-icon>
               </template>
             </el-input>
           </el-form-item>
@@ -50,10 +52,10 @@
         </el-form>
         <!-- 登录 -->
         <div>
-          <button>
+          <button @click="doLogin()">
             <span class="shadow"></span>
             <span class="edge"></span>
-            <span class="front text"> 登录 </span>
+            <span class="front text">登录</span>
           </button>
         </div>
       </div>
@@ -62,25 +64,29 @@
 </template>
 
 <script lang="ts" setup name="modal-user">
-import useModalStore from '@/store/modules/modal'
-import { storeToRefs } from 'pinia'
-import { reactive, ref, watch } from 'vue'
-import '@/assets/scss/userModal.scss'
+import useModalStore from '@/store/modules/modal';
+import { storeToRefs } from 'pinia';
+import { reactive, ref, watch } from 'vue';
+import '@/assets/scss/userModal.scss';
+import { API } from '@/api/typings';
+import { loginUserUsePost } from '@/api/userController';
+import useUserStore from '@/store/modules/user';
 
-const modalStore = storeToRefs(useModalStore())
-const dialogVisible = modalStore.userModal
-const isPassword = ref(false)
+const modalStore = storeToRefs(useModalStore());
+const userStore = useUserStore();
+const dialogVisible = modalStore.userModal;
+const isPassword = ref(false);
 // 模态框宽度
-const dialogWidth = ref(500)
+const dialogWidth = ref(500);
 
 // 监视浏览器宽度变化调整合适的模态框宽度
 watch(
   () => window.innerWidth,
-  newValue => {
+  (newValue) => {
     if (newValue > 500) {
-      dialogWidth.value = 500
+      dialogWidth.value = 500;
     } else {
-      dialogWidth.value = newValue
+      dialogWidth.value = newValue;
     }
   },
   {
@@ -88,23 +94,30 @@ watch(
     flush: 'post',
     deep: true
   }
-)
+);
 
-const formLabelAlign = reactive({
-  name: '',
-  region: '',
-  type: ''
-})
+const formLabelAlign = reactive<API.UserLoginRequest>({});
+
+// 登录
+const doLogin = async () => {
+  const res = await loginUserUsePost(formLabelAlign);
+  if (res.code === 200) {
+    modalStore.userModal.value = false;
+    userStore.setUserInfo(res.data!);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 .box-main {
   margin: 0 auto;
   text-align: center;
+
   h1 {
     text-align: center;
     margin-bottom: 20px;
   }
+
   .btn-box {
     display: flex;
     justify-content: space-between;

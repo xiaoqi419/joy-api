@@ -1,4 +1,10 @@
-import { defineConfig, presetUno, presetAttributify, presetIcons, transformerDirectives } from 'unocss'
+import {
+  defineConfig,
+  presetUno,
+  presetAttributify,
+  presetIcons,
+  transformerDirectives
+} from 'unocss';
 
 export default defineConfig({
   rules: [
@@ -14,7 +20,5 @@ export default defineConfig({
       }
     })
   ],
-  transformers: [
-    transformerDirectives()
-  ]
-})
+  transformers: [transformerDirectives()]
+});
