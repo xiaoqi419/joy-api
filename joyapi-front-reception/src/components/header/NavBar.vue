@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="nav-bar-container">
     <el-menu
       :default-active="activeIndex"
       class="menu"
@@ -60,8 +60,9 @@ const goHome = () => {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.nav-bar-container {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  width: 100%;
 
   .menu {
     height: 9vh;
