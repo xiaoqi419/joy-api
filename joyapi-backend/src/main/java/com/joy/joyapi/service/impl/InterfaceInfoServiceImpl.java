@@ -4,29 +4,40 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.gson.Gson;
 import com.joy.joyapi.common.ErrorCode;
 import com.joy.joyapi.exception.BusinessException;
+import com.joy.joyapi.exception.ThrowUtils;
 import com.joy.joyapi.mapper.InterfaceInfoMapper;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoAuditRequest;
+import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.joy.joyapi.model.entity.InterfaceInfo;
+import com.joy.joyapi.model.entity.User;
 import com.joy.joyapi.model.enums.InterfaceInfoStatusEnum;
 import com.joy.joyapi.model.vo.InterfaceInfoVO;
 import com.joy.joyapi.service.InterfaceInfoService;
+import com.joy.joyapi.service.UserService;
+import com.joy.joyapiclientsdk.client.JoyApiClient;
+import com.joy.joyapiclientsdk.model.dto.virtualuserinterface.VirtualUserInterfaceQueryRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * @author 26504
+ * @author Jason
  * @description 针对表【interface_info(接口)】的数据库操作Service实现
  * @createDate 2024-02-20 19:26:07
  */
 @Service
 public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
         implements InterfaceInfoService {
+
+    @Resource
+    private UserService userService;
 
 
     @Override
@@ -159,6 +170,26 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
             }
         }
         return true;
+    }
+
+    @Override
+    public Object invokeInterfaceInfo(InterfaceInfoInvokeRequest interfaceInfoInvokeRequest, HttpServletRequest request) {
+        long id = interfaceInfoInvokeRequest.getId();
+        String requestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+        // 判断接口是否存在
+        InterfaceInfo interfaceInfo = this.getById(id);
+        ThrowUtils.throwIf(interfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+        // 判断接口是否已通过审核
+        ThrowUtils.throwIf(!interfaceInfo.getStatus().equals(InterfaceInfoStatusEnum.ONLINE.getCode()),
+                ErrorCode.FORBIDDEN_ERROR);
+        User user = userService.getLoginUser(request);
+        String accessKey = user.getAccessKey();
+        String secretKey = user.getSecretKey();
+        Gson gson = new Gson();
+        VirtualUserInterfaceQueryRequest virtualUserInterfaceQueryRequest = gson.fromJson(requestParams, VirtualUserInterfaceQueryRequest.class);
+        // TODO 测试调用
+        JoyApiClient joyApiClient = new JoyApiClient(accessKey, secretKey);
+        return joyApiClient.getVirtualUser(virtualUserInterfaceQueryRequest);
     }
 }
 

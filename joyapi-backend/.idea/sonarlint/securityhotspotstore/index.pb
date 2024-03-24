@@ -228,3 +228,7 @@ u
 Esrc/main/java/com/joy/joyapi/model/enums/InterfaceInfoStatusEnum.java,a\e\aed4fbc9b36dca8b03a81042eb2f3395662bf9c7
 z
 Jsrc/main/java/com/joy/joyapi/model/dto/user/UserUpdatePasswordRequest.java,d\5\d5710f6079325cbca4d37a4257ec8ae211e1b13f
+„
+Tsrc/main/java/com/joy/joyapi/model/dto/interfaceinfo/InterfaceInfoInvokeRequest.java,8\5\8521e8f7dcd08c4a723964de6ab9471683825308
+e
+5src/main/java/com/joy/joyapi/client/JoyApiClient.java,8\b\8b0a2f6425bd9de998a1b65500957394c61ae799

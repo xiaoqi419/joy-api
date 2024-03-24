@@ -5,7 +5,7 @@
   </el-footer>
 </template>
 
-<script lang="ts" setup name="footer">
+<script lang="ts" setup name="foot">
 import { ElFooter } from 'element-plus';
 </script>
 
@@ -22,4 +22,3 @@ import { ElFooter } from 'element-plus';
   height: 30vh;
 }
 </style>
-

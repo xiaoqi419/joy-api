@@ -14,6 +14,7 @@
         JOY API
       </div>
       <div class="flex-grow" style="display: flex; justify-content: center; align-items: center">
+        <joy-tip-menu />
       </div>
       <div class="btn">
         <el-button :icon="Search" circle type="primary" style="margin-right: 20px" />
@@ -82,7 +83,6 @@ const goHome = () => {
     align-items: center;
     display: flex;
     padding-right: 50px;
-
 
     .btn-login {
       font-size: 20px;

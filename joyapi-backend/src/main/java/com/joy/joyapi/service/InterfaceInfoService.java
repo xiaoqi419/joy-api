@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoAuditRequest;
+import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.joy.joyapi.model.entity.InterfaceInfo;
 import com.joy.joyapi.model.vo.InterfaceInfoVO;
@@ -66,4 +67,14 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
      * @return 是否成功
      */
     boolean auditInterfaceInfo(InterfaceInfoAuditRequest interfaceInfoAuditRequest);
+
+    /**
+     * 测试调用接口
+     *
+     * @param interfaceInfoInvokeRequest 调用请求
+     * @param request                    请求
+     * @return 是否成功
+     */
+    Object invokeInterfaceInfo(InterfaceInfoInvokeRequest interfaceInfoInvokeRequest, HttpServletRequest request);
+
 }

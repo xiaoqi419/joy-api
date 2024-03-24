@@ -9,10 +9,7 @@ import com.joy.joyapi.common.ResultUtils;
 import com.joy.joyapi.constant.UserConstant;
 import com.joy.joyapi.exception.BusinessException;
 import com.joy.joyapi.exception.ThrowUtils;
-import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoAddRequest;
-import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoAuditRequest;
-import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.joy.joyapi.model.dto.interfaceinfo.*;
 import com.joy.joyapi.model.entity.InterfaceInfo;
 import com.joy.joyapi.model.entity.User;
 import com.joy.joyapi.model.enums.InterfaceInfoStatusEnum;
@@ -251,6 +248,9 @@ public class InterfaceInfoController {
 
     /**
      * 审核接口
+     *
+     * @param interfaceInfoAuditRequest 审核请求
+     * @return 是否成功
      */
     @PostMapping("/audit")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
@@ -261,6 +261,23 @@ public class InterfaceInfoController {
         }
         boolean result = interfaceInfoService.auditInterfaceInfo(interfaceInfoAuditRequest);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 测试调用接口
+     *
+     * @param interfaceInfoInvokeRequest 调用请求
+     * @param request                    请求
+     * @return 是否成功
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterface(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest, HttpServletRequest request) {
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Object info = interfaceInfoService.invokeInterfaceInfo(interfaceInfoInvokeRequest, request);
+
+        return ResultUtils.success(info);
     }
 
 
