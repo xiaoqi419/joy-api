@@ -3,7 +3,6 @@ package com.joy.joyapiinterface.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.joy.joyapiclientsdk.utils.RedisUtil;
 import com.joy.joyapiclientsdk.utils.SignUtil;
 import com.joy.joyapiinterface.common.ErrorCode;
 import com.joy.joyapiinterface.exception.BusinessException;
@@ -13,6 +12,7 @@ import com.joy.joyapiinterface.model.entity.User;
 import com.joy.joyapiinterface.model.entity.VirtualUserInterface;
 import com.joy.joyapiinterface.service.UserService;
 import com.joy.joyapiinterface.service.VirtualUserInterfaceService;
+import com.joy.joyapiinterface.utils.RedisUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

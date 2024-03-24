@@ -1,5 +1,5 @@
-/* eslint-disable */
 // @ts-ignore
+/* eslint-disable */
 import { request } from '@umijs/max';
 
 /** 查看用户AccessKey GET /api/user/accessKey */

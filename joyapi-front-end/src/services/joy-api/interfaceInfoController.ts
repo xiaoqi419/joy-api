@@ -62,6 +62,21 @@ export async function getInterfaceInfoVoByIdUsingGet(
   });
 }
 
+/** invokeInterface POST /api/InterfaceInfo/invoke */
+export async function invokeInterfaceUsingPost(
+  body: API.InterfaceInfoInvokeRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseObject_>('/api/InterfaceInfo/invoke', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 分页获取接口列表（仅管理员） 分页获取接口信息列表 POST /api/InterfaceInfo/list/page */
 export async function listInterfaceInfoByPageUsingPost(
   body: API.InterfaceInfoQueryRequest,

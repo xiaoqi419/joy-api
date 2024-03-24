@@ -1,16 +1,23 @@
 import VanillaJSONEditor from '@/components/JsonEditor/JsonEditor';
-import { getInterfaceInfoVoByIdUsingGet } from '@/services/joy-api/interfaceInfoController';
+import {
+  getInterfaceInfoVoByIdUsingGet,
+  invokeInterfaceUsingPost,
+} from '@/services/joy-api/interfaceInfoController';
+import { LoadingOutlined } from '@ant-design/icons';
 import { EditableProTable, PageContainer, ProColumns, ProField } from '@ant-design/pro-components';
 import { useParams } from '@umijs/max';
 import {
   Badge,
   Button,
   Card,
+  Col,
   Descriptions,
   DescriptionsProps,
   Form,
   message,
+  Row,
   Skeleton,
+  Spin,
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
@@ -28,7 +35,18 @@ const InterfaceInfoPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<API.InterfaceInfoVO>({});
   const [messageApi, contextHolder] = message.useMessage();
-
+  const [dataSource, setDataSource] = useState<readonly DataSourceType[]>([
+    {
+      id: 1,
+      paramName: '',
+      paramValue: '',
+    },
+  ]);
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1]);
+  const [invokeData, setInvokeData] = useState<object>({});
+  const [invokeParams, setInvokeParams] = useState<any>({});
+  const [invokeResult, setInvokeResult] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(true);
   const param = useParams();
 
   const loadData = async () => {
@@ -142,7 +160,7 @@ const InterfaceInfoPage: React.FC = () => {
       const rect = element.getBoundingClientRect();
       const elementHeight = rect.height;
       const elementTop = rect.top + window.scrollY;
-      const scrollPosition = elementTop - elementHeight;
+      const scrollPosition = elementTop - elementHeight + 200;
       window.scrollTo({
         top: scrollPosition,
         behavior: 'smooth',
@@ -180,17 +198,58 @@ const InterfaceInfoPage: React.FC = () => {
     },
   ];
 
-  const [dataSource, setDataSource] = useState<readonly DataSourceType[]>([
-    {
-      id: 1,
-      paramName: '',
-      paramValue: '',
-    },
-  ]);
-  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1]);
-  const [invokeData, setInvokeData] = useState<object>({});
-  const onFinish = () => {
-    console.log('Success:', invokeData);
+  const onFinish = async () => {
+    if (!data.id) {
+      messageApi.error('接口不存在');
+      return;
+    }
+    if (data.method === 'GET') {
+      // GET请求
+      setIsLoading(true);
+      const res = await invokeInterfaceUsingPost({
+        id: data.id,
+        userRequestParams: JSON.stringify(invokeData),
+      });
+      if (res.code === 200) {
+        setInvokeResult(res.data);
+        setIsLoading(false);
+      } else {
+        setInvokeResult(res.data);
+        messageApi.error('请检查参数后重试！');
+        setIsLoading(false);
+      }
+    } else {
+      // POST请求
+      setIsLoading(true);
+      // 如果invokeParams是空对象，则转换为JSON
+      if (Object.keys(invokeParams).length === 0) {
+        const res = await invokeInterfaceUsingPost({
+          id: data.id,
+          userRequestParams: JSON.stringify(invokeParams),
+        });
+        if (res.code === 200) {
+          setInvokeResult(res.data);
+          setIsLoading(false);
+        } else {
+          setInvokeResult(res.data);
+          messageApi.error('请检查参数后重试！');
+          setIsLoading(false);
+        }
+      } else {
+        const res = await invokeInterfaceUsingPost({
+          id: data.id,
+          userRequestParams: invokeParams,
+        });
+        if (res.code === 200) {
+          setInvokeResult(res.data);
+          setIsLoading(false);
+        } else {
+          setInvokeResult(res.data);
+          messageApi.error('请检查参数后重试！');
+          setIsLoading(false);
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -198,7 +257,7 @@ const InterfaceInfoPage: React.FC = () => {
     if (content.text) {
       // @ts-ignore
       const newJson = content.text.replace(/[\n\s]/g, '');
-      console.log(newJson);
+      setInvokeParams(newJson);
     }
   }, [content]);
 
@@ -292,6 +351,38 @@ const InterfaceInfoPage: React.FC = () => {
             </Form.Item>
           </Form>
         </Card>
+        <div style={{ marginTop: '20px' }}>
+          {!isLoading ? (
+            <Card title="调试结果">
+              <VanillaJSONEditor
+                mainMenuBar={false}
+                mode={'view'}
+                readOnly={true}
+                content={{
+                  json: invokeResult,
+                  text: JSON.stringify(invokeResult, null, 2),
+                }}
+              />
+            </Card>
+          ) : (
+            <Card title="调试结果">
+              <div
+                style={{
+                  fontSize: '20px',
+                  color: '#1890ff',
+                  textAlign: 'center',
+                }}
+              >
+                <Row style={{ marginBottom: '20px' }}>
+                  <Col span={24}>
+                    <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />
+                  </Col>
+                </Row>
+                <span>请点击调试按钮...</span>
+              </div>
+            </Card>
+          )}
+        </div>
       </PageContainer>
     </>
   );
