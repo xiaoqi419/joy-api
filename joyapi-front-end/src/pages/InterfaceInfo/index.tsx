@@ -13,6 +13,7 @@ import {
   Col,
   Descriptions,
   DescriptionsProps,
+  Divider,
   Form,
   message,
   Row,
@@ -295,12 +296,8 @@ const InterfaceInfoPage: React.FC = () => {
             )}
           </Skeleton>
         </Card>
-        <Card
-          ref={invokeRef}
-          style={{
-            marginTop: '20px',
-          }}
-        >
+        <Divider />
+        <Card ref={invokeRef}>
           <Form name="invoke" onFinish={onFinish} layout="vertical">
             <Form.Item label={'请求参数'} name="userRequestParams">
               {data.method === 'GET' ? (
@@ -351,36 +348,42 @@ const InterfaceInfoPage: React.FC = () => {
             </Form.Item>
           </Form>
         </Card>
-        <div style={{ marginTop: '20px' }}>
+        <div>
           {!isLoading ? (
-            <Card title="调试结果">
-              <VanillaJSONEditor
-                mainMenuBar={false}
-                mode={'view'}
-                readOnly={true}
-                content={{
-                  json: invokeResult,
-                  text: JSON.stringify(invokeResult, null, 2),
-                }}
-              />
-            </Card>
+            <>
+              <Divider />
+              <Card title="调试结果">
+                <VanillaJSONEditor
+                  mainMenuBar={false}
+                  mode={'view'}
+                  readOnly={true}
+                  content={{
+                    json: invokeResult,
+                    text: JSON.stringify(invokeResult, null, 2),
+                  }}
+                />
+              </Card>
+            </>
           ) : (
-            <Card title="调试结果">
-              <div
-                style={{
-                  fontSize: '20px',
-                  color: '#1890ff',
-                  textAlign: 'center',
-                }}
-              >
-                <Row style={{ marginBottom: '20px' }}>
-                  <Col span={24}>
-                    <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />
-                  </Col>
-                </Row>
-                <span>请点击调试按钮...</span>
-              </div>
-            </Card>
+            <>
+              <Divider />
+              <Card title="调试结果">
+                <div
+                  style={{
+                    fontSize: '20px',
+                    color: '#1890ff',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Spin indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />} />
+                    </Col>
+                  </Row>
+                  <span>请点击调试按钮...</span>
+                </div>
+              </Card>
+            </>
           )}
         </div>
       </PageContainer>
