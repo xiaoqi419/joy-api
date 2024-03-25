@@ -297,9 +297,9 @@ const InterfaceInfoPage: React.FC = () => {
           </Skeleton>
         </Card>
         <Divider />
-        <Card ref={invokeRef}>
+        <Card ref={invokeRef} title={'请求参数'}>
           <Form name="invoke" onFinish={onFinish} layout="vertical">
-            <Form.Item label={'请求参数'} name="userRequestParams">
+            <Form.Item name="userRequestParams">
               {data.method === 'GET' ? (
                 <>
                   <EditableProTable<DataSourceType>
