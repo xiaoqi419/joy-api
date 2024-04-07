@@ -40,4 +40,14 @@ public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
      * @return 查询条件
      */
     Wrapper<UserInterfaceInfo> getQueryWrapper(UserInterfaceInfoQueryRequest userInterfaceInfoQueryRequest);
+
+    /**
+     * 统计调用次数
+     *
+     * @param interfaceInfoId 调用接口id
+     * @param userId          用户id
+     * @return boolean true or false
+     */
+    boolean invokeCount(long interfaceInfoId, long userId);
+
 }

@@ -1,11 +1,13 @@
 package com.joy.joyapi.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joy.joyapi.common.BaseResponse;
 import com.joy.joyapi.common.ErrorCode;
 import com.joy.joyapi.common.ResultUtils;
 import com.joy.joyapi.exception.BusinessException;
+import com.joy.joyapi.exception.ThrowUtils;
 import com.joy.joyapi.mapper.UserInterfaceInfoMapper;
 import com.joy.joyapi.model.dto.userinterfaceinfo.UserInterfaceInfoQueryRequest;
 import com.joy.joyapi.model.entity.User;
@@ -13,6 +15,7 @@ import com.joy.joyapi.model.entity.UserInterfaceInfo;
 import com.joy.joyapi.service.UserInterfaceInfoService;
 import com.joy.joyapi.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +82,20 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
             queryWrapper.eq("status", userInterfaceInfoQueryRequest.getStatus());
         }
         return queryWrapper;
+    }
+
+    @Override
+    @Transactional
+    public boolean invokeCount(long interfaceInfoId, long userId) {
+        // 校验
+        ThrowUtils.throwIf(interfaceInfoId <= 0 || userId <= 0, ErrorCode.PARAMS_ERROR);
+        UpdateWrapper<UserInterfaceInfo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("interface_id", interfaceInfoId);
+        updateWrapper.eq("user_id", userId);
+        updateWrapper.setSql("total_num = total_num + 1");
+        boolean result = update(null, updateWrapper);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        return true;
     }
 }
 
