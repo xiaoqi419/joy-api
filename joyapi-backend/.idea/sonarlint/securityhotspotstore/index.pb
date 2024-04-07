@@ -246,3 +246,5 @@ Ysrc/main/java/com/joy/joyapi/model/dto/userinterfaceinfo/UserInterfaceInfoAddRe
 [src/main/java/com/joy/joyapi/model/dto/userinterfaceinfo/UserInterfaceInfoQueryRequest.java,f\6\f6b8433560c9b96a7605fc6527cbf7253ae40fd6
 p
 @src/main/java/com/joy/joyapi/model/entity/UserInterfaceInfo.java,a\8\a852ad5d8af734afea3193fb80f698bcce06ba21
+x
+Hsrc/main/java/com/joy/joyapi/controller/UserInterfaceInfoController.java,4\a\4a9f15597c9723ee49856e15a767ff7625cc7c45

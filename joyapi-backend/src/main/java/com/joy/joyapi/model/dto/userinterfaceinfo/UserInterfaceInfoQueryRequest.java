@@ -1,8 +1,8 @@
 package com.joy.joyapi.model.dto.userinterfaceinfo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.joy.joyapi.common.PageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -11,14 +11,19 @@ import java.io.Serializable;
  *
  * @author Jason
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class UserInterfaceInfoQueryRequest implements Serializable {
+public class UserInterfaceInfoQueryRequest extends PageRequest implements Serializable {
 
     /**
      * id
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 接口id
+     */
+    private Long interfaceId;
 
     /**
      * 调用用户 id

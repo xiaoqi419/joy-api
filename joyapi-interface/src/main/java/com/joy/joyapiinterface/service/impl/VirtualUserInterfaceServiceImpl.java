@@ -66,7 +66,7 @@ public class VirtualUserInterfaceServiceImpl extends ServiceImpl<VirtualUserInte
                 throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "请勿重复请求");
             }
             // 生成一个随机数存储到redis中
-            redisUtil.set(API_NAME + VIRTUAL_USER + RANDOM, nonce, 5);
+            redisUtil.set(API_NAME + VIRTUAL_USER + RANDOM, nonce, 2);
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "请勿重复请求");
         } finally {
