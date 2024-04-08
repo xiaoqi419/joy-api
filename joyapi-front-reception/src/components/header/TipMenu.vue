@@ -1,7 +1,7 @@
 <script setup lang="ts" name="tip-menu">
 import { ref } from 'vue';
 
-const tipStr = 'Joy Api - 永不收费';
+const tipStr = 'JOY API - 永不收费';
 const disabled = ref(false);
 </script>
 
@@ -40,5 +40,12 @@ const disabled = ref(false);
 
 .el-dropdown-link:focus {
   outline: none;
+}
+
+// 低分辨率下隐藏
+@media screen and (max-width: 768px) {
+  .tip-title {
+    display: none;
+  }
 }
 </style>

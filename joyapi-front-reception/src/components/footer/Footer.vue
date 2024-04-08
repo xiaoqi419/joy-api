@@ -13,12 +13,10 @@ import { ElFooter } from 'element-plus';
 .footer {
   text-align: center;
   padding: 20px 0;
-  background-color: #f5f5f5;
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #666;
   height: 30vh;
 }
 </style>

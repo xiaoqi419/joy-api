@@ -17,7 +17,6 @@
         <joy-tip-menu />
       </div>
       <div class="btn">
-        <el-button :icon="Search" circle type="primary" style="margin-right: 20px" />
         <el-button
           v-if="buttonStore.loginBtn"
           type="primary"
@@ -29,6 +28,21 @@
         <!--用户登录后的菜单组件-->
         <joy-avatar-menu v-else />
       </div>
+      <!--低分辨率菜单-->
+      <div class="mobile-menu">
+        <joy-svg-icon v-if="!mobileMenu" icon="menu" class="icon-menu" @click="mobileMenu = true" />
+        <joy-svg-icon v-else icon="menu-open" class="icon-menu" />
+        <el-drawer v-model="mobileMenu" :show-close="false" size="60%">
+          <el-button
+            v-if="buttonStore.loginBtn"
+            type="primary"
+            text
+            class="btn-login"
+            @click="doLogin()">
+            登录
+          </el-button>
+        </el-drawer>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -36,7 +50,6 @@
 <script lang="ts" setup name="top-header">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { Search } from '@element-plus/icons-vue';
 import useModalStore from '@/store/modules/modal';
 import useButtonStore from '@/store/modules/button';
 
@@ -58,6 +71,9 @@ const router = useRouter();
 const goHome = () => {
   router.push('/');
 };
+
+// 低分辨率菜单
+const mobileMenu = ref(false);
 </script>
 
 <style lang="scss" scoped>
@@ -100,6 +116,31 @@ const goHome = () => {
         margin-left: 10px;
         margin-right: 10px;
       }
+    }
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  // 低分辨率
+  @media screen and (max-width: 768px) {
+    .logo {
+      margin-left: 0;
+    }
+    .btn {
+      display: none;
+    }
+    .icon-menu {
+      display: block;
+      font-size: 29px;
+      margin-left: 5px;
+    }
+    .mobile-menu {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
     }
   }
 }
