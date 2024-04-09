@@ -236,8 +236,6 @@ r
 Bsrc/main/java/com/joy/joyapi/service/UserInterfaceInfoService.java,3\e\3ec4391586cac0f818904b8c6622597a90d8b156
 p
 @src/main/java/com/joy/joyapi/mapper/UserInterfaceInfoMapper.java,4\e\4e8744d9d80c5d5a02709c10c96dbad4ff6a971a
-n
->src/main/java/com/joy/joyapi/controller/UserInterfaceInfo.java,6\d\6dfedfaa26a2cc8db83d88277a03ac5378e0e10f
 ‰
 Ysrc/main/java/com/joy/joyapi/model/dto/userinterfaceinfo/UserInterfaceInfoAddRequest.java,2\7\27a35e6179978ec18588b40049770f85d230895b
 Œ
