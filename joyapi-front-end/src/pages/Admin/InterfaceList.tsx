@@ -3,7 +3,7 @@ import {
   listInterfaceInfoByPageUsingPost,
   updateInterfaceInfoUsingPost,
 } from '@/services/joy-api/interfaceInfoController';
-import { MoreOutlined, SmileOutlined, createFromIconfontCN } from '@ant-design/icons';
+import { createFromIconfontCN, MoreOutlined, SmileOutlined } from '@ant-design/icons';
 import {
   PageContainer,
   ProCard,
@@ -25,6 +25,7 @@ import {
   Form,
   Input,
   MenuProps,
+  message,
   Modal,
   Pagination,
   Popconfirm,
@@ -33,7 +34,6 @@ import {
   Space,
   Spin,
   Typography,
-  message,
 } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -50,7 +50,7 @@ interface Page {
 const Admin: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   // 分页数据
-  let pageParm: Page = {
+  let pageParam: Page = {
     current: 1,
     pageSize: 12,
   };
@@ -62,7 +62,7 @@ const Admin: React.FC = () => {
   // 获取接口列表
   const getInterfaceList = async () => {
     const param = {
-      ...pageParm,
+      ...pageParam,
     };
 
     const res = await listInterfaceInfoByPageUsingPost(param);
@@ -73,8 +73,8 @@ const Admin: React.FC = () => {
   };
 
   const onPageChange = (page: number, pageSize?: number) => {
-    pageParm.current = page;
-    pageParm.pageSize = pageSize || 10;
+    pageParam.current = page;
+    pageParam.pageSize = pageSize || 10;
     getInterfaceList();
   };
 
@@ -104,7 +104,7 @@ const Admin: React.FC = () => {
             });
             setManageModalVisible(false);
             // 刷新
-            getInterfaceList();
+            await getInterfaceList();
           } else {
             messageApi.open({
               type: 'error',
@@ -303,7 +303,7 @@ const Admin: React.FC = () => {
         type: 'success',
         content: '删除成功',
       });
-      getInterfaceList();
+      await getInterfaceList();
     } else {
       messageApi.open({
         type: 'error',
@@ -344,7 +344,7 @@ const Admin: React.FC = () => {
     console.log('Success:', values);
     const res = await listInterfaceInfoByPageUsingPost({
       ...values,
-      ...pageParm,
+      ...pageParam,
     });
     if (res.code === 200) {
       setInterfaceList(res.data?.records || []);
@@ -486,7 +486,13 @@ const Admin: React.FC = () => {
               marginTop: '20px',
             }}
           >
-            <Flex vertical={false} align={'center'} wrap="wrap" gap="middle">
+            <Flex
+              vertical={false}
+              align={'center'}
+              wrap="wrap"
+              gap="middle"
+              justify={'space-between'}
+            >
               {/* 如果interfaceList有值显示列表，否则显示加载组件 */}
 
               {interfaceList ? (
@@ -504,7 +510,7 @@ const Admin: React.FC = () => {
                         </span>
                       }
                       style={{
-                        maxWidth: 270,
+                        maxWidth: 280,
                       }}
                       hoverable
                       bordered
@@ -556,7 +562,7 @@ const Admin: React.FC = () => {
                         >
                           接口介绍：
                         </span>
-                        <Paragraph ellipsis={true ? { rows: 4 } : false}>
+                        <Paragraph ellipsis={{ rows: 4 }}>
                           <span
                             style={{
                               color: '#999999',
@@ -585,7 +591,7 @@ const Admin: React.FC = () => {
           {interfaceList.length > 0 && (
             <Pagination
               simple
-              pageSize={pageParm.pageSize}
+              pageSize={pageParam.pageSize}
               defaultCurrent={1}
               total={total}
               onChange={onPageChange}
