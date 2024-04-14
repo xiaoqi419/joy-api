@@ -246,3 +246,9 @@ p
 @src/main/java/com/joy/joyapi/model/entity/UserInterfaceInfo.java,a\8\a852ad5d8af734afea3193fb80f698bcce06ba21
 x
 Hsrc/main/java/com/joy/joyapi/controller/UserInterfaceInfoController.java,4\a\4a9f15597c9723ee49856e15a767ff7625cc7c45
+v
+Fsrc/test/java/com/joy/joyapi/service/UserInterfaceInfoServiceTest.java,e\f\ef78ff628de37fb19ddaa52648480fc9c113dad7
+]
+-.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
+S
+#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0

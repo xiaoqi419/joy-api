@@ -89,7 +89,7 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
         // 校验
         ThrowUtils.throwIf(interfaceInfoId <= 0 || userId <= 0, ErrorCode.PARAMS_ERROR);
         UpdateWrapper<UserInterfaceInfo> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("interface_id", interfaceInfoId);
+        updateWrapper.eq("` interface_id`", interfaceInfoId);
         updateWrapper.eq("user_id", userId);
         updateWrapper.setSql("total_num = total_num + 1");
         boolean result = update(null, updateWrapper);

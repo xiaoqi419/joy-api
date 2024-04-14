@@ -204,11 +204,10 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
             UserInterfaceInfo userInterfaceInfo = new UserInterfaceInfo();
             userInterfaceInfo.setInterfaceId(interfaceInfo.getId());
             userInterfaceInfoService.addUserInterfaceInfo(userInterfaceInfo, request);
-            boolean invoked = userInterfaceInfoService.invokeCount(interfaceInfo.getId(), user.getId());
-            ThrowUtils.throwIf(!invoked, ErrorCode.INTERNAL_SERVER_ERROR);
+            userInterfaceInfoService.invokeCount(interfaceInfo.getId(), user.getId());
+
         }
-        boolean invoked = userInterfaceInfoService.invokeCount(interfaceInfo.getId(), user.getId());
-        ThrowUtils.throwIf(!invoked, ErrorCode.INTERNAL_SERVER_ERROR);
+        userInterfaceInfoService.invokeCount(interfaceInfo.getId(), user.getId());
 
         return joyApiClient.getVirtualUser(virtualUserInterfaceQueryRequest);
     }
