@@ -12,11 +12,14 @@ import com.joy.joyapi.mapper.InterfaceInfoMapper;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoAuditRequest;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.joy.joyapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
+import com.joy.joyapi.model.dto.userinterfaceinfo.UserInterfaceInfoQueryRequest;
 import com.joy.joyapi.model.entity.InterfaceInfo;
 import com.joy.joyapi.model.entity.User;
+import com.joy.joyapi.model.entity.UserInterfaceInfo;
 import com.joy.joyapi.model.enums.InterfaceInfoStatusEnum;
 import com.joy.joyapi.model.vo.InterfaceInfoVO;
 import com.joy.joyapi.service.InterfaceInfoService;
+import com.joy.joyapi.service.UserInterfaceInfoService;
 import com.joy.joyapi.service.UserService;
 import com.joy.joyapiclientsdk.client.JoyApiClient;
 import com.joy.joyapiclientsdk.model.dto.virtualuserinterface.VirtualUserInterfaceQueryRequest;
@@ -38,6 +41,8 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
 
     @Resource
     private UserService userService;
+    @Resource
+    private UserInterfaceInfoService userInterfaceInfoService;
 
 
     @Override
@@ -189,6 +194,22 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         VirtualUserInterfaceQueryRequest virtualUserInterfaceQueryRequest = gson.fromJson(requestParams, VirtualUserInterfaceQueryRequest.class);
         // TODO 测试调用
         JoyApiClient joyApiClient = new JoyApiClient(accessKey, secretKey);
+        // 调用接口成功后在接口统计中判断是否有该用户该接口的调用统计
+        UserInterfaceInfoQueryRequest userInterfaceInfoQueryRequest = new UserInterfaceInfoQueryRequest();
+        userInterfaceInfoQueryRequest.setUserId(user.getId());
+        Wrapper<UserInterfaceInfo> queryWrapper = userInterfaceInfoService.getQueryWrapper(userInterfaceInfoQueryRequest);
+        UserInterfaceInfo info = userInterfaceInfoService.getOne(queryWrapper);
+        if (info == null) {
+            // 如果没有则添加
+            UserInterfaceInfo userInterfaceInfo = new UserInterfaceInfo();
+            userInterfaceInfo.setInterfaceId(interfaceInfo.getId());
+            userInterfaceInfoService.addUserInterfaceInfo(userInterfaceInfo, request);
+            boolean invoked = userInterfaceInfoService.invokeCount(interfaceInfo.getId(), user.getId());
+            ThrowUtils.throwIf(!invoked, ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        boolean invoked = userInterfaceInfoService.invokeCount(interfaceInfo.getId(), user.getId());
+        ThrowUtils.throwIf(!invoked, ErrorCode.INTERNAL_SERVER_ERROR);
+
         return joyApiClient.getVirtualUser(virtualUserInterfaceQueryRequest);
     }
 }

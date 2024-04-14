@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class InterfaceInfoInvokeRequest implements Serializable {
 
     /**
-     * id
+     * 接口id
      */
     private Long id;
 
