@@ -1,8 +1,15 @@
 <script setup lang="ts" name="tip-menu">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const tipStr = 'JOY API - 永不收费';
 const disabled = ref(false);
+const router = useRouter();
+
+// 网站公告跳转
+const goNotice = () => {
+  router.push('/notice');
+};
 </script>
 
 <template>
@@ -11,7 +18,7 @@ const disabled = ref(false);
       <span class="tip-title">{{ tipStr }}</span>
       <template #content>
         <div class="tip-content">
-          <el-button plain>网站公告</el-button>
+          <el-button plain @click="goNotice">网站公告</el-button>
           <el-button plain>开源项目</el-button>
           <el-button plain>友链</el-button>
         </div>

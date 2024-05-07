@@ -80,6 +80,10 @@ const mobileMenu = ref(false);
 .nav-bar-container {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 
   .menu {
     height: 9vh;

@@ -3,9 +3,7 @@
     <joy-top-header />
   </div>
   <div class="app">
-    <div class="main">
-      <router-view />
-    </div>
+    <router-view />
     <!-- 底部 -->
     <joy-foot />
   </div>
@@ -16,7 +14,7 @@
 <style lang="scss" scoped>
 .app {
   height: 100vh;
-  padding: 0 80px;
+  padding: 100px 80px;
 }
 
 .nav-bar {
@@ -25,14 +23,10 @@
   width: 100%;
 }
 
-.main {
-  padding: 20px 30px;
-}
-
 // 低分辨率
 @media screen and (max-width: 768px) {
   .app {
-    padding: 0 20px;
+    padding: 60px 20px;
   }
 }
 </style>
