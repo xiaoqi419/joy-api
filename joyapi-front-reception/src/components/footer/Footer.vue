@@ -1,7 +1,16 @@
 <template>
   <el-footer class="footer">
-    <p>© 2021 Your Company. All rights reserved.</p>
-    <p>Contact us: email@example.com</p>
+    <p style="justify-content: center; display: flex">
+      © 2024 &nbsp;By&nbsp;
+      <el-link
+        href="https://www.ojason.top"
+        type="primary"
+        style="font-weight: bold; font-size: 15px">
+        Jason
+      </el-link>
+      . All rights reserved.
+    </p>
+    <p>Contact us: zggx261@163.com</p>
   </el-footer>
 </template>
 
