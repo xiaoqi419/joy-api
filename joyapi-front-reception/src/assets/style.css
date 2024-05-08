@@ -15,8 +15,8 @@ html {
 
 /*滚动条样式 蓝色滚动条*/
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -35,7 +35,6 @@ html {
 
 ::-webkit-scrollbar-corner {
   background-color: transparent;
-  
 }
 
 /* 设置全局样式结束 */

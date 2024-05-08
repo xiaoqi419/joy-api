@@ -28,9 +28,7 @@
         <!--用户登录后的菜单组件-->
         <joy-avatar-menu v-else />
         <!--关于-->
-        <el-button type="primary" text class="btn-login" @click="router.push('/about')">
-          关于
-        </el-button>
+        <el-button type="primary" text class="btn-login" @click="jumpAbout">关于</el-button>
       </div>
       <!--低分辨率菜单-->
       <div class="mobile-menu">
@@ -74,6 +72,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
 const router = useRouter();
 const goHome = () => {
   router.push('/');
+};
+
+// 跳转到关于页面
+const jumpAbout = () => {
+  window.location.href = 'https://www.ojason.top/about/';
 };
 
 // 低分辨率菜单
