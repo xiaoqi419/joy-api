@@ -1,11 +1,43 @@
+/* 设置全局样式 */
 :root {
   background-color: var(--el-bg-color);
   color: var(--el-text-color-regular);
 }
+
 * {
   margin: 0;
   padding: 0;
 }
+
 html {
   width: auto;
 }
+
+/*滚动条样式 蓝色滚动条*/
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #409eff;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #409eff;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+  
+}
+
+/* 设置全局样式结束 */
+
+
