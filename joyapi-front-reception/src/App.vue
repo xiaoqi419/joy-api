@@ -6,6 +6,9 @@
     <router-view />
     <!-- 底部 -->
     <joy-foot />
+    <el-backtop>
+      <joy-svg-icon icon="rocket" style="height: 30px; width: 30px" />
+    </el-backtop>
   </div>
 </template>
 
