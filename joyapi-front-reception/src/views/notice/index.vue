@@ -65,7 +65,7 @@ const carouselItem = ref(['Join', 'Relaxation', 'Selection', 'WalkingTogether'])
               </el-timeline-item>
               <el-timeline-item color="#307af6" center placement="top">
                 <el-card>
-                  <p>待补充...</p>
+                  <p>待补充&nbsp;...</p>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
