@@ -73,6 +73,26 @@ const carouselItem = ref(['Join', 'Relaxation', 'Selection', 'WalkingTogether'])
         </el-col>
       </el-row>
     </div>
+    <!--网站初衷-->
+    <div class="original">
+      <el-row>
+        <el-col :span="24">
+          <h2>网站初衷</h2>
+          <p class="content">
+            <code>JoyApi</code>
+            是我很早就在设想的一个项目,由于时间不充足加之技术难度导致项目一直搁浅。
+            做这个项目的初衷也是想起了当年那个刚入行的小白，不会写后端，又苦于囊中羞涩导致很多想使用的API
+            没有办法使用到自己的作品中，这才一直有个执念：我一定要让每一个热爱编程，热爱技术的开发者能没有顾虑的去实现自己的想法。
+            <br />
+          </p>
+          <div style="text-align: center; margin-top: 50px">
+            <code>热爱</code>
+            <code>创造</code>
+            <code>开源</code>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -97,6 +117,16 @@ const carouselItem = ref(['Join', 'Relaxation', 'Selection', 'WalkingTogether'])
     margin-top: 20px;
 
     .timeline {
+      margin-top: 20px;
+    }
+  }
+
+  .original {
+    margin-top: 20px;
+
+    .content {
+      text-indent: 2em;
+      line-height: 2em;
       margin-top: 20px;
     }
   }
