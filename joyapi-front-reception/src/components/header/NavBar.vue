@@ -27,6 +27,10 @@
         </el-button>
         <!--用户登录后的菜单组件-->
         <joy-avatar-menu v-else />
+        <!--关于-->
+        <el-button type="primary" text class="btn-login" @click="router.push('/about')">
+          关于
+        </el-button>
       </div>
       <!--低分辨率菜单-->
       <div class="mobile-menu">
